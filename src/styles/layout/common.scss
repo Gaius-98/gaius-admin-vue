@@ -1,0 +1,12 @@
+.layout {
+  .layout-header {
+    height: $layout-header-height;
+  }
+  .layout-content {
+    box-sizing: border-box;
+    margin: 24px 16px;
+    padding: 16px;
+    background: #fff;
+    height: calc(100vh - $layout-header-height - 48px);
+  }
+}
