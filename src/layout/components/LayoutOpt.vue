@@ -1,15 +1,17 @@
 <template>
   <div class="layout-opt">
-    <div class="layout-opt-i18n">
-      <a-button ghost size="small">English</a-button>
+    <div class="layout-opt-i18n" @click="onToggleLocal">
+      <a-button ghost size="small">
+        {{ local == 'en' ? '中文' : 'English' }}
+      </a-button>
     </div>
     <div class="layout-opt-search">
       <SearchOutlined />
     </div>
-    <div class="layout-opt-theme">
+    <div class="layout-opt-theme" @click="onOpenConfigDrawer">
       <SettingOutlined />
     </div>
-    <div class="layout-opt-github">
+    <div class="layout-opt-github" @click="onOpenGithub">
       <GithubOutlined />
     </div>
     <div class="layout-opt-userinfo">
@@ -24,7 +26,15 @@
 </template>
 
 <script lang="ts" setup>
+import { useSystemStore } from '@/stores/system'
+import { storeToRefs } from 'pinia'
 import { SearchOutlined, SettingOutlined, GithubOutlined } from '@ant-design/icons-vue'
+const systemStore = useSystemStore()
+const { local } = storeToRefs(systemStore)
+const { onOpenConfigDrawer, onToggleLocal } = systemStore
+const onOpenGithub = () => {
+  window.open('https://github.com/Gaius-98/gaius-admin', '_blank')
+}
 </script>
 <style scoped lang="scss">
 .layout-opt {

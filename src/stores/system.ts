@@ -47,14 +47,42 @@ export const useSystemStore = defineStore('system', () => {
           ]
         }
       ]
-    },
-    {
-      key: 'alipay',
-      title: 'Navigation Four - Link'
     }
   ])
+  const isConfigVisible = ref(false)
+  const onOpenConfigDrawer = () => {
+    isConfigVisible.value = true
+  }
+  const onCloseConfigDrawer = () => {
+    isConfigVisible.value = false
+  }
+  const local = ref<'en' | 'zh'>('en')
+  const onToggleLocal = () => {
+    local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
+  }
+  const themeCfg = reactive({
+    projectName: import.meta.env.VITE_TITLE,
+    colorPrimary: '#1677ff',
+    headerBgColor: '#001529',
+    headerFontColor: '#fff',
+    menuBgColor: '#001529',
+    menuFontColor: '#fff',
+    layoutMode: 'horizontal'
+  })
+  const collapsed = ref(false)
+  const onToggleCollapsed = () => {
+    collapsed.value = !collapsed.value
+  }
   return {
     title,
-    menuList
+    menuList,
+    isConfigVisible,
+    local,
+    onOpenConfigDrawer,
+    onCloseConfigDrawer,
+    onToggleLocal,
+    themeCfg,
+    collapsed,
+    onToggleCollapsed
   }
 })

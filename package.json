@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "homepage": "https://github.com/Gaius-98/gaius-admin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gaius-98/gaius-admin.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",

@@ -1,11 +1,30 @@
 <template>
-  <component :is="layout[curLayout]"></component>
+  <component :is="LayoutComponent"></component>
+  <a-drawer
+    :width="300"
+    title="主题配置"
+    placement="right"
+    :open="isConfigVisible"
+    @close="onCloseConfigDrawer"
+    :bodyStyle="{
+      padding: 0
+    }"
+  >
+    <layout-theme-cfg></layout-theme-cfg>
+  </a-drawer>
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent } from 'vue'
-
-const curLayout = ref<'horizontal' | 'vertical'>('horizontal')
+import { ref, defineAsyncComponent, computed } from 'vue'
+import { useSystemStore } from '@/stores/system'
+import { storeToRefs } from 'pinia'
+import LayoutThemeCfg from './components/LayoutThemeCfg.vue'
+const systemStore = useSystemStore()
+const { isConfigVisible, themeCfg } = storeToRefs(systemStore)
+const { onCloseConfigDrawer } = systemStore
+const LayoutComponent = computed(() => {
+  return layout[themeCfg.value.layoutMode as string]
+})
 const layout = {
   horizontal: defineAsyncComponent(() => import('@/layout/LayoutType/HorizontalSplitLayout.vue')),
   vertical: defineAsyncComponent(() => import('@/layout/LayoutType/VerticalStackLayout.vue'))

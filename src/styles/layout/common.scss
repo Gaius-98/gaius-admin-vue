@@ -1,6 +1,9 @@
 .layout {
   .layout-header {
+    display: flex;
+    justify-content: space-between;
     height: $layout-header-height;
+    padding: 0 6px 0px 6px;
   }
   .layout-content {
     box-sizing: border-box;
