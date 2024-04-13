@@ -1,3 +1,4 @@
+import type { VNode } from "vue"
 export interface SystemMenuItem {
   key: string
   label: string
@@ -5,7 +6,7 @@ export interface SystemMenuItem {
   icon?: string
   children?: SystemMenuItem[]
 }
-export interface UIMenuItem extends SystemMenuItem {
+export interface UIMenuItem extends Pick<SystemMenuItem,'key'|'label'|'title'> {
   icon?: VNode
   children?: UIMenuItem[]
 }
