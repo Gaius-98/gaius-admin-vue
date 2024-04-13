@@ -30,7 +30,7 @@ import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import { SearchOutlined, SettingOutlined, GithubOutlined } from '@ant-design/icons-vue'
 const systemStore = useSystemStore()
-const { local } = storeToRefs(systemStore)
+const { local, themeCfg } = storeToRefs(systemStore)
 const { onOpenConfigDrawer, onToggleLocal } = systemStore
 const onOpenGithub = () => {
   window.open('https://github.com/Gaius-98/gaius-admin', '_blank')
@@ -41,7 +41,8 @@ const onOpenGithub = () => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: #fff;
+  color: v-bind('themeCfg.headerFontColor');
+  background: v-bind('themeCfg.headerBgColor');
   height: $layout-header-height;
   div {
     margin: 0 5px;
@@ -60,6 +61,12 @@ const onOpenGithub = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .layout-opt-userinfo-name {
+      max-width: 80px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 }
 </style>

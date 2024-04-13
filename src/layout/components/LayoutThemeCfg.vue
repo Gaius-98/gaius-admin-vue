@@ -10,9 +10,20 @@
         </a-form-item>
         <a-form-item label="布局方式">
           <a-radio-group v-model:value="themeCfg.layoutMode" button-style="solid">
-            <a-radio-button value="horizontal">horizontal</a-radio-button>
-            <a-radio-button value="vertical">vertical</a-radio-button>
+            <a-radio-button :value="item" v-for="item in Object.values(LayoutCategory)" :key="item">
+              {{ item }}
+            </a-radio-button>
           </a-radio-group>
+        </a-form-item>
+        <a-form-item label="开启水印">
+          <a-switch
+            v-model:checked="themeCfg.watermarkVisible"
+            checked-children="开"
+            un-checked-children="关"
+          />
+        </a-form-item>
+        <a-form-item label="水印内容" v-if="themeCfg.watermarkVisible">
+          <a-input v-model:value="themeCfg.watermarkText"> </a-input>
         </a-form-item>
       </a-collapse-panel>
       <a-collapse-panel header="顶栏配置">
@@ -24,11 +35,12 @@
         </a-form-item>
       </a-collapse-panel>
       <a-collapse-panel header="菜单配置">
-        <a-form-item label="背景颜色">
-          <color-picker v-model="themeCfg.menuBgColor" />
-        </a-form-item>
-        <a-form-item label="字体颜色">
-          <color-picker v-model="themeCfg.menuFontColor" />
+        <a-form-item label="主题">
+          <a-radio-group v-model:value="themeCfg.menuTheme" button-style="solid">
+            <a-radio-button :value="item" v-for="item in Object.values(ThemeCategory)" :key="item"
+              >{{ item }}
+            </a-radio-button>
+          </a-radio-group>
         </a-form-item>
       </a-collapse-panel>
     </a-collapse>
@@ -36,10 +48,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref } from 'vue'
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import ColorPicker from '@/components/GaiusColorPicker.vue'
+import { LayoutCategory, ThemeCategory } from '@/model'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)
 </script>

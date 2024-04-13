@@ -7,7 +7,9 @@
       }
     }"
   >
-    <layout-view></layout-view>
+    <a-watermark :content="themeCfg.watermarkText" :zIndex="themeCfg.watermarkVisible ? 9 : -1">
+      <layout-view></layout-view>
+    </a-watermark>
   </a-config-provider>
 </template>
 <script setup lang="ts">

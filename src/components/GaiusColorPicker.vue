@@ -3,10 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref } from 'vue'
-
 const model = defineModel()
-const onChange = (ev: InputEvent) => {
+const onChange = (ev: Event) => {
   model.value = ev.target!.value
 }
 </script>

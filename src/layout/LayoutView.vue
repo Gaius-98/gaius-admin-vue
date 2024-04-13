@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed } from 'vue'
+import { defineAsyncComponent, computed } from 'vue'
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import LayoutThemeCfg from './components/LayoutThemeCfg.vue'

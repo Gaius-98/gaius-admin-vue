@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
+import type { SystemMenuItem, SystemThemeCfg } from '@/model'
 export const useSystemStore = defineStore('system', () => {
-  const title = ref('gaius-admin')
-  const menuList = reactive([
+  const menuTree = reactive<SystemMenuItem[]>([
     {
       key: 'mail',
       label: 'Navigation One',
-      title: 'Navigation One'
+      title: 'Navigation One',
+      icon: 'StepBackwardOutlined'
     },
     {
       key: 'app',
@@ -60,22 +61,22 @@ export const useSystemStore = defineStore('system', () => {
   const onToggleLocal = () => {
     local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
   }
-  const themeCfg = reactive({
+  const themeCfg = reactive<SystemThemeCfg>({
     projectName: import.meta.env.VITE_TITLE,
     colorPrimary: '#1677ff',
     headerBgColor: '#001529',
-    headerFontColor: '#fff',
-    menuBgColor: '#001529',
-    menuFontColor: '#fff',
-    layoutMode: 'horizontal'
+    headerFontColor: '#ffffff',
+    menuTheme: 'light',
+    layoutMode: 'horizontal',
+    watermarkVisible: false,
+    watermarkText: import.meta.env.VITE_TITLE
   })
   const collapsed = ref(false)
   const onToggleCollapsed = () => {
     collapsed.value = !collapsed.value
   }
   return {
-    title,
-    menuList,
+    menuTree,
     isConfigVisible,
     local,
     onOpenConfigDrawer,

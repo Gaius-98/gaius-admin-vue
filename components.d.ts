@@ -25,8 +25,11 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     ARadioButton: typeof import('ant-design-vue/es')['RadioButton']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
+    ASwitch: typeof import('ant-design-vue/es')['Switch']
+    AWatermark: typeof import('ant-design-vue/es')['Watermark']
     GaiusColor: typeof import('./src/components/GaiusColor.vue')['default']
     GaiusColorPicker: typeof import('./src/components/GaiusColorPicker.vue')['default']
+    GaiusIcon: typeof import('./src/components/GaiusIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

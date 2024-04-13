@@ -1,13 +1,6 @@
 <template>
   <a-layout class="layout">
-    <a-layout-sider
-      collapsible
-      :collapsed="collapsed"
-      :trigger="null"
-      :style="{
-        background: themeCfg.menuBgColor
-      }"
-    >
+    <a-layout-sider collapsible :collapsed="collapsed" :trigger="null" :theme="themeCfg.menuTheme">
       <layout-logo />
       <layout-menu mode="inline"> </layout-menu>
     </a-layout-sider>
