@@ -28,7 +28,7 @@ export default defineConfig({
     proxy: {
       //开发环境
       '/dev': {
-        target: 'http://xxxxx',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/dev/, '')
       },
