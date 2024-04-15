@@ -10,5 +10,9 @@ export interface AuthInfo {
     username:string
     name:string
     role:string
-    createTime:Date
+    createTime:Date,
+    id:string
+}
+export type CreateAuthInfo =  Pick<AuthInfo,'avatar'|'email'|'name'|'role'|'username'> &  {
+    password:string,
 }

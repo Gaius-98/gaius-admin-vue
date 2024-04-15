@@ -17,7 +17,13 @@ const router = createRouter({
           path:'/menu',
           name:'menu',
           component:()=>import('@/views/System/MenuView.vue')
-        },{
+        },
+        {
+          path:'/user',
+          name:'user',
+          component:()=>import('@/views/System/UserView.vue')
+        },
+        {
           path:'/:pathMatch(.*)*',
           name:'404',
           component:NotFound
