@@ -3,14 +3,12 @@
     <a-card class="search-area">
       <a-form ref="searchFormRef" :model="menuParamsForm" @finish="getList">
         <a-row :gutter="24">
-          <a-col :span="8">
+          <a-col :span="4">
             <a-form-item label="名称" name="keyword">
               <a-input v-model:value="menuParamsForm.keyword"> </a-input>
             </a-form-item>
           </a-col>
-        </a-row>
-        <a-row>
-          <a-col :span="24" style="text-align: right">
+          <a-col :span="4" style="text-align: right">
             <a-button type="primary" html-type="submit">搜索</a-button>
             <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
           </a-col>
@@ -42,7 +40,7 @@
         </template>
       </a-table>
     </a-card>
-    <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
+    <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle">
       <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
         <a-form-item label="名称" name="label">
           <a-input v-model:value="formData.label"></a-input>
@@ -167,6 +165,15 @@ const modalTitle = computed(() => {
 })
 const modalFormRef = ref<FormInstance>()
 const onOpenAddMenu = () => {
+  formData.value = {
+    label: '',
+    menuType: 'app',
+    sortNum: 0,
+    address: '',
+    type: 'front',
+    openType: '_self',
+    pid: ''
+  }
   modalType.value = 'add'
   modalOpen.value = true
   getDict()
