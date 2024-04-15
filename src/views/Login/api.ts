@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import type { AuthLogin,  AuthToken } from "@/model/IAuth";
+import type { AuthLogin,  AuthToken } from "@/model";
 import axios from 'axios'
 import type {AxiosResponse} from 'axios'
 export default {
