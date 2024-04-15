@@ -58,6 +58,7 @@
               label: 'label',
               value: 'id'
             }"
+            @change="onChangeTreeSelect"
           >
           </a-tree-select>
         </a-form-item>
@@ -83,8 +84,8 @@ import { message, type FormInstance } from 'ant-design-vue'
 const menuParamsForm = reactive({
   keyword: ''
 })
-const tableData = reactive<ResMenuItem[]>([])
-const columns = reactive([
+const tableData = ref<ResMenuItem[]>([])
+const columns = ref([
   {
     title: '名称',
     key: 'label',
@@ -122,7 +123,7 @@ const getList = () => {
   api.getList(menuParamsForm.keyword).then((res) => {
     const { code, data } = res
     if (code == 200) {
-      Object.assign(tableData, data)
+      tableData.value = data
     }
     loading.value = false
   })
@@ -131,13 +132,14 @@ onMounted(() => {
   getList()
 })
 const modalOpen = ref(false)
-const formData = reactive<ResMenuItem>({
+const formData = ref<ResMenuItem>({
   label: '',
   menuType: 'app',
   sortNum: 0,
   address: '',
   type: 'front',
-  openType: '_self'
+  openType: '_self',
+  pid: ''
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -159,7 +161,7 @@ const getDetailById = async (id: string) => {
 const onOpenEditMenu = async (record: ResMenuItem) => {
   const { code, data } = await getDetailById(record.id!)
   if (code == 200) {
-    Object.assign(formData, data)
+    formData.value = data
     modalType.value = 'edit'
     modalOpen.value = true
     getDict()
@@ -183,7 +185,7 @@ const onConfirm = () => {
   } else {
     http = api.update
   }
-  http(formData).then((res) => {
+  http(formData.value).then((res) => {
     const { code } = res
     if (code == 200) {
       message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
@@ -201,6 +203,10 @@ const getDict = () => {
       Object.assign(dictList, data)
     }
   })
+}
+const onChangeTreeSelect = (val: string) => {
+  let value = val ? val : null
+  formData.value.pid = value
 }
 </script>
 <style scoped lang="scss">
