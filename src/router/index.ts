@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import NotFound from '@/views/ErrorTemplate/NotFound.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,6 +17,10 @@ const router = createRouter({
           path:'/menu',
           name:'menu',
           component:()=>import('@/views/System/MenuView.vue')
+        },{
+          path:'/:pathMatch(.*)*',
+          name:'404',
+          component:NotFound
         }
       ]
     },

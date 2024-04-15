@@ -190,7 +190,6 @@ const onDeleteMenu = async (record: ResMenuItem) => {
   }
 }
 const resetForm = () => {
-  console.log(modalFormRef.value)
   modalFormRef.value?.resetFields()
 }
 const onConfirm = () => {
