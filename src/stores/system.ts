@@ -1,55 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import type { SystemMenuItem, SystemThemeCfg } from '@/model'
+import systemApi from '@/api/system'
 export const useSystemStore = defineStore('system', () => {
-  const menuTree = reactive<SystemMenuItem[]>([
-    {
-      key: 'mail',
-      label: 'Navigation One',
-      title: 'Navigation One',
-      icon: 'StepBackwardOutlined'
-    },
-    {
-      key: 'app',
-      label: 'Navigation Two',
-      title: 'Navigation Two'
-    },
-    {
-      key: 'sub1',
-      label: 'Navigation Three - Submenu',
-      title: 'Navigation Three - Submenu',
-      children: [
-        {
-          type: 'group',
-          label: 'Item 1',
-          children: [
-            {
-              label: 'Option 1',
-              key: 'setting:1'
-            },
-            {
-              label: 'Option 2',
-              key: 'setting:2'
-            }
-          ]
-        },
-        {
-          type: 'group',
-          label: 'Item 2',
-          children: [
-            {
-              label: 'Option 3',
-              key: 'setting:3'
-            },
-            {
-              label: 'Option 4',
-              key: 'setting:4'
-            }
-          ]
-        }
-      ]
-    }
-  ])
+  const menuTree = ref<SystemMenuItem[]>([])
   const isConfigVisible = ref(false)
   const onOpenConfigDrawer = () => {
     isConfigVisible.value = true
@@ -61,6 +15,7 @@ export const useSystemStore = defineStore('system', () => {
   const onToggleLocal = () => {
     local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
   }
+
   const themeCfg = reactive<SystemThemeCfg>({
     projectName: import.meta.env.VITE_TITLE,
     colorPrimary: '#1677ff',
@@ -75,6 +30,15 @@ export const useSystemStore = defineStore('system', () => {
   const onToggleCollapsed = () => {
     collapsed.value = !collapsed.value
   }
+
+  const getMenu = async () => {
+    const { data } = await systemApi.getMenu()
+    menuTree.value = data
+  }
+
+  const startUp = async () => {
+    await getMenu()
+  }
   return {
     menuTree,
     isConfigVisible,
@@ -84,6 +48,8 @@ export const useSystemStore = defineStore('system', () => {
     onToggleLocal,
     themeCfg,
     collapsed,
-    onToggleCollapsed
+    onToggleCollapsed,
+    startUp,
+    getMenu
   }
 })

@@ -1,32 +1,33 @@
-import type { VNode } from "vue"
+import type { VNode } from 'vue'
 export interface SystemMenuItem {
   key: string
   label: string
   title?: string
   icon?: string
+  [key: string]: any
   children?: SystemMenuItem[]
 }
-export interface UIMenuItem extends Pick<SystemMenuItem,'key'|'label'|'title'> {
+export interface UIMenuItem extends Pick<SystemMenuItem, 'key' | 'label' | 'title'> {
   icon?: VNode
   children?: UIMenuItem[]
 }
 export interface ResMenuItem {
-  id?:string;
-  label: string;
-  pid?: string;
-  menuType: 'app' | 'directory';
-  desc?: string;
-  icon?: string;
-  sortNum: number;
-  address?:string;
+  id?: string
+  label: string
+  pid?: string
+  menuType: 'app' | 'directory'
+  desc?: string
+  icon?: string
+  sortNum: number
+  address?: string
   // table 预置列表爷 page 预置设计页面 front 前端代码页面 form 表单页面
-  type: 'table' | 'page' | 'front' | 'form';
-  openType: '_blank' | '_self';
+  type: 'table' | 'page' | 'front' | 'form'
+  openType: '_blank' | '_self'
 }
 export interface ResMenuDict {
-  id:string,
-  label:string,
-  children:ResMenuDict[]
+  id: string
+  label: string
+  children: ResMenuDict[]
 }
 export enum LayoutCategory {
   horizontal = 'horizontal',

@@ -21,7 +21,7 @@ import { storeToRefs } from 'pinia'
 import LayoutThemeCfg from './components/LayoutThemeCfg.vue'
 const systemStore = useSystemStore()
 const { isConfigVisible, themeCfg } = storeToRefs(systemStore)
-const { onCloseConfigDrawer } = systemStore
+const { onCloseConfigDrawer, startUp } = systemStore
 const LayoutComponent = computed(() => {
   return layout[themeCfg.value.layoutMode as string]
 })
@@ -29,5 +29,6 @@ const layout = {
   horizontal: defineAsyncComponent(() => import('@/layout/LayoutType/HorizontalSplitLayout.vue')),
   vertical: defineAsyncComponent(() => import('@/layout/LayoutType/VerticalStackLayout.vue'))
 }
+startUp()
 </script>
 <style scoped lang="scss"></style>
