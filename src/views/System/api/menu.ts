@@ -1,5 +1,9 @@
 import request from "@/utils/request";
 import type { ResMenuItem } from "@/model";
+export interface MenuDict {
+    id:string,
+    label:string
+}
 export default {
     getList:(keyword:string)=>{
         return request<ResMenuItem[]>({
@@ -11,7 +15,7 @@ export default {
         })
     },
     getDetail:(id:string)=>{
-        return request({
+        return request<ResMenuItem>({
             url:'/menu/detail',
             method:'get',
             params:{
@@ -43,7 +47,7 @@ export default {
         })
     },
     dict:()=>{
-        return request({
+        return request<MenuDict[]>({
             url:'menu/directory',
             method:'get'
         })
