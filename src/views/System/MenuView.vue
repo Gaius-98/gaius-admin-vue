@@ -91,7 +91,7 @@ import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/menu'
 import type { ResMenuItem } from '@/model'
 import { message, type FormInstance } from 'ant-design-vue'
-import { MenuDict } from './api/menu'
+import type { MenuDict } from './api/menu'
 const menuParamsForm = reactive({
   keyword: ''
 })

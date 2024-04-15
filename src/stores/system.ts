@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import type { SystemMenuItem, SystemThemeCfg } from '@/model'
+import type { ResMenuItem, SystemThemeCfg } from '@/model'
 import systemApi from '@/api/system'
 export const useSystemStore = defineStore('system', () => {
-  const menuTree = ref<SystemMenuItem[]>([])
+  const menuTree = ref<ResMenuItem[]>([])
   const isConfigVisible = ref(false)
   const onOpenConfigDrawer = () => {
     isConfigVisible.value = true

@@ -7,9 +7,11 @@ export interface SystemMenuItem {
   [key: string]: any
   children?: SystemMenuItem[]
 }
-export interface UIMenuItem extends Pick<SystemMenuItem, 'key' | 'label' | 'title'> {
-  icon?: VNode
-  children?: UIMenuItem[]
+export interface UIMenuItem extends Pick<ResMenuItem, 'id' | 'label'> {
+  icon?: VNode|string
+  children?: UIMenuItem[],
+  key:string,
+  [key:string]:any
 }
 export interface ResMenuItem {
   id?: string
@@ -22,7 +24,8 @@ export interface ResMenuItem {
   address?: string
   // table 预置列表爷 page 预置设计页面 front 前端代码页面 form 表单页面
   type: 'table' | 'page' | 'front' | 'form'
-  openType: '_blank' | '_self'
+  openType: '_blank' | '_self',
+  children?:ResMenuItem[]
 }
 export interface ResMenuDict {
   id: string
