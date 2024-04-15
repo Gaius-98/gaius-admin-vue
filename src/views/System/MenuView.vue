@@ -1,10 +1,20 @@
 <template>
   <div class="menu">
     <a-card class="search-area">
-      <a-form layout="inline">
-        <a-form-item label="名称" name="keyword">
-          <a-input v-model:value="menuParamsForm.keyword"> </a-input>
-        </a-form-item>
+      <a-form ref="searchFormRef" :model="menuParamsForm" @finish="getList">
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item label="名称" name="keyword">
+              <a-input v-model:value="menuParamsForm.keyword"> </a-input>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="24" style="text-align: right">
+            <a-button type="primary" html-type="submit">搜索</a-button>
+            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+          </a-col>
+        </a-row>
       </a-form>
     </a-card>
     <a-card>
@@ -118,6 +128,11 @@ const columns = ref([
   }
 ])
 const loading = ref(false)
+const searchFormRef = ref<FormInstance>()
+const onClear = () => {
+  searchFormRef.value?.resetFields()
+  getList()
+}
 const getList = () => {
   loading.value = true
   api.getList(menuParamsForm.keyword).then((res) => {
@@ -195,12 +210,12 @@ const onConfirm = () => {
     modalOpen.value = false
   })
 }
-const dictList = reactive([])
+const dictList = ref([])
 const getDict = () => {
   api.dict().then((res) => {
     const { code, data } = res
     if (code == 200) {
-      Object.assign(dictList, data)
+      dictList.value = data
     }
   })
 }
