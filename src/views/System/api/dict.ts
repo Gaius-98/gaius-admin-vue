@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 import type { SystemDictItem,ResPage,PageParams,SystemDictTypeItem } from "@/model";
 export interface DictPageParams extends PageParams {
-    dictType:string[]
+    dictType:string
 }
 export default {
     getList:(params:PageParams)=>{
@@ -11,21 +11,21 @@ export default {
             params,
         })
     },
-    getDetail:(username:string)=>{
+    getDetail:(id:string)=>{
         return request<SystemDictItem>({
             method:'get',
             url:'dict/detail',
             params:{
-                username
+                id
             },
         })
     },
-    remove:(username:string)=>{
+    remove:(id:string)=>{
         return request<string>({
             method:'get',
             url:'dict/remove',
             params:{
-                username
+                id
             },
         })
     },

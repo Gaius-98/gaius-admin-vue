@@ -4,18 +4,19 @@
       <a-form ref="searchFormRef" :model="dictParamsForm" @finish="getList">
         <a-row :gutter="24">
           <a-col :span="4">
-            <a-form-item label="名称" name="keyword">
+            <a-form-item label="字典描述" name="keyword">
               <a-input v-model:value="dictParamsForm.keyword"> </a-input>
             </a-form-item>
           </a-col>
           <a-col :span="4">
-            <a-form-item label="名称" name="keyword">
+            <a-form-item label="归属字典" name="dictType">
               <a-select
                 v-model:value="dictParamsForm.dictType"
                 :fieldNames="{
                   label: 'dictTypeDesc',
                   value: 'dictType'
                 }"
+                allowClear
                 :options="dictTypes"
               >
               </a-select>
@@ -39,6 +40,10 @@
         :pagination="{ current: dictParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key == 'status'">
+            <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+            <a-tag color="#f50" v-else>停用</a-tag>
+          </template>
           <template v-if="column.key == 'action'">
             <a-button type="link" @click="onOpenEditdict(record)">编辑</a-button>
             <a-divider type="vertical" />
@@ -82,7 +87,10 @@
           </a-select>
         </a-form-item>
         <a-form-item label="字典类型描述">
-          <a-input v-model:value="formData.dictTypeDesc"></a-input>
+          <a-input
+            v-model:value="formData.dictTypeDesc"
+            :disabled="!isAddDictType.includes(formData.dictType)"
+          ></a-input>
         </a-form-item>
         <a-form-item label="字典描述">
           <a-input v-model:value="formData.label"></a-input>
@@ -92,6 +100,12 @@
         </a-form-item>
         <a-form-item label="排序号">
           <a-input-number v-model:value="formData.sortNum"></a-input-number>
+        </a-form-item>
+        <a-form-item label="状态">
+          <a-radio-group v-model:value="formData.status" button-style="solid">
+            <a-radio-button :value="1">启用 </a-radio-button>
+            <a-radio-button :value="0">停用 </a-radio-button>
+          </a-radio-group>
         </a-form-item>
         <a-form-item label="描述">
           <a-input type="textarea" v-model:value="formData.desc"></a-input>
@@ -121,12 +135,17 @@ const VNodes = defineComponent({
 })
 const dictParamsForm = reactive<DictPageParams>({
   keyword: '',
-  dictType: [],
+  dictType: '',
   pageNumber: 1,
   pageSize: 10
 })
 const tableData = ref<SystemDictItem[]>([])
 const columns = ref([
+  {
+    title: '归属字典',
+    key: 'dictTypeDesc',
+    dataIndex: 'dictTypeDesc'
+  },
   {
     title: '字典描述',
     key: 'label',
@@ -138,14 +157,9 @@ const columns = ref([
     dataIndex: 'value'
   },
   {
-    title: '归属字典',
-    key: 'dictTypeDesc',
-    dataIndex: 'dictTypeDesc'
-  },
-  {
-    title: '归属字典类型',
-    key: 'dictType',
-    dataIndex: 'dictType'
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status'
   },
   {
     title: '创建时间',
@@ -240,6 +254,8 @@ const onConfirm = () => {
     if (code == 200) {
       message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
       getList()
+      getDictTypes()
+      isAddDictType.value = []
     }
     resetForm()
     modalOpen.value = false
@@ -247,9 +263,12 @@ const onConfirm = () => {
 }
 
 const dictType = ref('')
+const isAddDictType = ref<string[]>([])
 const addDictType = (e: Event) => {
   e.preventDefault()
   dictTypes.value.push({ dictType: dictType.value, dictTypeDesc: dictType.value })
+  isAddDictType.value.push(dictType.value)
+  dictType.value = ''
 }
 const onChangeDictType = () => {
   formData.value.dictTypeDesc = dictTypes.value.find(

@@ -62,4 +62,5 @@ export interface SystemDictItem extends SystemDictTypeItem {
   value:string
   sortNum:number
   desc?:string
+  status?:number
 }
