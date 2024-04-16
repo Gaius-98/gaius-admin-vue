@@ -52,3 +52,14 @@ export interface SystemThemeCfg {
   watermarkText: string
   menuTheme: themeType
 }
+export interface SystemDictTypeItem {
+  dictType:string
+  dictTypeDesc:string
+}
+export interface SystemDictItem extends SystemDictTypeItem {
+  id?:string
+  label:string
+  value:string
+  sortNum:number
+  desc?:string
+}

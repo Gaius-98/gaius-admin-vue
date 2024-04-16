@@ -24,6 +24,11 @@ const router = createRouter({
           component:()=>import('@/views/System/UserView.vue')
         },
         {
+          path:'/dict',
+          name:'dict',
+          component:()=>import('@/views/System/DictView.vue')
+        },
+        {
           path:'/:pathMatch(.*)*',
           name:'404',
           component:NotFound

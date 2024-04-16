@@ -19,7 +19,12 @@
       <div class="tools">
         <a-button type="primary" @click="onOpenAdduser">新增</a-button>
       </div>
-      <a-table :loading="loading" :columns="columns" :data-source="tableData">
+      <a-table
+        :loading="loading"
+        :columns="columns"
+        :data-source="tableData"
+        :pagination="{ current: userParamsForm.pageNumber, total: total }"
+      >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'action'">
             <a-button type="link" @click="onOpenEdituser(record)">编辑</a-button>
@@ -108,12 +113,14 @@ const onClear = () => {
   searchFormRef.value?.resetFields()
   getList()
 }
+const total = ref(0)
 const getList = () => {
   loading.value = true
   api.getList(userParamsForm).then((res) => {
     const { code, data } = res
     if (code == 200) {
       tableData.value = data.data
+      total.value = data.total
     }
     loading.value = false
   })
