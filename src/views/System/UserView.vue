@@ -106,8 +106,8 @@ const columns = ref([
   },
   {
     title: '角色',
-    key: 'role',
-    dataIndex: 'role'
+    key: 'roleId',
+    dataIndex: 'roleId'
   },
   {
     title: '创建时间',
