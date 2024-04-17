@@ -19,7 +19,13 @@
       <div class="tools">
         <a-button type="primary" @click="onOpenAddMenu">新增</a-button>
       </div>
-      <a-table :loading="loading" :columns="columns" :data-source="tableData" :pagination="false">
+      <a-table
+        :rowKey="(record: ResMenuItem) => record.id"
+        :loading="loading"
+        :columns="columns"
+        :data-source="tableData"
+        :pagination="false"
+      >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'action'">
             <a-button type="link" @click="onOpenEditMenu(record)">编辑</a-button>
