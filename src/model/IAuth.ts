@@ -9,10 +9,23 @@ export interface AuthInfo {
     email:string
     username:string
     name:string
-    role:string
+    roleId:string
     createTime:Date,
     id:string
 }
-export type CreateAuthInfo =  Pick<AuthInfo,'avatar'|'email'|'name'|'role'|'username'> &  {
+export type CreateAuthInfo =  Pick<AuthInfo,'avatar'|'email'|'name'|'roleId'|'username'> &  {
     password:string,
+}
+export interface RoleInfo {
+    id?:string
+    roleName:string
+    roleValue:string[]
+    roleId:string
+    creatTime?:Date
+    desc?:string
+    status:number
+}
+export interface RoleDictItem {
+    roleId:string
+    roleName:string
 }

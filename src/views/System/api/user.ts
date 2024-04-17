@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import type {PageParams,AuthInfo,ResPage,CreateAuthInfo} from '@/model'
+import type {PageParams,AuthInfo,ResPage,CreateAuthInfo,RoleDictItem} from '@/model'
 export default {
     getList:(params:PageParams)=>{
         return request<ResPage<AuthInfo[]>>({
@@ -38,6 +38,12 @@ export default {
             method:'post',
             url:'user/update',
             data,
+        })
+    },
+    getRoleDict:()=>{
+        return request<RoleDictItem[]>({
+            method:'get',
+            url:'role/dict',
         })
     }
 }

@@ -1,11 +1,11 @@
 <template>
-  <div class="user">
+  <div class="role">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="userParamsForm" @finish="getList">
+      <a-form ref="searchFormRef" :model="roleParamsForm" @finish="getList">
         <a-row :gutter="24">
           <a-col :span="4">
-            <a-form-item label="用户名" name="keyword">
-              <a-input v-model:value="userParamsForm.keyword"> </a-input>
+            <a-form-item label="角色名称" name="keyword">
+              <a-input v-model:value="roleParamsForm.keyword"> </a-input>
             </a-form-item>
           </a-col>
           <a-col :span="4" style="text-align: right">
@@ -17,60 +17,71 @@
     </a-card>
     <a-card>
       <div class="tools">
-        <a-button type="primary" @click="onOpenAdduser">新增</a-button>
+        <a-button type="primary" @click="onOpenAddrole">新增</a-button>
       </div>
       <a-table
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :pagination="{ current: userParamsForm.pageNumber, total: total }"
+        :pagination="{ current: roleParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.key == 'role'">
-            <a-tag>{{ record.role }}</a-tag>
+          <template v-if="column.key == 'status'">
+            <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+            <a-tag color="#f50" v-else>停用</a-tag>
           </template>
           <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenEdituser(record)">编辑</a-button>
+            <a-button type="link" @click="onOpenEditrole(record)">编辑</a-button>
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"
               cancel-text="取消"
-              @confirm="onDeleteuser(record)"
+              @confirm="onDeleterole(record)"
             >
               <a-button type="link" danger>删除</a-button>
             </a-popconfirm>
           </template>
-          <template v-if="column.key == 'userType'">
-            <a-tag color="#2db7f5" v-if="record.userType == 'app'">菜单</a-tag>
-            <a-tag color="#87d068" v-if="record.userType == 'directory'">目录</a-tag>
+          <template v-if="column.key == 'roleType'">
+            <a-tag color="#2db7f5" v-if="record.roleType == 'app'">菜单</a-tag>
+            <a-tag color="#87d068" v-if="record.roleType == 'directory'">目录</a-tag>
           </template>
         </template>
       </a-table>
     </a-card>
     <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
       <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-        <a-form-item label="用户名">
-          <a-input v-model:value="formData.username"></a-input>
+        <a-form-item label="角色名">
+          <a-input v-model:value="formData.roleName"></a-input>
         </a-form-item>
-        <a-form-item label="密码">
-          <a-input-password v-model:value="formData.password"></a-input-password>
+        <a-form-item label="角色ID">
+          <a-input v-model:value="formData.roleId"></a-input>
         </a-form-item>
-        <a-form-item label="角色">
-          <a-select
-            v-model:value="formData.roleId"
-            :fieldNames="{
-              label: 'roleName',
-              value: 'roleId'
+        <a-form-item label="状态">
+          <a-radio-group v-model:value="formData.status" button-style="solid">
+            <a-radio-button :value="1">启用 </a-radio-button>
+            <a-radio-button :value="0">停用 </a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="权限">
+          <a-tree-select
+            v-model:value="formData.roleValue"
+            style="width: 100%"
+            :tree-data="menuTree"
+            tree-checkable
+            allow-clear
+            :show-checked-strategy="SHOW_ALL"
+            placeholder="请选择权限"
+            tree-node-filter-prop="label"
+            :field-names="{
+              children: 'children',
+              label: 'label',
+              value: 'id'
             }"
-            :options="roleDictList"
-          ></a-select>
+          />
         </a-form-item>
-        <a-form-item label="名称">
-          <a-input v-model:value="formData.name"></a-input>
-        </a-form-item>
-        <a-form-item label="邮箱">
-          <a-input v-model:value="formData.email"></a-input>
+        <a-form-item label="备注">
+          <a-input v-model:value="formData.desc"></a-input>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -79,35 +90,38 @@
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
-import api from './api/user'
+import api from './api/role'
 import { message, type FormInstance } from 'ant-design-vue'
-import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem } from '@/model'
-const userParamsForm = reactive<PageParams>({
+import type { RoleInfo, PageParams, ResMenuItem } from '@/model'
+import apiMenu from './api/menu'
+import { TreeSelect } from 'ant-design-vue'
+const SHOW_ALL = TreeSelect.SHOW_ALL
+const roleParamsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
   pageSize: 10
 })
-const tableData = ref<AuthInfo[]>([])
+const tableData = ref<RoleInfo[]>([])
 const columns = ref([
   {
-    title: '用户名',
-    key: 'username',
-    dataIndex: 'username'
+    title: '角色名',
+    key: 'roleName',
+    dataIndex: 'roleName'
   },
   {
-    title: '名称',
-    key: 'name',
-    dataIndex: 'name'
+    title: '角色ID',
+    key: 'roleId',
+    dataIndex: 'roleId'
   },
   {
-    title: '邮箱',
-    key: 'email',
-    dataIndex: 'email'
+    title: '备注',
+    key: 'desc',
+    dataIndex: 'desc'
   },
   {
-    title: '角色',
-    key: 'role',
-    dataIndex: 'role'
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status'
   },
   {
     title: '创建时间',
@@ -129,7 +143,7 @@ const onClear = () => {
 const total = ref(0)
 const getList = () => {
   loading.value = true
-  api.getList(userParamsForm).then((res) => {
+  api.getList(roleParamsForm).then((res) => {
     const { code, data } = res
     if (code == 200) {
       tableData.value = data.data
@@ -142,46 +156,44 @@ onMounted(() => {
   getList()
 })
 const modalOpen = ref(false)
-const formData = ref<CreateAuthInfo>({
-  username: '',
-  name: '',
-  password: '',
-  email: '',
-  avatar: '',
-  roleId: ''
+const formData = ref<RoleInfo>({
+  roleName: '',
+  roleId: '',
+  status: 1,
+  desc: '',
+  roleValue: []
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
   let titleObj = {
-    add: '新增用户',
-    edit: '编辑用户'
+    add: '新增角色',
+    edit: '编辑角色'
   }
   return titleObj[modalType.value]
 })
 const modalFormRef = ref<FormInstance>()
-const onOpenAdduser = () => {
+const onOpenAddrole = () => {
   modalType.value = 'add'
   modalOpen.value = true
   formData.value = {
-    username: '',
-    name: '',
-    password: '',
-    email: '',
-    avatar: '',
-    roleId: ''
+    roleName: '',
+    roleId: '',
+    status: 1,
+    desc: '',
+    roleValue: []
   }
 }
 
-const onOpenEdituser = async (record: AuthInfo) => {
-  const { code, data } = await api.getDetail(record.username!)
+const onOpenEditrole = async (record: RoleInfo) => {
+  const { code, data } = await api.getDetail(record.id!)
   if (code == 200) {
     formData.value = data
     modalType.value = 'edit'
     modalOpen.value = true
   }
 }
-const onDeleteuser = async (record: AuthInfo) => {
-  const { code, msg, data } = await api.remove(record.username!)
+const onDeleterole = async (record: RoleInfo) => {
+  const { code, msg, data } = await api.remove(record.id!)
   if (code == 200) {
     message.success(data)
     getList()
@@ -207,21 +219,21 @@ const onConfirm = () => {
     modalOpen.value = false
   })
 }
-const roleDictList = ref<RoleDictItem[]>([])
-const getRoleDict = () => {
-  api.getRoleDict().then((res) => {
+const menuTree = ref<ResMenuItem[]>([])
+const getMenuTree = () => {
+  apiMenu.getList('').then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
-      roleDictList.value = data
+      menuTree.value = data
     }
   })
 }
 onMounted(() => {
-  getRoleDict()
+  getMenuTree()
 })
 </script>
 <style scoped lang="scss">
-.user {
+.role {
   display: flex;
   flex-direction: column;
   width: 100%;

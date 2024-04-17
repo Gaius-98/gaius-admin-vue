@@ -29,6 +29,11 @@ const router = createRouter({
           component:()=>import('@/views/System/DictView.vue')
         },
         {
+          path:'/role',
+          name:'role',
+          component:()=>import('@/views/System/RoleView.vue')
+        },
+        {
           path:'/:pathMatch(.*)*',
           name:'404',
           component:NotFound
