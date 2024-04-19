@@ -10,3 +10,4 @@ export interface ResPage<T>{
   data:T,
   total:number
 }
+
