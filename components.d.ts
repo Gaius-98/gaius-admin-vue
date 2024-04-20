@@ -54,5 +54,6 @@ declare module 'vue' {
     GaiusIframe: typeof import('./src/components/GaiusIframe.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SchemaForm: typeof import('./src/components/SchemaForm/SchemaForm.vue')['default']
   }
 }
