@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
-import ColorPicker from '@/components/GaiusColorPicker.vue'
+import ColorPicker from '@/components/ColorPicker.vue'
 import { LayoutCategory, ThemeCategory } from '@/model'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)

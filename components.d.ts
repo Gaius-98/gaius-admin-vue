@@ -47,6 +47,8 @@ declare module 'vue' {
     ATreeSelect: typeof import('ant-design-vue/es')['TreeSelect']
     ATypographyLink: typeof import('ant-design-vue/es')['TypographyLink']
     AWatermark: typeof import('ant-design-vue/es')['Watermark']
+    ColorPicker: typeof import('./src/components/ColorPicker.vue')['default']
+    EditTable: typeof import('./src/components/EditTable.vue')['default']
     GaiusColorPicker: typeof import('./src/components/GaiusColorPicker.vue')['default']
     GaiusEditTable: typeof import('./src/components/GaiusEditTable.vue')['default']
     GaiusIframe: typeof import('./src/components/GaiusIframe.vue')['default']

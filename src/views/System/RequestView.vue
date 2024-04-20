@@ -80,16 +80,13 @@
         <div>
           <a-tabs v-model:activeKey="activeKey">
             <a-tab-pane key="params" tab="params">
-              <gaius-edit-table :columns="paramsColumns" v-model="formData.params">
-              </gaius-edit-table>
+              <edit-table :columns="paramsColumns" v-model="formData.params"> </edit-table>
             </a-tab-pane>
             <a-tab-pane key="headers" tab="headers">
-              <gaius-edit-table :columns="headersColumns" v-model="formData.headers">
-              </gaius-edit-table>
+              <edit-table :columns="headersColumns" v-model="formData.headers"> </edit-table>
             </a-tab-pane>
             <a-tab-pane key="body" tab="body">
-              <gaius-edit-table :columns="paramsColumns" v-model="formData.body">
-              </gaius-edit-table>
+              <edit-table :columns="paramsColumns" v-model="formData.body"> </edit-table>
             </a-tab-pane>
           </a-tabs>
         </div>
@@ -130,10 +127,8 @@ import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/http'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { ReqInfo, ReqPageParams } from '@/model'
-import GaiusEditTable from '@/components/GaiusEditTable.vue'
-import type { EditColumn } from '@/components/GaiusEditTable.vue'
-import type { Res } from '@/utils/request'
-import type { AxiosResponse } from 'axios'
+import EditTable from '@/components/EditTable.vue'
+import type { EditColumn } from '@/components/EditTable.vue'
 const requestParamsForm = reactive<ReqPageParams>({
   keyword: '',
   pageNumber: 1,
