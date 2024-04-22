@@ -1,9 +1,9 @@
 import {h, toRefs,ref,inject} from 'vue'
-import type {Prop,ComputedOptions} from 'vue'
-import type { SchemaProperties,ControlType,Schema,SchemaLayout } from './schema'
+import type {Prop} from 'vue'
+import type { SchemaProperties,ControlType,Schema,SchemaLayout,SchemaFormItem } from './schema'
 import type { Obj } from '@/model'
 import { Input,Select,Form,FormItem,InputNumber,DatePicker,TreeSelect,RadioButton,RadioGroup, type RadioChangeEvent,Switch } from 'ant-design-vue'
-import { compileText,replaceVar,execFun } from './core'
+import { compileText,execFun } from './core'
 import { GuPubSub } from 'gaius-utils'
 import _ from 'lodash'
 const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,component?:Obj<any>) =>{
@@ -154,7 +154,7 @@ const SchemaForm = {
         const { layout,properties,formData } =toRefs(props)
         const registeredComponents = inject('registeredComponents')
         const options = ref<Obj<any>>({})
-        const needOptions =  Object.entries(properties.value).filter(([key,propItem])=> {
+        const needOptions =  Object.entries(properties.value).filter(([,propItem])=> {
             return propItem?.component?.dataSource || propItem?.component?.asyncData
         })
         const getOptions = async (key:string,propItem:SchemaProperties) =>{
@@ -170,7 +170,7 @@ const SchemaForm = {
         })
 
         const refrehOption = (key:string) =>{
-            const [pKey,propItem] =  Object.entries(properties.value).find(([propKey,propItem])=>key == propKey)!
+            const [pKey,propItem] =  Object.entries(properties.value).find(([propKey])=>key == propKey)!
             if(propItem){
                 getOptions(pKey,propItem)
             }
@@ -214,7 +214,7 @@ const SchemaForm = {
     },
     render : (ctx:any)=>{
         return  h(Form,{...ctx.layout},
-         [...Object.entries(ctx.properties).map(  ([key,propItem])=>  createSchemaFormItem(ctx.formData,key,propItem,ctx))]
+         [...Object.entries(ctx.properties).map(  ([key,propItem]:[string,SchemaFormItem])=>  createSchemaFormItem(ctx.formData,key,propItem,ctx))]
         )
     }
 }

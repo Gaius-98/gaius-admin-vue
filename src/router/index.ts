@@ -14,30 +14,48 @@ const router = createRouter({
           component: () => import('@/views/Home/HomeView.vue'),
         },
         {
-          path:'/menu',
-          name:'menu',
-          component:()=>import('@/views/System/MenuView.vue')
+          path:'/system',
+          name:'system',
+          children:[        
+            {
+              path:'/menu',
+              name:'menu',
+              component:()=>import('@/views/System/MenuView.vue')
+            },
+            {
+              path:'/user',
+              name:'user',
+              component:()=>import('@/views/System/UserView.vue')
+            },
+            {
+              path:'/dict',
+              name:'dict',
+              component:()=>import('@/views/System/DictView.vue')
+            },
+            {
+              path:'/role',
+              name:'role',
+              component:()=>import('@/views/System/RoleView.vue')
+            },
+            {
+              path:'/request',
+              name:'request',
+              component:()=>import('@/views/System/RequestView.vue')
+            },
+          ]
         },
         {
-          path:'/user',
-          name:'user',
-          component:()=>import('@/views/System/UserView.vue')
+          path:'low-code',
+          name:'lowCode',
+          children:[
+            {
+              path:'/form',
+              name:'form',
+              component:()=>import('@/views/LowCode/Form/FormView.vue')
+            }
+          ]
         },
-        {
-          path:'/dict',
-          name:'dict',
-          component:()=>import('@/views/System/DictView.vue')
-        },
-        {
-          path:'/role',
-          name:'role',
-          component:()=>import('@/views/System/RoleView.vue')
-        },
-        {
-          path:'/request',
-          name:'request',
-          component:()=>import('@/views/System/RequestView.vue')
-        },
+
         {
           path:'/:pathMatch(.*)*',
           name:'404',
