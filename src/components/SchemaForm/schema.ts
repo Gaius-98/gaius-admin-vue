@@ -8,7 +8,7 @@ export interface SchemaLayout {
     }
     layout?:'horizontal'|'vertical'|'inline',
 }
-export type ControlType = 'string'|'date'|'number'|'select'|'tree'
+export type ControlType = 'string'|'date'|'number'|'select'|'tree'|'radio'|'switch'
 export interface SchemaProperties{
     label:string
     required?:boolean

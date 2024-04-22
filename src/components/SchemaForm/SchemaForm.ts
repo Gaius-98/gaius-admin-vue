@@ -1,10 +1,11 @@
-import {h, toRefs,ref,watch} from 'vue'
+import {h, toRefs,ref,inject} from 'vue'
 import type {Prop,ComputedOptions} from 'vue'
 import type { SchemaProperties,ControlType,Schema,SchemaLayout } from './schema'
 import type { Obj } from '@/model'
-import { Input,Select,Form,FormItem,InputNumber,DatePicker,TreeSelect } from 'ant-design-vue'
+import { Input,Select,Form,FormItem,InputNumber,DatePicker,TreeSelect,RadioButton,RadioGroup, type RadioChangeEvent,Switch } from 'ant-design-vue'
 import { compileText,replaceVar,execFun } from './core'
 import { GuPubSub } from 'gaius-utils'
+import _ from 'lodash'
 const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,component?:Obj<any>) =>{
     let Node 
     switch (type) {
@@ -59,6 +60,30 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 },
             })
             break;
+        case 'radio':
+            Node = h(RadioGroup,{
+                ...component,
+                value:formData[key],
+                onChange:(e:RadioChangeEvent)=>{
+                    formData[key] = e.target!.value
+                    ctx.pubSub.onPublish(key)
+                }
+            },(ctx.options[key] || []).map((item:any)=>{
+                return h(RadioButton,{
+                    value:item.value,
+                    key:item.value
+                },item.label)
+            }))
+            break;
+        case 'switch':
+            Node = h(Switch,{
+                checked:formData[key],
+                onChange(value:any){
+                    formData[key] = value
+                    ctx.pubSub.onPublish(key)
+                }
+            })
+            break;
         default:
             Node = h(Input,{
                 ...component,
@@ -78,9 +103,26 @@ const createSchemaFormItem =   (formData:Obj<any>,key:string,prop:SchemaProperti
     let childrenNode 
     if(component?.name){
         const { name } = component
-        childrenNode = h(name!,{
-            ...component,
-            formData
+        const itemProps = _.cloneDeep(component)
+        Reflect.deleteProperty(itemProps,'onChange')
+        if(!ctx.registeredComponents[name]){
+            throw new Error(`${name} is not registered,provide('registeredComponents','${name}',Component)`)
+        }
+        childrenNode = h(ctx.registeredComponents[name],{
+            ...itemProps,
+            formData,
+            value:formData[key],
+            onChange:(value:any)=>{
+                formData[key] = value
+                ctx.pubSub.onPublish(key)
+                if(component.onChange){
+                   try {
+                     component.onChange(value,formData,key)
+                   } catch (error:any) {
+                        throw new Error(error)
+                   }
+                }
+            }
         })
     }else{
         childrenNode =   createUIControl(formData,key,type,ctx,component)
@@ -110,6 +152,7 @@ const SchemaForm = {
     },
     setup(props:Schema) {
         const { layout,properties,formData } =toRefs(props)
+        const registeredComponents = inject('registeredComponents')
         const options = ref<Obj<any>>({})
         const needOptions =  Object.entries(properties.value).filter(([key,propItem])=> {
             return propItem?.component?.dataSource || propItem?.component?.asyncData
@@ -165,7 +208,8 @@ const SchemaForm = {
             formData,
             options,
             visibleInfo,
-            pubSub
+            pubSub,
+            registeredComponents
         }
     },
     render : (ctx:any)=>{
