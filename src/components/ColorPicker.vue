@@ -6,8 +6,8 @@
 const model = defineModel()
 const emits = defineEmits(['change'])
 const onChangeColor = (ev: Event) => {
-  model.value = ev.target!.value
-  emits('change', ev.target!.value)
+  model.value = (ev.target as HTMLInputElement).value
+  emits('change', (ev.target as HTMLInputElement).value)
 }
 </script>
 <style scoped lang="scss">

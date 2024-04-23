@@ -202,7 +202,13 @@ onMounted(() => {
   getDictTypes()
 })
 const modalOpen = ref(false)
-const formData = ref<SystemDictItem>({})
+const formData = ref<SystemDictItem>({
+  label: '',
+  value: '',
+  dictType: '',
+  dictTypeDesc: '',
+  sortNum: 0
+})
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
   let titleObj = {

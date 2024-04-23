@@ -15,17 +15,18 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed } from 'vue'
+import { defineAsyncComponent, computed, type Component } from 'vue'
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import LayoutThemeCfg from './components/LayoutThemeCfg.vue'
+import type { Obj } from '@/model'
 const systemStore = useSystemStore()
 const { isConfigVisible, themeCfg } = storeToRefs(systemStore)
 const { onCloseConfigDrawer, startUp } = systemStore
 const LayoutComponent = computed(() => {
-  return layout[themeCfg.value.layoutMode as string]
+  return layout[themeCfg.value.layoutMode]
 })
-const layout = {
+const layout: Obj<Component> = {
   horizontal: defineAsyncComponent(() => import('@/layout/LayoutType/HorizontalSplitLayout.vue')),
   vertical: defineAsyncComponent(() => import('@/layout/LayoutType/VerticalStackLayout.vue'))
 }

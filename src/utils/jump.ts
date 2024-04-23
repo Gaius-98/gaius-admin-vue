@@ -11,7 +11,7 @@ export default (data: ResMenuItem) => {
       } else if (openType == '_blank') {
         router.push({
           path: '/link',
-          params: {
+          query: {
             orgUrl: address
           }
         })

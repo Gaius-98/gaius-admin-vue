@@ -1,6 +1,6 @@
 import {h, toRefs,ref,inject} from 'vue'
 import type {Prop} from 'vue'
-import type { SchemaProperties,ControlType,Schema,SchemaLayout,SchemaFormItem } from './schema'
+import type { SchemaProperties,ControlType,Schema,SchemaLayout } from './schema'
 import type { Obj } from '@/model'
 import { Input,Select,Form,FormItem,InputNumber,DatePicker,TreeSelect,RadioButton,RadioGroup, type RadioChangeEvent,Switch } from 'ant-design-vue'
 import { compileText,execFun } from './core'
@@ -14,7 +14,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 ...component,
                 value:formData[key],
                 onChange:(e:Event)=>{
-                    formData[key] = e.target!.value
+                    formData[key] = (e.target as HTMLInputElement).value
                     ctx.pubSub.onPublish(key)
                 }
             })
@@ -89,7 +89,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 ...component,
                 value:formData[key],
                 onChange:(e:Event)=>{
-                    formData[key] = e.target!.value
+                    formData[key] = (e.target as HTMLInputElement).value
                     console.log(ctx.pubSub.onPublish.toString())
                     ctx.pubSub.onPublish(key)
                 }})
@@ -214,7 +214,7 @@ const SchemaForm = {
     },
     render : (ctx:any)=>{
         return  h(Form,{...ctx.layout},
-         [...Object.entries(ctx.properties).map(  ([key,propItem]:[string,SchemaFormItem])=>  createSchemaFormItem(ctx.formData,key,propItem,ctx))]
+         [...Object.entries(ctx.properties as Obj<SchemaProperties>).map(  ([key,propItem]:[string,SchemaProperties])=>  createSchemaFormItem(ctx.formData,key,propItem,ctx))]
         )
     }
 }
