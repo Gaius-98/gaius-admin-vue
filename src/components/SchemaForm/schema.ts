@@ -3,8 +3,14 @@ import type { Obj } from "@/model"
 export interface SchemaLayout {
     labelAlign?:'left'|'right'
     labelCol?:{
-        span:number,
-        offset:number
+        span?:number,
+        offset?:number,
+        style?:Obj<any>
+    },
+    wrapperCol?:{
+        span?:number,
+        offset?:number,
+        style?:Obj<any>
     }
     layout?:'horizontal'|'vertical'|'inline',
 }

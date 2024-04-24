@@ -3,7 +3,7 @@ import type {Prop} from 'vue'
 import type { SchemaProperties,ControlType,Schema,SchemaLayout } from './schema'
 import type { Obj } from '@/model'
 import { Input,Select,Form,FormItem,InputNumber,DatePicker,TreeSelect,RadioButton,RadioGroup, type RadioChangeEvent,Switch } from 'ant-design-vue'
-import { compileText,execFun } from './core'
+import { compileText,execFun,getDeepValue,setDeepValue } from './core'
 import { GuPubSub } from 'gaius-utils'
 import _ from 'lodash'
 const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,component?:Obj<any>) =>{
@@ -12,9 +12,9 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
         case 'string':
             Node = h(Input,{
                 ...component,
-                value:formData[key],
+                value: getDeepValue(formData,key),
                 onChange:(e:Event)=>{
-                    formData[key] = (e.target as HTMLInputElement).value
+                    setDeepValue(formData,key,(e.target as HTMLInputElement).value)
                     ctx.pubSub.onPublish(key)
                 }
             })
@@ -23,9 +23,9 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
             Node = h(Select,{
                 ...component,
                 options:ctx.options[key]||[],
-                value:formData[key],
+                value:getDeepValue(formData,key),
                 onChange:(value:any)=>{
-                    formData[key] = value
+                    setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
                 }
 
@@ -34,18 +34,18 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
         case 'number':
             Node = h(InputNumber,{
                 ...component,
-                value:formData[key],                
+                value:getDeepValue(formData,key),                
                 onChange:(value:any)=>{
-                    formData[key] = value
+                   setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
                 }})
             break;
         case 'date':
             Node = h(DatePicker,{
                 ...component,
-                value:formData[key],
+                value:getDeepValue(formData,key),
                 onChange:(value:any)=>{
-                    formData[key] = value
+                    setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
                 }})
 
@@ -54,18 +54,18 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
             Node = h(TreeSelect,{
                 ...component,               
                 options:ctx.options[key]||[],
-                value:formData[key],
+                value:getDeepValue(formData,key),
                 onChange:(value:any)=>{
-                    formData[key] = value
+                   setDeepValue(formData,key,value)
                 },
             })
             break;
         case 'radio':
             Node = h(RadioGroup,{
                 ...component,
-                value:formData[key],
+                value:getDeepValue(formData,key),
                 onChange:(e:RadioChangeEvent)=>{
-                    formData[key] = e.target!.value
+                    setDeepValue(formData,key,e.target!.value)
                     ctx.pubSub.onPublish(key)
                 }
             },(ctx.options[key] || []).map((item:any)=>{
@@ -77,9 +77,9 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
             break;
         case 'switch':
             Node = h(Switch,{
-                checked:formData[key],
+                checked:getDeepValue(formData,key),
                 onChange(value:any){
-                    formData[key] = value
+                    setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
                 }
             })
@@ -87,10 +87,9 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
         default:
             Node = h(Input,{
                 ...component,
-                value:formData[key],
+                value:getDeepValue(formData,key),
                 onChange:(e:Event)=>{
-                    formData[key] = (e.target as HTMLInputElement).value
-                    console.log(ctx.pubSub.onPublish.toString())
+                    setDeepValue(formData,key,(e.target as HTMLInputElement).value)
                     ctx.pubSub.onPublish(key)
                 }})
             break;
@@ -111,10 +110,10 @@ const createSchemaFormItem =   (formData:Obj<any>,key:string,prop:SchemaProperti
         childrenNode = h(ctx.registeredComponents[name],{
             ...itemProps,
             formData,
-            value:formData[key],
+            value:getDeepValue(formData,key),
             onChange:(value:any)=>{
                 formData[key] = value
-                ctx.pubSub.onPublish(key)
+                setDeepValue(formData,key,value)
                 if(component.onChange){
                    try {
                      component.onChange(value,formData,key)
@@ -129,7 +128,8 @@ const createSchemaFormItem =   (formData:Obj<any>,key:string,prop:SchemaProperti
     }
     return ctx.visibleInfo[key] && h(FormItem,{
         label,
-        name:key
+        name:key,
+        style:{width:'100%'}
     },[
         childrenNode
     ])

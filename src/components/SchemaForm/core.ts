@@ -4,7 +4,8 @@ export const compileText = (text:string) =>{
     const matches = text.match(regex);
     if(matches){
         return matches.map(match=>{
-            const variableName = match.trim().substring(2, match.length - 1).split('.')[1]
+            const varStr = match.trim().replace(/formData./g,'')
+            const variableName = varStr.substring(2, match.length - 1)
             return variableName
         })
     }else{
@@ -25,4 +26,20 @@ export const execFun = (text:string,formData:Obj<any>) =>{
     const funStr = replaceVar(text,formData)
     const runFun = new Function(`return ${funStr}` )
     return runFun()
+}
+
+export const getDeepValue = (obj:Obj<any>,path:string)=>{
+    const paths = path.split('.')
+    return paths.reduce((pre,cur)=>{
+        return pre[cur]
+    },obj) as any
+}
+export const setDeepValue = (obj:Obj<any>,path:string,value:any)=>{
+    const paths = path.split('.')
+    paths.reduce((pre,cur,index)=>{
+        if(index === paths.length-1){
+            pre[cur] = value
+        }
+        return pre[cur]
+    },obj)
 }
