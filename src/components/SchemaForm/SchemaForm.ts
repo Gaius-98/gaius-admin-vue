@@ -129,7 +129,6 @@ const createSchemaFormItem =   (formData:Obj<any>,key:string,prop:SchemaProperti
     return ctx.visibleInfo[key] && h(FormItem,{
         label,
         name:key,
-        style:{width:'100%'}
     },[
         childrenNode
     ])
@@ -184,7 +183,6 @@ const SchemaForm = {
                 }else if(typeof propItem.show == 'boolean'){
                     visibleInfo.value[key] = propItem.show
                 }else if(typeof propItem.show =='string') {
-                    propItem.show!
                     const showStr = propItem.show as string
                     visibleInfo.value[key]  = execFun(showStr,formData!.value!)
                     const depend = compileText(showStr)

@@ -23,10 +23,16 @@ const { formConfig } = storeToRefs(formStore)
   gap: 20px;
   height: 100%;
   .left-part {
+    padding: 20px;
+    background-color: #fff;
   }
   .middle-part {
+    padding: 20px;
+    background-color: #fff;
   }
   .right-part {
+    padding: 20px 20px 0 0;
+    background-color: #fff;
   }
 }
 </style>

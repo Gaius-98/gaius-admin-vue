@@ -3,7 +3,7 @@
     v-bind="$attrs"
     :bodyStyle="{
       padding: 0,
-      'min-height': '100px'
+      'min-height': '40px',
     }"
   >
     <material-view v-model="children" />
@@ -15,10 +15,4 @@ import MaterialView from './MaterialView.vue'
 
 const children = defineModel<any[]>('children', { required: true })
 </script>
-<style scoped lang="scss">
-.card {
-  .ant-card-body {
-    min-height: 30px;
-  }
-}
-</style>
+<style scoped lang="scss"></style>

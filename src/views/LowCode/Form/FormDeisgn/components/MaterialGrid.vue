@@ -31,7 +31,7 @@ watch(
 </script>
 <style scoped lang="scss">
 .gutter-col {
-  min-height: 30px;
+  min-height: 40px;
   border: 1px dashed;
 }
 .gutter-col + .gutter-col {

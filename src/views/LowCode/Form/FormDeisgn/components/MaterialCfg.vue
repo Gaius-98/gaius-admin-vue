@@ -4,6 +4,7 @@
     :layout="schema.layout"
     :properties="schema.properties"
     :formData="curControlCfg"
+    :key="curControlCfg.id"
   >
   </schema-form>
   <div v-else>
@@ -38,6 +39,7 @@ watch(
       if (cfg) {
         schema.value.properties = _.cloneDeep(cfg.properties)
       }
+      console.log('curControlCfg.value.type', schema.value.properties)
     }
   }
 )
