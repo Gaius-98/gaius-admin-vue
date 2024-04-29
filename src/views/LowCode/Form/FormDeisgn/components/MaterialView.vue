@@ -22,14 +22,14 @@
       >
         <component
           :is="getComponentNameByType(item.type)"
-          v-bind="getComponentProp(item.controlProp)"
+          v-bind="getComponentProp(item.controlProp, item.type)"
           :key="item.id"
         ></component>
       </a-form-item>
       <component
         v-else
         :is="getComponentNameByType(item.type)"
-        v-bind="getComponentProp(item.controlProp)"
+        v-bind="getComponentProp(item.controlProp, item.type)"
         v-model:children="item.controlProp.children"
         :key="item.id"
       ></component>
@@ -53,6 +53,8 @@ import { useFormDesignStore } from '@/stores/formDesign'
 import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/stores/system'
 import { CopyFilled, DeleteFilled } from '@ant-design/icons-vue'
+import commonApi from '@/api/common'
+import { cloneDeep } from 'lodash'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)
 const formStore = useFormDesignStore()
@@ -62,8 +64,31 @@ const data = defineModel<any[]>({ required: true })
 const getComponentNameByType = (type: string) => {
   return ControlMappingType[type]
 }
-const getComponentProp = (prop: any) => {
-  return prop
+const getComponentProp = (prop: any, type: string) => {
+  const cloneProp = cloneDeep(prop)
+  switch (type) {
+    case 'radio':
+      cloneProp.options = [
+        { label: '1', value: '1' },
+        { label: '2', value: '2' }
+      ]
+      break
+    case 'checkbox':
+      cloneProp.options = [
+        { label: '1', value: '1' },
+        { label: '2', value: '2' }
+      ]
+      break
+    case 'select':
+      cloneProp.options = [
+        { label: '1', value: '1' },
+        { label: '2', value: '2' }
+      ]
+      break
+    default:
+      break
+  }
+  return cloneProp
 }
 const onDrop = (e: DragEvent) => {
   if (e.dataTransfer!.getData('material')) {

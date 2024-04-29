@@ -1,5 +1,6 @@
 import type { SchemaProperties } from "@/components/SchemaForm/schema"
 import type { Obj } from "@/model";
+import dictApi from "@/views/System/api/dict";
 export interface ControlCfgSchema{
     type:string;
     properties:Obj<SchemaProperties>;
@@ -99,7 +100,7 @@ export default [
             },
             'controlProp.virtual':{
                 type:'switch',
-                label:'开启虚拟滚动',
+                label:'虚拟滚动',
             },
             'controlProp.mode':{
                 type:'select',
@@ -118,6 +119,25 @@ export default [
                     allowClear:true
                 }
             },
+            'controlProp.dict':{
+                type:'select',
+                label:'字典',
+                component:{
+                    asyncData: async () =>{
+                      const {code,data,msg} = await  dictApi.getDictTypeList()
+                      if(code == 200){
+                        return data.map(item => {
+                            return {
+                                label:item.dictTypeDesc,
+                                value:item.dictType
+                            }
+                        })
+                      }else{
+                        return []
+                      }
+                    },
+                }
+            }
         } 
     },
     {
@@ -225,6 +245,25 @@ export default [
                     ]
                 }
             },
+            'controlProp.dict':{
+                type:'select',
+                label:'字典',
+                component:{
+                    asyncData: async () =>{
+                      const {code,data,msg} = await  dictApi.getDictTypeList()
+                      if(code == 200){
+                        return data.map(item => {
+                            return {
+                                label:item.dictTypeDesc,
+                                value:item.dictType
+                            }
+                        })
+                      }else{
+                        return []
+                      }
+                    },
+                }
+            }
         } 
     },
     {
@@ -242,6 +281,25 @@ export default [
                 type:'switch',
                 label:'禁用',
             },
+            'controlProp.dict':{
+                type:'select',
+                label:'字典',
+                component:{
+                    asyncData: async () =>{
+                      const {code,data,msg} = await  dictApi.getDictTypeList()
+                      if(code == 200){
+                        return data.map(item => {
+                            return {
+                                label:item.dictTypeDesc,
+                                value:item.dictType
+                            }
+                        })
+                      }else{
+                        return []
+                      }
+                    },
+                }
+            }
         } 
     },
     {
@@ -304,6 +362,104 @@ export default [
                 label:'步长',
             },
         } 
+    },
+    {
+        type:'date',
+        properties:{
+            'formItemProp.label':{
+                type:'string',
+                label:'标签文本',
+            },
+            'formItemProp.name':{
+                type:'string',
+                label:'字段名',
+            },
+            'controlProp.bordered':{
+                type:'switch',
+                label:'边框',
+            },
+            'controlProp.disabled':{
+                type:'switch',
+                label:'禁用',
+            },
+            'controlProp.format':{
+                type:'string',
+                label:'显示格式化'
+            },
+            'controlProp.valueFormat':{
+                type:'string',
+                label:'值格式化'
+            },
+            'controlProp.size':{
+                type:'radio',
+                label:'大小',
+                component:{
+                    dataSource:[
+                        {
+                            label:'大',
+                            value:'large'
+                        },
+                        {
+                            label:'中',
+                            value:'middle'
+                        },
+                        {
+                            label:'小',
+                            value:'small'
+                        }
+                    ]
+                }
+            },
+             'controlProp.mode':{
+                type:'radio',
+                label:'面板',
+                component:{
+                    dataSource:[
+                        {
+                            label:'时间',
+                            value:'time'
+                        },
+                        {
+                            label:'日期',
+                            value:'date'
+                        },
+                        
+                        {
+                            label:'月',
+                            value:'month'
+                        },
+                        {
+                            label:'年',
+                            value:'year'
+                        }
+                    ]
+                }
+            },
+             'controlProp.picker':{
+                type:'radio',
+                label:'类型',
+                component:{
+                    dataSource:[
+                        {
+                            label:'日期',
+                            value:'date'
+                        },
+                        {
+                            label:'周',
+                            value:'week'
+                        },
+                        {
+                            label:'月',
+                            value:'month'
+                        },
+                        {
+                            label:'年',
+                            value:'year'
+                        }
+                    ]
+                }
+            },
+        }
     },
     {
         type:'grid',

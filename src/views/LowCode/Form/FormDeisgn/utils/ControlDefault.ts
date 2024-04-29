@@ -62,7 +62,21 @@ const checkboxDefault= {
     type:'checkbox',
     id:''
 }
-const dateDefault = {}
+const dateDefault = {
+    ...formDefault,
+    controlProp:{
+        allowClear:false,
+        bordered:true,
+        disabled:false,
+        format:'YYYY-MM-DD',
+        mode:'',
+        valueFormat:'YYYY-MM-DD',
+        size:'middle',
+        picker:''
+    },
+    type:'date',
+    id:''
+}
 const numberDefalt = {
     ...formDefault,
     controlProp:{

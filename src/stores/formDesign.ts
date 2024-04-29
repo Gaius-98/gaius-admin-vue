@@ -12,7 +12,9 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
             curControlCfg.value = data[idx]
         }
     }
-
+    const extraFormConfig = ref<Obj<any>>({
+        name:''
+    })
     const removeControlItem = (id:string,data:Obj<any>[])=>{
         const idx = data.findIndex(item=>item.id === id)
         if(idx != -1){
@@ -25,11 +27,19 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         const copyControl = initFormControl(curControlCfg.value.type,copyCfg)
         formConfig.value.push(copyControl)
     }
+    const onSave = () =>{
+        console.log({
+            ...formConfig.value,
+            ...extraFormConfig.value,
+        })
+    }
     return {
         curControlCfg,
         formConfig,
         onSelectControlItem,
         copyControlItem,
-        removeControlItem
+        removeControlItem,
+        extraFormConfig,
+        onSave
     }
 })
