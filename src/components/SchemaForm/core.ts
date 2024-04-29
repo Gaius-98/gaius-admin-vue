@@ -5,7 +5,7 @@ export const compileText = (text:string) =>{
     if(matches){
         return matches.map(match=>{
             const varStr = match.trim().replace(/formData./g,'')
-            const variableName = varStr.substring(2, match.length - 1)
+            const variableName = varStr.substring(2, varStr.length - 1)
             return variableName
         })
     }else{
