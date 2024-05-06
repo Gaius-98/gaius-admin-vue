@@ -5,7 +5,7 @@ const formDefault ={
         name:'',
         required:false,
     },
-    
+    show:undefined
 }
 const inputDefault = {
     ...formDefault,
@@ -101,7 +101,8 @@ const gridDefault = {
         colNumber:2,
         children:[]
     },
-    id:''
+    id:'',
+    show:undefined
 }
 const cardDefault = {
     type:'card',
@@ -111,7 +112,8 @@ const cardDefault = {
         hoverable:false,
         children:[]
     },
-    id:''
+    id:'',
+    show:undefined
 }
 
 

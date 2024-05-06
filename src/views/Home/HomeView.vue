@@ -1,5 +1,6 @@
 <template>
   <a-button type="primary"> test </a-button>
+  {{ formData }}
   <schema-form
     :layout="schema.layout"
     :properties="schema.properties"
@@ -44,7 +45,8 @@ const schema = ref<Schema>({
       type: 'string',
       label: '测试数值',
       component: {}
-    }
+    },
+
   }
 })
 const formData = ref({})

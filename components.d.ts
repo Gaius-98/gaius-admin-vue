@@ -49,6 +49,7 @@ declare module 'vue' {
     AWatermark: typeof import('ant-design-vue/es')['Watermark']
     ColorPicker: typeof import('./src/components/ColorPicker.vue')['default']
     EditTable: typeof import('./src/components/EditTable.vue')['default']
+    LowCodeForm: typeof import('./src/components/LowCodeForm/LowCodeForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

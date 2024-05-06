@@ -192,7 +192,6 @@ const SchemaForm = {
                         })
                     })
                 }
-                return propItem?.component?.dataSource || propItem?.component?.asyncData
             })
         }
         const visibleInfo = ref<Obj<boolean>>({

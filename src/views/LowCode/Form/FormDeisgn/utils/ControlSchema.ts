@@ -17,6 +17,10 @@ export default [
                 type:'string',
                 label:'字段名',
             },
+            'show':{
+                type:'string',
+                label:'显隐条件'
+            },
             'controlProp.allowClear':{
                 type:'switch',
                 label:'可清除',
@@ -53,6 +57,7 @@ export default [
                 type:'number',
                 label:'最大长度',
             },
+
         } 
     },
     {
@@ -65,6 +70,10 @@ export default [
             'formItemProp.name':{
                 type:'string',
                 label:'字段名',
+            },
+            'show':{
+                type:'string',
+                label:'显隐条件'
             },
             'controlProp.allowClear':{
                 type:'switch',
@@ -151,6 +160,10 @@ export default [
                 type:'string',
                 label:'字段名',
             },
+            'show':{
+                type:'string',
+                label:'显隐条件'
+            },
             'controlProp.disabled':{
                 type:'switch',
                 label:'禁用',
@@ -187,6 +200,10 @@ export default [
             'formItemProp.name':{
                 type:'string',
                 label:'字段名',
+            },
+            'show':{
+                type:'string',
+                label:'显隐条件'
             },
             'controlProp.disabled':{
                 type:'switch',
@@ -277,6 +294,10 @@ export default [
                 type:'string',
                 label:'字段名',
             },
+            'show':{
+                type:'string',
+                label:'显隐条件'
+            },
             'controlProp.disabled':{
                 type:'switch',
                 label:'禁用',
@@ -312,6 +333,10 @@ export default [
             'formItemProp.name':{
                 type:'string',
                 label:'字段名',
+            },
+            'show':{
+                type:'string',
+                label:'显隐条件'
             },
             'controlProp.bordered':{
                 type:'switch',
@@ -373,6 +398,10 @@ export default [
             'formItemProp.name':{
                 type:'string',
                 label:'字段名',
+            },
+            'show':{
+                type:'string',
+                label:'显隐条件'
             },
             'controlProp.bordered':{
                 type:'switch',
@@ -464,6 +493,10 @@ export default [
     {
         type:'grid',
         properties:{
+            'show':{
+                type:'string',
+                label:'显隐条件'
+            },
             'controlProp.gutter':{
                 type:'number',
                 label:'栅格间距',
@@ -474,22 +507,22 @@ export default [
                 component:{
                     dataSource:[
                         {
-                            label:'一列',
+                            label:'一',
                             value:1
                         },
                         {
-                            label:'两列',
+                            label:'二',
                             value:2
                         },
                         {
-                            label:'三列',
+                            label:'三',
                             value:3
                         },
                         {
-                            label:'四列',
+                            label:'四',
                             value:4
                         }
-                    ]
+                    ],
                 }
             },
         }
@@ -497,6 +530,10 @@ export default [
     {
         type:'card',
         properties:{
+            'show':{
+                type:'string',
+                label:'显隐条件'
+            },
             'controlProp.title':{
                 type:'string',
                 label:'标题',
