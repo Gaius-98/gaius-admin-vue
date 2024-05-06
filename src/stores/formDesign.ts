@@ -24,7 +24,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
     const copyControlItem = ()=>{
         const copyCfg = _.cloneDeep(curControlCfg.value)
         Reflect.deleteProperty(copyCfg,'id')
-        const copyControl = initFormControl(curControlCfg.value.type,copyCfg)
+        const copyControl = initFormControl(curControlCfg.value.type!,copyCfg)
         formConfig.value.push(copyControl)
     }
     const onSave = () =>{
