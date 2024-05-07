@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "vite --host",
+    "dev:prod": "vite --host --mode production",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -29,6 +30,7 @@
     "ant-design-vue": "4.1.2",
     "axios": "^1.6.8",
     "gaius-utils": "^1.0.6",
+    "html2canvas": "^1.4.1",
     "husky": "^9.0.11",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",

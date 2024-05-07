@@ -38,6 +38,7 @@ service.interceptors.response.use(
   }
 )
 
+
 const request = <T>(config: AxiosRequestConfig) =>
   new Promise<Res<T>>((resolve, reject) => {
     service.request<T, Res<T>>(config).then(

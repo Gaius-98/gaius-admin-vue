@@ -1,9 +1,10 @@
 <template>
-  <div class="form-design">
+  <div class="form-design" v-loading.fullscreen="saveLoading">
     <material-area class="left-part"></material-area>
     <div class="middle-part">
       <div class="middle-part-header">
         <a-button @click="onOpenSaveModal" type="primary"> 保存 </a-button>
+        <a-button @click="onOpenPreviewModal"> 预览 </a-button>
       </div>
       <material-view v-model="formConfig" class="middle-part-content"></material-view>
     </div>
@@ -16,6 +17,9 @@
       :form-data="extraFormConfig"
     ></schema-form>
   </a-modal>
+  <a-modal v-model:open="previewShow" title="预览">
+    <low-code-form :formData="formData" :schema="formConfig"></low-code-form>
+  </a-modal>
 </template>
 
 <script lang="ts" setup>
@@ -27,8 +31,9 @@ import { useFormDesignStore } from '@/stores/formDesign'
 import { storeToRefs } from 'pinia'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/schema'
+import LowCodeForm from '@/components/LowCodeForm/LowCodeForm.vue'
 const formStore = useFormDesignStore()
-const { formConfig, extraFormConfig } = storeToRefs(formStore)
+const { formConfig, extraFormConfig, saveLoading } = storeToRefs(formStore)
 const { onSave } = formStore
 const show = ref(false)
 const schema = ref<Schema>({
@@ -49,6 +54,11 @@ const onOpenSaveModal = () => {
 const onConfirm = () => {
   onSave()
   show.value = false
+}
+const previewShow = ref(false)
+const formData = ref({})
+const onOpenPreviewModal = () => {
+  previewShow.value = true
 }
 </script>
 <style scoped lang="scss">

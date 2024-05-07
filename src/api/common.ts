@@ -7,7 +7,6 @@ export interface DictItem {
 }
 export default {
   getDict: (data: DictTypes) => {
-    console.log(data)
     return request<Obj<DictItem[]>>({
       method: 'get',
       url: '/dict/dictByType',

@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     AButton: typeof import('ant-design-vue/es')['Button']
+    AButtonGroup: typeof import('ant-design-vue/es')['ButtonGroup']
     ACard: typeof import('ant-design-vue/es')['Card']
     ACheckboxGroup: typeof import('ant-design-vue/es')['CheckboxGroup']
     ACol: typeof import('ant-design-vue/es')['Col']
@@ -23,6 +24,7 @@ declare module 'vue' {
     AEmpty: typeof import('ant-design-vue/es')['Empty']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
+    AImage: typeof import('ant-design-vue/es')['Image']
     AInput: typeof import('ant-design-vue/es')['Input']
     AInputNumber: typeof import('ant-design-vue/es')['InputNumber']
     AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
@@ -49,7 +51,9 @@ declare module 'vue' {
     AWatermark: typeof import('ant-design-vue/es')['Watermark']
     ColorPicker: typeof import('./src/components/ColorPicker.vue')['default']
     EditTable: typeof import('./src/components/EditTable.vue')['default']
+    LowCodeCard: typeof import('./src/components/LowCodeForm/components/LowCodeCard.vue')['default']
     LowCodeForm: typeof import('./src/components/LowCodeForm/LowCodeForm.vue')['default']
+    LowCodeGrid: typeof import('./src/components/LowCodeForm/components/LowCodeGrid.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

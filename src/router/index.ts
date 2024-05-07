@@ -45,13 +45,18 @@ const router = createRouter({
           ]
         },
         {
-          path:'low-code',
+          path:'/low-code',
           name:'lowCode',
           children:[
             {
               path:'/form',
               name:'form',
               component:()=>import('@/views/LowCode/Form/FormView.vue')
+            },
+            {
+              path:'/formList',
+              name:'formList',
+              component:()=>import('@/views/LowCode/Form/FormList/FormList.vue')
             }
           ]
         },

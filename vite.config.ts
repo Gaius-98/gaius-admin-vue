@@ -34,7 +34,7 @@ export default defineConfig({
       },
       //生产环境
       '/prod': {
-        target: 'http://xxxxx',
+        target: 'http://120.26.161.36:8899/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/prod/, '')
       }

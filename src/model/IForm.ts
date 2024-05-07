@@ -63,13 +63,13 @@ export interface LCNumberCfg extends Partial<Pick<LCBaseCfg,'disabled'|'size'|'b
 export interface LCGridCfg {
     gutter?:number
     colNumber?:number
-    children:Array<any>
+    children:Array<LCFormItemCfg<ControlType>[]>
 }
 export interface LCCardCfg {
     title?:string
     bordered?:boolean
     hoverable?:boolean
-    children:Array<any>
+    children:LCFormItemCfg<ControlType>[]
 }
 export interface LCFormItemCfg<T extends ControlType> {
     id?:string,
@@ -81,5 +81,14 @@ export interface LCFormItemCfg<T extends ControlType> {
         required:boolean
     }
 }
+
+export interface LCFormCfg {
+    name:string,
+    id?:string,
+    schema:LCFormItemCfg<ControlType>[],
+    img:string,
+    description?:string
+}
+
 
 
