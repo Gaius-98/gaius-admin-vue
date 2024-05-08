@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import {h}from 'vue'
 import NotFound from '@/views/ErrorTemplate/NotFound.vue'
+import BlankView from '@/layout/BlankView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -16,29 +18,30 @@ const router = createRouter({
         {
           path:'/system',
           name:'system',
+          component:BlankView,
           children:[        
             {
-              path:'/menu',
+              path:'menu',
               name:'menu',
               component:()=>import('@/views/System/MenuView.vue')
             },
             {
-              path:'/user',
+              path:'user',
               name:'user',
               component:()=>import('@/views/System/UserView.vue')
             },
             {
-              path:'/dict',
+              path:'dict',
               name:'dict',
               component:()=>import('@/views/System/DictView.vue')
             },
             {
-              path:'/role',
+              path:'role',
               name:'role',
               component:()=>import('@/views/System/RoleView.vue')
             },
             {
-              path:'/request',
+              path:'request',
               name:'request',
               component:()=>import('@/views/System/RequestView.vue')
             },
@@ -47,14 +50,15 @@ const router = createRouter({
         {
           path:'/low-code',
           name:'lowCode',
+          component:BlankView,
           children:[
             {
-              path:'/form',
+              path:'form',
               name:'form',
               component:()=>import('@/views/LowCode/Form/FormView.vue')
             },
             {
-              path:'/formList',
+              path:'form-list',
               name:'formList',
               component:()=>import('@/views/LowCode/Form/FormList/FormList.vue')
             }
