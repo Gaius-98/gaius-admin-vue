@@ -1,7 +1,7 @@
 <template>
   <div class="dict">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="dictParamsForm" @finish="getList">
+      <a-form ref="searchFormRef" :model="dictParamsForm" @finish="onSearch">
         <a-row :gutter="24">
           <a-col :span="4">
             <a-form-item label="字典描述" name="keyword">
@@ -38,6 +38,9 @@
         :columns="columns"
         :data-source="tableData"
         :pagination="{ current: dictParamsForm.pageNumber, total: total }"
+        v-model:current="dictParamsForm.pageNumber"
+        @change="onChangePagination"
+        :scroll="{ y: 440 }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'status'">
@@ -118,7 +121,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed, defineComponent } from 'vue'
 import api from './api/dict'
-import { message, type FormInstance } from 'ant-design-vue'
+import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { SystemDictItem, SystemDictTypeItem } from '@/model'
 import type { DictPageParams } from './api/dict'
 import { PlusOutlined } from '@ant-design/icons-vue'
@@ -179,6 +182,17 @@ const onClear = () => {
   getList()
 }
 const total = ref(0)
+const onSearch = () => {
+  dictParamsForm.pageNumber = 1
+  dictParamsForm.pageSize = 10
+  getList()
+}
+const onChangePagination = (pagination: PaginationProps) => {
+  const { current, pageSize } = pagination
+  dictParamsForm.pageNumber = current!
+  dictParamsForm.pageSize = pageSize!
+  getList()
+}
 const getList = () => {
   loading.value = true
   api.getList(dictParamsForm).then((res) => {

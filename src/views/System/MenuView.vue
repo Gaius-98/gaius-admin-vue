@@ -25,6 +25,7 @@
         :columns="columns"
         :data-source="tableData"
         :pagination="false"
+        :scroll="{ y: 440 }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'action'">

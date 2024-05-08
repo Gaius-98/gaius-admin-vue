@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="userParamsForm" @finish="getList">
+      <a-form ref="searchFormRef" :model="userParamsForm" @finish="onSearch">
         <a-row :gutter="24">
           <a-col :span="4">
             <a-form-item label="用户名" name="keyword">
@@ -23,6 +23,8 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
+        :scroll="{ y: 440 }"
+        @change="onChangePagination"
         :pagination="{ current: userParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
@@ -80,7 +82,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/user'
-import { message, type FormInstance } from 'ant-design-vue'
+import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem } from '@/model'
 const userParamsForm = reactive<PageParams>({
   keyword: '',
@@ -127,6 +129,17 @@ const onClear = () => {
   getList()
 }
 const total = ref(0)
+const onSearch = () => {
+  userParamsForm.pageNumber = 1
+  userParamsForm.pageSize = 10
+  getList()
+}
+const onChangePagination = (pagination: PaginationProps) => {
+  const { current, pageSize } = pagination
+  userParamsForm.pageNumber = current!
+  userParamsForm.pageSize = pageSize!
+  getList()
+}
 const getList = () => {
   loading.value = true
   api.getList(userParamsForm).then((res) => {

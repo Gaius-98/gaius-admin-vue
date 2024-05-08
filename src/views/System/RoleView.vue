@@ -1,7 +1,7 @@
 <template>
   <div class="role">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="roleParamsForm" @finish="getList">
+      <a-form ref="searchFormRef" :model="roleParamsForm" @finish="onSearch">
         <a-row :gutter="24">
           <a-col :span="4">
             <a-form-item label="角色名称" name="keyword">
@@ -23,6 +23,8 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
+        :scroll="{ y: 440 }"
+        @change="onChangePagination"
         :pagination="{ current: roleParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
@@ -91,7 +93,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/role'
-import { message, type FormInstance } from 'ant-design-vue'
+import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { RoleInfo, PageParams, ResMenuItem } from '@/model'
 import apiMenu from './api/menu'
 import { TreeSelect } from 'ant-design-vue'
@@ -141,6 +143,17 @@ const onClear = () => {
   getList()
 }
 const total = ref(0)
+const onSearch = () => {
+  roleParamsForm.pageNumber = 1
+  roleParamsForm.pageSize = 10
+  getList()
+}
+const onChangePagination = (pagination: PaginationProps) => {
+  const { current, pageSize } = pagination
+  roleParamsForm.pageNumber = current!
+  roleParamsForm.pageSize = pageSize!
+  getList()
+}
 const getList = () => {
   loading.value = true
   api.getList(roleParamsForm).then((res) => {

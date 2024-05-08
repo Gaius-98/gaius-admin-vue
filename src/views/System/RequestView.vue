@@ -1,7 +1,7 @@
 <template>
   <div class="request">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="requestParamsForm" @finish="getList">
+      <a-form ref="searchFormRef" :model="requestParamsForm" @finish="onSearch">
         <a-row :gutter="24">
           <a-col :span="4">
             <a-form-item label="API名称" name="keyword">
@@ -28,6 +28,8 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
+        :scroll="{ y: 440 }"
+        @change="onChangePagination"
         :pagination="{ current: requestParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
@@ -125,7 +127,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/http'
-import { message, type FormInstance } from 'ant-design-vue'
+import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { ReqInfo, ReqPageParams } from '@/model'
 import EditTable from '@/components/EditTable.vue'
 import type { EditColumn } from '@/components/EditTable.vue'
@@ -221,6 +223,17 @@ const onClear = () => {
   getList()
 }
 const total = ref(0)
+const onSearch = () => {
+  requestParamsForm.pageNumber = 1
+  requestParamsForm.pageSize = 10
+  getList()
+}
+const onChangePagination = (pagination: PaginationProps) => {
+  const { current, pageSize } = pagination
+  requestParamsForm.pageNumber = current!
+  requestParamsForm.pageSize = pageSize!
+  getList()
+}
 const getList = () => {
   loading.value = true
   api.getList(requestParamsForm).then((res) => {
