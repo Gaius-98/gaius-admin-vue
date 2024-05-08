@@ -84,14 +84,13 @@ const dictKeys = ref<string[]>([])
 const dict = ref<Obj<any>>({})
 const collectDictKey = () => {
   schema.value.map((e: LCFormItemCfg<ControlType>) => {
-    if (e.controlProp?.dict) {
-      dictKeys.value.push(e.controlProp.dict)
+    if ('dict' in e.controlProp!) {
+      dictKeys.value.push(e.controlProp.dict!)
     }
   })
 }
 collectDictKey()
 const getDict = () => {
-  console.log(dictKeys.value)
   if (dictKeys.value.length > 0) {
     common.getDict(dictKeys.value).then((res) => {
       const { code, data, msg } = res
