@@ -55,7 +55,8 @@ const router = createRouter({
             {
               path:'form',
               name:'form',
-              component:()=>import('@/views/LowCode/Form/FormView.vue')
+              component:()=>import('@/views/LowCode/Form/FormView.vue'),
+              props:(route)=>(route.query)
             },
             {
               path:'form-list',

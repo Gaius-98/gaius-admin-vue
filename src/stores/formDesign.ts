@@ -11,8 +11,18 @@ import type { LCFormCfg } from "@/model";
 import {message} from 'ant-design-vue'
 export const useFormDesignStore = defineStore('formDesign',()=>{
     const formConfig = ref<LCFormItemCfg<ControlType>[]>([])
+
     const curControlCfg = ref<LCFormItemCfg<ControlType>>({})
     const id = ref('')
+    const setFormDetail = (data:LCFormCfg) =>{
+        const {id:formId,schema,name,description} = data
+        id.value = formId!
+        extraFormConfig.value = {
+            name,
+            description
+        }
+        formConfig.value = schema
+    }
     const onSelectControlItem = (id:string,data:LCFormItemCfg<ControlType>[]) =>{
         const idx = data.findIndex(item=>item.id === id)
         if(idx != -1){
@@ -23,6 +33,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         name:'',
         description:''
     })
+
     const removeControlItem = (id:string,data:LCFormItemCfg<ControlType>[])=>{
         const idx = data.findIndex(item=>item.id === id)
         if(idx != -1){
@@ -42,6 +53,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         vNode.style.width = '720px'
         vNode.style.height = '500px'
         vNode.style.overflowY = 'auto'
+        vNode.style.padding = '10px'
         const FormComp = createApp(LowCodeForm, {
             schema: formConfig.value,
             formData:{}
@@ -60,16 +72,19 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
                 document.body.removeChild(document.querySelector('.preview-form') as Node)
             }
         }
+        let api = formApi.add
         const req = <LCFormCfg>{
             schema:formConfig.value,
             ...extraFormConfig.value,
             img
         }
-        const {code,data,msg} = await formApi.add(req)
+        if(id.value){
+            api = formApi.update
+            req.id = id.value
+        }
+        const {code,msg} = await api(req)
         if(code == 200){
-            message.success(data as string)
-        }else{
-            message.error(data as string)
+            message.success(msg)
         }
         saveLoading.value = false
     }
@@ -82,6 +97,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         extraFormConfig,
         onSave,
         id,
-        saveLoading
+        saveLoading,
+        setFormDetail
     }
 })

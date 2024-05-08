@@ -41,5 +41,13 @@ export default {
             data,
         })
     },
-
+    getTemplate:(id:string) =>{
+        return request<string>({
+            method:'get',
+            url:'/form/template',
+            data:{
+                id
+            }
+        })
+    }
 }

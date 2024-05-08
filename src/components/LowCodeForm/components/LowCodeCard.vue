@@ -4,11 +4,11 @@
       padding: 0,
       'min-height': '40px'
     }"
-    :title="schema.title"
-    :bordered="schema.bordered"
-    :hoverable="schema.hoverable"
+    :title="schema.controlProp.title"
+    :bordered="schema.controlProp.bordered"
+    :hoverable="schema.controlProp.hoverable"
   >
-    <low-code-form :schema="schema.children" :formData="formData"></low-code-form>
+    <low-code-form :schema="schema.controlProp.children" :formData="formData"></low-code-form>
   </a-card>
 </template>
 
