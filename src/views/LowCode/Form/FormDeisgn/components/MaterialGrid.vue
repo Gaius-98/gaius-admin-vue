@@ -22,7 +22,17 @@ const colSpan = computed(() => {
 watch(
   () => colNumber.value,
   () => {
-    children.value = Array.from({ length: colNumber.value }).map(() => [])
+    if (children.value) {
+      if (children.value.length > colNumber.value) {
+        children.value = children.value.slice(0, colNumber.value)
+      } else {
+        children.value = children.value.concat(
+          Array.from({ length: colNumber.value - children.value.length }).map(() => [])
+        )
+      }
+    } else {
+      children.value = Array.from({ length: colNumber.value }).map(() => [])
+    }
   },
   {
     immediate: true

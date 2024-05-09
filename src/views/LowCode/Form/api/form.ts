@@ -45,7 +45,7 @@ export default {
         return request<string>({
             method:'get',
             url:'/form/template',
-            data:{
+            params:{
                 id
             }
         })

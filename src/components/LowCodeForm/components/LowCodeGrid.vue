@@ -21,7 +21,6 @@ interface Props {
 }
 const props = defineProps<Props>()
 const { schema, formData } = toRefs(props)
-console.log(schema.value, 'schema')
 const colSpan = computed(() => {
   return 24 / schema.value.controlProp.colNumber
 })
