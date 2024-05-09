@@ -26,38 +26,38 @@
       >
         <a-input
           v-if="item.type == 'input'"
-          v-model:value="formData[item.name]"
+          v-model:value="formData[item.formItemProp.name]"
           v-bind="item.controlProp"
         />
         <a-select
           v-if="item.type == 'select'"
-          v-model:value="formData[item.name]"
+          v-model:value="formData[item.formItemProp.name]"
           v-bind="item.controlProp"
           :options="dict[item.controlProp.dict]"
         >
         </a-select>
         <a-radio-group
           v-if="item.type == 'radio'"
-          v-model:value="formData[item.name]"
+          v-model:value="formData[item.formItemProp.name]"
           v-bind="item.controlProp"
           :options="dict[item.controlProp.dict]"
         >
         </a-radio-group>
         <a-date-picker
           v-if="item.type == 'date'"
-          v-model:value="formData[item.name]"
+          v-model:value="formData[item.formItemProp.name]"
           v-bind="item.controlProp"
         >
         </a-date-picker>
         <a-input-number
           v-if="item.type == 'number'"
-          v-model:value="formData[item.name]"
+          v-model:value="formData[item.formItemProp.name]"
           v-bind="item.controlProp"
         >
         </a-input-number>
         <a-checkbox-group
           v-if="item.type == 'checkbox'"
-          v-model:value="formData[item.name]"
+          v-model:value="formData[item.formItemProp.name]"
           v-bind="item.controlProp"
           :options="dict[item.controlProp.dict]"
         >
