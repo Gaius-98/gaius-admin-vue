@@ -22,15 +22,24 @@
       <a-empty v-if="tableData.length === 0" />
       <div class="contain" v-else>
         <div class="item" v-for="item in tableData" :key="item.id">
-          <a-image :src="item.img" alt="" />
-          <div class="bottom">
-            <div class="title">{{ item.name }}</div>
+          <div class="top">
+            <div class="title" :title="item.name">{{ item.name }}</div>
             <div class="buttons">
+              <a-button
+                :icon="h(DownloadOutlined)"
+                shape="circle"
+                type="link"
+                ghost
+                title="下载"
+                @click="onDownload(item.id!, item.name)"
+              >
+              </a-button>
               <a-button
                 :icon="h(EditOutlined)"
                 shape="circle"
                 type="link"
                 ghost
+                title="编辑"
                 @click="onJumpEdit(item.id!)"
               >
               </a-button>
@@ -40,11 +49,19 @@
                 cancel-text="取消"
                 @confirm="onDelete(item.id!)"
               >
-                <a-button :icon="h(DeleteOutlined)" shape="circle" type="link" danger ghost>
+                <a-button
+                  title="删除"
+                  :icon="h(DeleteOutlined)"
+                  shape="circle"
+                  type="link"
+                  danger
+                  ghost
+                >
                 </a-button>
               </a-popconfirm>
             </div>
           </div>
+          <a-image :src="item.img" height="calc(100% - 40px)" width="100%" />
         </div>
       </div>
       <a-pagination
@@ -59,11 +76,12 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, h } from 'vue'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
+import { EditOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icons-vue'
 import api from '../api/form'
 import type { FormInstance } from 'ant-design-vue'
 import type { LCFormCfg, PageParams } from '@/model'
 import { useRouter } from 'vue-router'
+import { downloadFile } from '@/utils/tools'
 const router = useRouter()
 const paramsForm = reactive<PageParams>({
   keyword: '',
@@ -110,6 +128,14 @@ const onDelete = (id: string) => {
     }
   })
 }
+const onDownload = (id: string, name: string) => {
+  api.getTemplate(id).then((res) => {
+    const { code, data, msg } = res
+    if (code == 200) {
+      downloadFile(data, name, 'vue')
+    }
+  })
+}
 onMounted(() => {
   getList()
 })
@@ -136,27 +162,21 @@ onMounted(() => {
       position: relative;
       width: 100%;
       height: 250px;
-      padding: 10px;
       border-radius: 5px;
       cursor: pointer;
-      background-color: #e0edff;
-
-      img {
-        width: 100%;
-        height: calc(100% - 30px);
-      }
-      .bottom {
+      border: 1px solid #c3d1e1;
+      padding: 2px;
+      .top {
         display: flex;
+        background-color: #f2f7ff;
+        padding: 2px 5px;
         .title {
-          font-weight: 500;
+          font-weight: 600;
           font-size: 16px;
-          text-align: center;
           flex: 1;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-        }
-        .buttons {
         }
       }
     }
