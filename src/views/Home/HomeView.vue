@@ -1,6 +1,7 @@
 <template>
   <a-button type="primary"> test </a-button>
   {{ formData }}
+  <icon-select v-model="icon" style="width: 300px"></icon-select>
   <schema-form
     :layout="schema.layout"
     :properties="schema.properties"
@@ -12,6 +13,8 @@
 import { ref } from 'vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/schema'
+import IconSelect from './../../components/IconSelect/IconSelect.vue'
+const icon = ref('')
 const schema = ref<Schema>({
   layout: {
     labelAlign: 'left',
@@ -45,8 +48,7 @@ const schema = ref<Schema>({
       type: 'string',
       label: '测试数值',
       component: {}
-    },
-
+    }
   }
 })
 const formData = ref({})

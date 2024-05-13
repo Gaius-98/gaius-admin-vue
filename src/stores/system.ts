@@ -11,7 +11,7 @@ export const useSystemStore = defineStore('system', () => {
   const onCloseConfigDrawer = () => {
     isConfigVisible.value = false
   }
-  const local = ref<'en' | 'zh'>('en')
+  const local = ref<'en' | 'zh'>('zh')
   const onToggleLocal = () => {
     local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
   }

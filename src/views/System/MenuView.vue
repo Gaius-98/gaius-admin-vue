@@ -77,6 +77,9 @@
           >
           </a-tree-select>
         </a-form-item>
+        <a-form-item label="图标" name="icon">
+          <icon-select v-model="formData.icon"></icon-select>
+        </a-form-item>
         <a-form-item label="排序号" name="sortNum">
           <a-input-number v-model:value="formData.sortNum"></a-input-number>
         </a-form-item>
@@ -94,6 +97,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/menu'
+import IconSelect from '@/components/IconSelect/IconSelect.vue'
 import type { ResMenuItem } from '@/model'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { MenuDict } from './api/menu'
