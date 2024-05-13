@@ -163,13 +163,14 @@ const columns = ref([
   {
     title: '请求方式',
     key: 'method',
-    dataIndex: 'method'
+    dataIndex: 'method',
+    width: 100
   },
-
   {
     title: '状态',
     key: 'status',
-    dataIndex: 'status'
+    dataIndex: 'status',
+    width: 100
   },
   {
     title: '创建时间',
