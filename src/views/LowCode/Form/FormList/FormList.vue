@@ -18,51 +18,83 @@
     <a-card>
       <div class="tools">
         <a-button type="primary" @click="onOpenAdd">新增</a-button>
+        <a-button @click="onToggleType" type="link" style="float: right"><SwapOutlined /></a-button>
       </div>
       <a-empty v-if="tableData.length === 0" />
-      <div class="contain" v-else>
-        <div class="item" v-for="item in tableData" :key="item.id">
-          <div class="top">
-            <div class="title" :title="item.name">{{ item.name }}</div>
-            <div class="buttons">
-              <a-button
-                :icon="h(DownloadOutlined)"
-                shape="circle"
-                type="link"
-                ghost
-                title="下载"
-                @click="onDownload(item.id!, item.name)"
-              >
-              </a-button>
-              <a-button
-                :icon="h(EditOutlined)"
-                shape="circle"
-                type="link"
-                ghost
-                title="编辑"
-                @click="onJumpEdit(item.id!)"
-              >
-              </a-button>
+      <div v-else>
+        <div class="contain" v-if="type == 'visual'">
+          <div class="item" v-for="item in tableData" :key="item.id">
+            <div class="top">
+              <div class="title" :title="item.name">{{ item.name }}</div>
+              <div class="buttons">
+                <a-button
+                  :icon="h(DownloadOutlined)"
+                  shape="circle"
+                  type="link"
+                  ghost
+                  title="下载"
+                  @click="onDownload(item.id!, item.name)"
+                >
+                </a-button>
+                <a-button
+                  :icon="h(EditOutlined)"
+                  shape="circle"
+                  type="link"
+                  ghost
+                  title="编辑"
+                  @click="onJumpEdit(item.id!)"
+                >
+                </a-button>
+                <a-popconfirm
+                  title="确定要删除吗?"
+                  ok-text="确定"
+                  cancel-text="取消"
+                  @confirm="onDelete(item.id!)"
+                >
+                  <a-button
+                    title="删除"
+                    :icon="h(DeleteOutlined)"
+                    shape="circle"
+                    type="link"
+                    danger
+                    ghost
+                  >
+                  </a-button>
+                </a-popconfirm>
+              </div>
+            </div>
+            <a-image :src="item.img" height="calc(100% - 40px)" width="100%" />
+          </div>
+        </div>
+        <a-table
+          v-else
+          :columns="columns"
+          :data-source="tableData"
+          :pagination="false"
+          :scroll="{ y: 470 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key == 'status'">
+              <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+              <a-tag color="#f50" v-else>停用</a-tag>
+            </template>
+            <template v-if="column.key == 'action'">
+              <a-button type="link" @click="onJumpEdit(record.id!)">编辑</a-button>
+              <a-divider type="vertical" />
               <a-popconfirm
                 title="确定要删除吗?"
                 ok-text="确定"
                 cancel-text="取消"
-                @confirm="onDelete(item.id!)"
+                @confirm="onDelete(record.id!)"
               >
-                <a-button
-                  title="删除"
-                  :icon="h(DeleteOutlined)"
-                  shape="circle"
-                  type="link"
-                  danger
-                  ghost
-                >
-                </a-button>
+                <a-button type="link" danger>删除</a-button>
               </a-popconfirm>
-            </div>
-          </div>
-          <a-image :src="item.img" height="calc(100% - 40px)" width="100%" />
-        </div>
+            </template>
+            <template v-if="column.key == 'img'">
+              <a-image :src="record.img" height="100px" width="100%" />
+            </template>
+          </template>
+        </a-table>
       </div>
       <a-pagination
         style="display: flex; justify-content: flex-end"
@@ -82,7 +114,42 @@ import type { FormInstance } from 'ant-design-vue'
 import type { LCFormCfg, PageParams } from '@/model'
 import { useRouter } from 'vue-router'
 import { downloadFile } from '@/utils/tools'
+import { SwapOutlined } from '@ant-design/icons-vue'
 const router = useRouter()
+const columns = ref([
+  {
+    title: '表单名称',
+    key: 'name',
+    dataIndex: 'name'
+  },
+  {
+    title: '预览图',
+    key: 'img',
+    dataIndex: 'img',
+    width: 150
+  },
+  {
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status',
+    width: 100
+  },
+  {
+    title: '创建时间',
+    key: 'createTime',
+    dataIndex: 'createTime'
+  },
+  {
+    title: '备注',
+    key: 'description',
+    dataIndex: 'description'
+  },
+  {
+    title: '操作',
+    key: 'action',
+    dataIndex: 'action'
+  }
+])
 const paramsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
@@ -95,6 +162,10 @@ const searchFormRef = ref<FormInstance>()
 const onClear = () => {
   searchFormRef.value?.resetFields()
   getList()
+}
+const type = ref<'visual' | 'form'>('form')
+const onToggleType = () => {
+  type.value == 'form' ? (type.value = 'visual') : (type.value = 'form')
 }
 const getList = () => {
   loading.value = true
