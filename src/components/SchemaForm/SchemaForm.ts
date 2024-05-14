@@ -98,7 +98,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
 }
 
 const createSchemaFormItem =   (formData:Obj<any>,key:string,prop:SchemaProperties,ctx:any) =>{
-    const {type,label,component } = prop
+    const {type,label,component,rules } = prop
     let childrenNode 
     if(component?.name){
         const { name } = component
@@ -124,11 +124,12 @@ const createSchemaFormItem =   (formData:Obj<any>,key:string,prop:SchemaProperti
             }
         })
     }else{
-        childrenNode =   createUIControl(formData,key,type,ctx,component)
+        childrenNode  =  createUIControl(formData,key,type,ctx,component)
     }
     return ctx.visibleInfo[key] && h(FormItem,{
         label,
         name:key,
+        rules
     },[
         childrenNode
     ])
