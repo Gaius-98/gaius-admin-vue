@@ -25,7 +25,7 @@ export interface SchemaProperties{
     component?:{
         name?:string
         dataSource?:any[]
-        asyncData?:()=>Promise<any>
+        asyncData?:(formData:Obj<any>,field:string)=>Promise<any>
         [key:string]:any
     }
 }
@@ -33,4 +33,9 @@ export interface Schema {
     layout?:SchemaLayout
     properties:Obj<SchemaProperties>,
     formData?:Obj<any>
+}
+export interface FormFieldInfo{
+    formData:Obj<any>,
+    field:string,
+    value:any,
 }

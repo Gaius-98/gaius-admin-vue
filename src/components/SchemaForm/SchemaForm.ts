@@ -1,10 +1,11 @@
 import {h, toRefs,ref,inject} from 'vue'
 import type {Prop} from 'vue'
-import type { SchemaProperties,ControlType,Schema,SchemaLayout } from './schema'
+import type { SchemaProperties,ControlType,Schema,SchemaLayout,FormFieldInfo } from './schema'
 import type { Obj } from '@/model'
 import { Input,Select,Form,FormItem,InputNumber,DatePicker,TreeSelect,RadioButton,RadioGroup, type RadioChangeEvent,Switch } from 'ant-design-vue'
 import { compileText,execFun,getDeepValue,setDeepValue } from './core'
 import { GuPubSub } from 'gaius-utils'
+import { defineExpose } from 'vue';
 import _ from 'lodash'
 const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,component?:Obj<any>) =>{
     let Node 
@@ -16,6 +17,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange:(e:Event)=>{
                     setDeepValue(formData,key,(e.target as HTMLInputElement).value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:(e.target as HTMLInputElement).value})
                 }
             })
             break;
@@ -27,6 +29,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange:(value:any)=>{
                     setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:value})
                 }
 
             })
@@ -38,6 +41,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange:(value:any)=>{
                    setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:value})
                 }})
             break;
         case 'date':
@@ -47,6 +51,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange:(value:any)=>{
                     setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:value})
                 }})
 
             break;
@@ -57,6 +62,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 value:getDeepValue(formData,key),
                 onChange:(value:any)=>{
                    setDeepValue(formData,key,value)
+                   ctx.onChange({formData:formData,field:key,value:value})
                 },
             })
             break;
@@ -67,6 +73,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange:(e:RadioChangeEvent)=>{
                     setDeepValue(formData,key,e.target!.value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:e.target!.value})
                 }
             },(ctx.options[key] || []).map((item:any)=>{
                 return h(RadioButton,{
@@ -81,6 +88,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange(value:any){
                     setDeepValue(formData,key,value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:value})
                 }
             })
             break;
@@ -91,6 +99,7 @@ const createUIControl =  (formData:Obj<any>,key:string,type:ControlType,ctx:any,
                 onChange:(e:Event)=>{
                     setDeepValue(formData,key,(e.target as HTMLInputElement).value)
                     ctx.pubSub.onPublish(key)
+                    ctx.onChange({formData:formData,field:key,value:(e.target as HTMLInputElement).value})
                 }})
             break;
     }
@@ -154,7 +163,7 @@ const SchemaForm = {
         const { layout,properties,formData } =toRefs(props)
         const registeredComponents = inject('registeredComponents')
         const options = ref<Obj<any>>({})
-        const needOptions =  Object.entries(properties.value).filter(([,propItem])=> {
+        const linkData =  Object.entries(properties.value).filter(([,propItem])=> {
             return propItem?.component?.dataSource || propItem?.component?.asyncData
         })
         const getOptions = async (key:string,propItem:SchemaProperties) =>{
@@ -162,13 +171,16 @@ const SchemaForm = {
             if(dataSource){
                 options.value[key] = dataSource
             }else{
-                options.value[key] = await asyncData!()
+                options.value[key] = await asyncData!(formData!.value!,key)
             }
         }
-        needOptions.map(async ([key,propItem])=>{
+        linkData.map(async ([key,propItem])=>{
            await getOptions(key,propItem)
         })
-
+        /**
+         * 用于刷新对应formItem的下拉数据
+         * @param key  字段名称
+         */
         const refrehOption = (key:string) =>{
             const [pKey,propItem] =  Object.entries(properties.value).find(([propKey])=>key == propKey)!
             if(propItem){
@@ -176,7 +188,16 @@ const SchemaForm = {
             }
         }
         const pubSub = new GuPubSub()
-
+        const onChange = (data:FormFieldInfo) =>{
+            const { field } = data
+            const changeFn = properties.value[field]?.component?.onChange
+            if(changeFn){
+                changeFn(data)
+            }
+        }
+        const expose = defineExpose({
+            refrehOption,
+        });
         const setVisibleInfo = () =>{
             Object.entries(properties.value).map(([key,propItem])=> {
                 if(typeof propItem.show  == 'undefined'){
@@ -207,7 +228,9 @@ const SchemaForm = {
             options,
             visibleInfo,
             pubSub,
-            registeredComponents
+            registeredComponents,
+            onChange,
+            expose
         }
     },
     render : (ctx:any)=>{
