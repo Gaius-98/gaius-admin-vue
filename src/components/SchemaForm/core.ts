@@ -18,7 +18,7 @@ export const replaceVar = (text:string,formData:Obj<any>)=>{
         // 从捕获组中获取变量名称
         const variableName = p1.trim().split('.')[1];
         // 返回变量对应的值，如果变量不存在，则返回原占位符
-        return formData[variableName]  ? formData[variableName] : null;
+        return formData[variableName]  ? `'${formData[variableName]}'` : null;
     });
     return replacedStr
 }
