@@ -15,11 +15,12 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
     const curControlCfg = ref<LCFormItemCfg<ControlType>>({})
     const id = ref('')
     const setFormDetail = (data:LCFormCfg) =>{
-        const {id:formId,schema,name,description} = data
+        const {id:formId,schema,name,description,status} = data
         id.value = formId!
         extraFormConfig.value = {
             name,
-            description
+            description,
+            status
         }
         formConfig.value = schema
     }
@@ -31,7 +32,8 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
     }
     const extraFormConfig = ref<Obj<any>>({
         name:'',
-        description:''
+        description:'',
+        status:1
     })
 
     const removeControlItem = (id:string,data:LCFormItemCfg<ControlType>[])=>{

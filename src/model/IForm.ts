@@ -87,7 +87,8 @@ export interface LCFormCfg {
     id?:string,
     schema:LCFormItemCfg<ControlType>[],
     img:string,
-    description?:string
+    description?:string,
+    status?:number
 }
 
 

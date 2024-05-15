@@ -1,14 +1,26 @@
 <template>
+  <a-page-header
+    :title="title"
+    :subTitle="desc"
+    @back="goBack"
+    :ghost="false"
+    style="padding: 10px 24px"
+  >
+    <template #extra>
+      <a-space>
+        <a-button @click="onDownload" v-if="id"> 导出 </a-button>
+        <a-button @click="onOpenPreviewModal"> 预览 </a-button>
+        <a-button @click="onOpenSaveModal" type="primary"> 保存 </a-button>
+      </a-space>
+    </template>
+    <template #tags>
+      <a-tag color="#87d068" v-if="extraFormConfig.status">启用</a-tag>
+      <a-tag color="#f50" v-else>停用</a-tag>
+    </template>
+  </a-page-header>
   <div class="form-design" v-loading.fullscreen="saveLoading">
     <material-area class="left-part"></material-area>
     <div class="middle-part">
-      <div class="middle-part-header">
-        <a-space>
-          <a-button @click="onDownload" v-if="id"> 导出 </a-button>
-          <a-button @click="onOpenPreviewModal"> 预览 </a-button>
-          <a-button @click="onOpenSaveModal" type="primary"> 保存 </a-button>
-        </a-space>
-      </div>
       <material-view v-model="formConfig" class="middle-part-content"></material-view>
     </div>
     <material-cfg class="right-part"></material-cfg>
@@ -29,7 +41,7 @@
 import MaterialArea from './components/MaterialArea.vue'
 import MaterialView from './components/MaterialView.vue'
 import MaterialCfg from './components/MaterialCfg.vue'
-import { reactive, toRefs, ref } from 'vue'
+import { reactive, toRefs, ref, computed } from 'vue'
 import { useFormDesignStore } from '@/stores/formDesign'
 import { storeToRefs } from 'pinia'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
@@ -60,14 +72,24 @@ if (id.value) {
     name: '',
     description: '',
     schema: [],
-    img: ''
+    img: '',
+    status: 1
   })
 }
+const title = computed(() => {
+  return id.value ? extraFormConfig.value.name : '新建表单'
+})
+const desc = computed(() => {
+  return id.value ? extraFormConfig.value.description : ''
+})
 const show = ref(false)
 const schema = ref<Schema>({
   layout: {
     labelAlign: 'left',
-    layout: 'horizontal'
+    layout: 'horizontal',
+    labelCol: {
+      span: 4
+    }
   },
   properties: {
     name: {
@@ -77,6 +99,23 @@ const schema = ref<Schema>({
     description: {
       type: 'string',
       label: '备注'
+    },
+    status: {
+      type: 'radio',
+      label: '状态',
+      component: {
+        buttonStyle: 'solid',
+        dataSource: [
+          {
+            label: '启用',
+            value: 1
+          },
+          {
+            label: '停用',
+            value: 0
+          }
+        ]
+      }
     }
   }
 })
@@ -84,9 +123,12 @@ const onOpenSaveModal = () => {
   show.value = true
 }
 const router = useRouter()
+const goBack = () => {
+  router.go(-1)
+}
 const onConfirm = () => {
   onSave().then(() => {
-    router.go(-1)
+    goBack()
   })
   show.value = false
 }
@@ -108,8 +150,9 @@ const onDownload = () => {
 .form-design {
   display: grid;
   grid-template-columns: 1fr 6fr 2fr;
-  gap: 20px;
+  gap: 10px;
   height: 100%;
+  margin-top: 10px;
   .left-part {
     padding: 20px;
     background-color: #fff;
@@ -125,7 +168,6 @@ const onDownload = () => {
       background-color: #fff;
     }
     .middle-part-content {
-      margin-top: 20px;
       flex: 1;
       background-color: #fff;
     }

@@ -23,48 +23,28 @@
       <a-empty v-if="tableData.length === 0" />
       <div v-else>
         <div class="contain" v-if="type == 'visual'">
-          <div class="item" v-for="item in tableData" :key="item.id">
-            <div class="top">
-              <div class="title" :title="item.name">{{ item.name }}</div>
-              <div class="buttons">
-                <a-button
-                  :icon="h(DownloadOutlined)"
-                  shape="circle"
-                  type="link"
-                  ghost
-                  title="下载"
-                  @click="onDownload(item.id!, item.name)"
-                >
-                </a-button>
-                <a-button
-                  :icon="h(EditOutlined)"
-                  shape="circle"
-                  type="link"
-                  ghost
-                  title="编辑"
-                  @click="onJumpEdit(item.id!)"
-                >
-                </a-button>
-                <a-popconfirm
-                  title="确定要删除吗?"
-                  ok-text="确定"
-                  cancel-text="取消"
-                  @confirm="onDelete(item.id!)"
-                >
-                  <a-button
-                    title="删除"
-                    :icon="h(DeleteOutlined)"
-                    shape="circle"
-                    type="link"
-                    danger
-                    ghost
-                  >
-                  </a-button>
-                </a-popconfirm>
-              </div>
-            </div>
-            <a-image :src="item.img" height="calc(100% - 40px)" width="100%" />
-          </div>
+          <a-card hoverable v-for="item in tableData" :key="item.id">
+            <template #cover>
+              <a-image :src="item.img" height="130px" />
+            </template>
+            <template #actions>
+              <DownloadOutlined
+                key="download"
+                @click="onDownload(item.id!, item.name)"
+                title="下载"
+              />
+              <EditOutlined key="edit" title="编辑" @click="onJumpEdit(item.id!)" />
+              <a-popconfirm
+                title="确定要删除吗?"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="onDelete(item.id!)"
+              >
+                <DeleteOutlined key="delete" title="删除" />
+              </a-popconfirm>
+            </template>
+            <a-card-meta :title="item.name" :description="item.description"> </a-card-meta>
+          </a-card>
         </div>
         <a-table
           v-else
@@ -79,6 +59,8 @@
               <a-tag color="#f50" v-else>停用</a-tag>
             </template>
             <template v-if="column.key == 'action'">
+              <a-button type="link" @click="onDownload(record.id!, record.name)">下载</a-button>
+              <a-divider type="vertical" />
               <a-button type="link" @click="onJumpEdit(record.id!)">编辑</a-button>
               <a-divider type="vertical" />
               <a-popconfirm
