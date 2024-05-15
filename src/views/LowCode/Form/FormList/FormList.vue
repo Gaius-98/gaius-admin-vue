@@ -23,7 +23,7 @@
       <a-empty v-if="tableData.length === 0" />
       <div v-else>
         <div class="contain" v-if="type == 'visual'">
-          <a-card hoverable v-for="item in tableData" :key="item.id">
+          <a-card :hoverable="true" v-for="item in tableData" :key="item.id">
             <template #cover>
               <a-image :src="item.img" height="130px" />
             </template>
