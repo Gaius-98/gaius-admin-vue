@@ -1,4 +1,10 @@
 <template>
+  <a-button
+    type="text"
+    @click="onAdd"
+    :icon="h(PlusCircleOutlined)"
+    v-if="tableData.length == 0"
+  ></a-button>
   <a-table
     :columns="tableColumns"
     :data-source="tableData"
@@ -38,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, computed } from 'vue'
+import { reactive, toRefs, ref, computed, watch, h } from 'vue'
 import type { ModelRef } from 'vue'
 import type { Obj } from '@/model'
 import { v4 as uuidV4 } from 'uuid'
@@ -59,6 +65,21 @@ interface Props {
   action?: boolean
 }
 const data: ModelRef<any> = defineModel()
+const tableData = ref<any[]>([])
+
+watch(
+  () => data,
+  () => {
+    tableData.value = data.value.map((e: Obj<string>) => ({
+      _id_: uuidV4(),
+      ...e
+    }))
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 let props = withDefaults(defineProps<Props>(), {
   action: true
 })
@@ -69,7 +90,6 @@ const inputColumns = computed(() => {
 const selectColumns = computed(() => {
   return getFilterColumnByType('select')
 })
-const tableData = ref<any[]>([])
 
 const tableColumns = computed(() => {
   if (action.value) {
@@ -83,10 +103,6 @@ const tableColumns = computed(() => {
   }
   return columns.value
 })
-tableData.value = data.value.map((e: Obj<string>) => ({
-  _id_: uuidV4(),
-  ...e
-}))
 
 const getColumnOptions = (dataIndex: string) => {
   return columns.value.find((e) => e.dataIndex == dataIndex)?.options || []
