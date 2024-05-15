@@ -15,12 +15,24 @@
       <GithubOutlined />
     </div>
     <div class="layout-opt-userinfo">
-      <a-avatar>
-        <template #icon>
-          <img src="../../assets/user.jpg" alt="" />
+      <a-popover placement="bottomRight">
+        <template #content>
+          <a-button @click="onLogout" block> 退出 </a-button>
         </template>
-      </a-avatar>
-      <span class="layout-opt-userinfo-name">测试</span>
+        <template #title>
+          <a-descriptions title="用户信息" size="small" :column="1" style="width: 200px">
+            <a-descriptions-item label="姓名">{{ userInfo.name }}</a-descriptions-item>
+            <a-descriptions-item label="用户名">{{ userInfo.username }}</a-descriptions-item>
+            <a-descriptions-item label="邮箱">{{ userInfo.email }}</a-descriptions-item>
+          </a-descriptions>
+        </template>
+        <a-avatar>
+          <template #icon>
+            <img src="../../assets/user.jpg" alt="" />
+          </template>
+        </a-avatar>
+        <span class="layout-opt-userinfo-name">测试</span>
+      </a-popover>
     </div>
   </div>
 </template>
@@ -29,11 +41,20 @@
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import { SearchOutlined, SettingOutlined, GithubOutlined } from '@ant-design/icons-vue'
+import auth from '@/utils/auth'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const systemStore = useSystemStore()
-const { local, themeCfg } = storeToRefs(systemStore)
+const { local, themeCfg, userInfo } = storeToRefs(systemStore)
 const { onOpenConfigDrawer, onToggleLocal } = systemStore
 const onOpenGithub = () => {
   window.open('https://github.com/Gaius-98/gaius-admin', '_blank')
+}
+const onLogout = () => {
+  auth.remove()
+  router.push({
+    path: '/login'
+  })
 }
 </script>
 <style scoped lang="scss">
@@ -61,6 +82,7 @@ const onOpenGithub = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
     .layout-opt-userinfo-name {
       max-width: 80px;
       text-overflow: ellipsis;

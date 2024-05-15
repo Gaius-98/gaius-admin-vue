@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import type { ResMenuItem, SystemThemeCfg } from '@/model'
+import type { ResMenuItem, SystemThemeCfg,CreateAuthInfo } from '@/model'
 import systemApi from '@/api/system'
+import userApi from '@/views/System/api/user'
 export const useSystemStore = defineStore('system', () => {
   const menuTree = ref<ResMenuItem[]>([])
   const isConfigVisible = ref(false)
@@ -26,6 +27,7 @@ export const useSystemStore = defineStore('system', () => {
     watermarkVisible: false,
     watermarkText: import.meta.env.VITE_TITLE
   })
+  const userInfo = ref<Partial<CreateAuthInfo>>({})
   const collapsed = ref(false)
   const onToggleCollapsed = () => {
     collapsed.value = !collapsed.value
@@ -35,9 +37,14 @@ export const useSystemStore = defineStore('system', () => {
     const { data } = await systemApi.getMenu()
     menuTree.value = data
   }
+  const getUserInfo = async () =>{
+    const {data} = await userApi.getUserInfo()
+    userInfo.value = data
+  }
 
   const startUp = async () => {
     await getMenu()
+    await getUserInfo()
   }
   return {
     menuTree,
@@ -50,6 +57,8 @@ export const useSystemStore = defineStore('system', () => {
     collapsed,
     onToggleCollapsed,
     startUp,
-    getMenu
+    getMenu,
+    userInfo,
+    getUserInfo,
   }
 })

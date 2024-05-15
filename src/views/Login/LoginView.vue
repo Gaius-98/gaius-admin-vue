@@ -48,6 +48,7 @@ import { storeToRefs } from 'pinia'
 import api from './api'
 import { setCookie } from '@/utils/cookie'
 import { useRouter } from 'vue-router'
+import auth from '@/utils/auth'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)
 const authForm = reactive({
@@ -60,7 +61,7 @@ const onLogin = () => {
   api.login(authForm).then((res) => {
     const { code, data } = res
     if (code == 200) {
-      setCookie('admin-cookie', data)
+      auth.set(data)
       router.push('/home')
     }
   })

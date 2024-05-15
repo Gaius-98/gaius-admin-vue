@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import {h}from 'vue'
 import NotFound from '@/views/ErrorTemplate/NotFound.vue'
 import BlankView from '@/layout/BlankView.vue'
+import auth from '@/utils/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -81,5 +82,15 @@ const router = createRouter({
     }
   ]
 })
-
+router.beforeEach((to,from,next)=>{
+  if(to.path == '/login'){
+    next()
+  }else{
+    if(auth.get()){
+      next()
+    }else{
+      next('/login')
+    }
+  }
+})
 export default router

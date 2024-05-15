@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { getCookie } from './cookie'
 import {message} from 'ant-design-vue'
+import auth from './auth'
 //接口返回格式
 export type Res<T = any> = {
   code: number
@@ -16,9 +16,7 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
   (config) => {
-    if(getCookie('admin-cookie')){
-      config.headers['Authorization'] = `Bearer ${getCookie('admin-cookie')}`
-    }
+    config.headers['Authorization'] = `Bearer ${auth.get()}`
     return config
   },
   (error) => error

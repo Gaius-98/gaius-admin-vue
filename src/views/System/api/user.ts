@@ -17,6 +17,12 @@ export default {
             },
         })
     },
+    getUserInfo:()=>{
+        return request<CreateAuthInfo>({
+            method:'get',
+            url:'user/userInfo',
+        })
+    },
     remove:(username:string)=>{
         return request<string>({
             method:'get',
