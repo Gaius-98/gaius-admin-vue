@@ -128,7 +128,7 @@ const onDrop = (e: DragEvent) => {
       }
     }
     &.active {
-      border:1px solid  v-bind('themeCfg.colorPrimary');
+      border: 1px solid v-bind('themeCfg.colorPrimary');
       & > .material-util {
         display: flex;
       }

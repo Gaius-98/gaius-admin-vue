@@ -7,11 +7,11 @@ import LowCodeForm from "@/components/LowCodeForm/LowCodeForm.vue";
 import { createApp } from "vue";
 import html2canvas from 'html2canvas'
 import formApi from "@/views/LowCode/Form/api/form";
-import type { LCFormCfg } from "@/model";
+import type { LCFormCfg,FormCfg } from "@/model";
 import {message} from 'ant-design-vue'
 export const useFormDesignStore = defineStore('formDesign',()=>{
-    const formConfig = ref<LCFormItemCfg<ControlType>[]>([])
-
+    const formCfgItemList = ref<LCFormItemCfg<ControlType>[]>([])
+    const formConfig = ref<Partial<FormCfg>>({})
     const curControlCfg = ref<LCFormItemCfg<ControlType>>({})
     const id = ref('')
     const setFormDetail = (data:LCFormCfg) =>{
@@ -22,7 +22,8 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
             description,
             status
         }
-        formConfig.value = schema
+        formCfgItemList.value = schema.formCfgItemList
+        formConfig.value = schema.formConfig
     }
     const onSelectControlItem = (id:string,data:LCFormItemCfg<ControlType>[]) =>{
         const idx = data.findIndex(item=>item.id === id)
@@ -46,7 +47,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         const copyCfg = _.cloneDeep(curControlCfg.value)
         Reflect.deleteProperty(copyCfg,'id')
         const copyControl = initFormControl(curControlCfg.value.type!,copyCfg)
-        formConfig.value.push(copyControl)
+        formCfgItemList.value.push(copyControl)
     }
     const saveLoading = ref(false)
     const AddPreviewForm = () => {
@@ -57,7 +58,10 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         vNode.style.overflowY = 'auto'
         vNode.style.padding = '10px'
         const FormComp = createApp(LowCodeForm, {
-            schema: formConfig.value,
+            schema: {
+                formCfgItemList:formCfgItemList.value,
+                formConfig:formConfig.value
+            },
             formData:{}
         })
         FormComp.mount(vNode).$el
@@ -76,7 +80,10 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         }
         let api = formApi.add
         const req = <LCFormCfg>{
-            schema:formConfig.value,
+            schema:{
+                formCfgItemList:formCfgItemList.value,
+                formConfig:formConfig.value
+            },
             ...extraFormConfig.value,
             img
         }
@@ -92,7 +99,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
     }
     return {
         curControlCfg,
-        formConfig,
+        formCfgItemList,
         onSelectControlItem,
         copyControlItem,
         removeControlItem,
@@ -100,6 +107,7 @@ export const useFormDesignStore = defineStore('formDesign',()=>{
         onSave,
         id,
         saveLoading,
-        setFormDetail
+        setFormDetail,
+        formConfig
     }
 })

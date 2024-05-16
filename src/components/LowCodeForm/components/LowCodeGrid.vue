@@ -6,7 +6,7 @@
       :key="index"
       v-for="(item, index) in schema.controlProp.children"
     >
-      <low-code-form :schema="item" :formData="formData" />
+      <low-code-form :schema="{ formCfgItemList: item }" :formData="formData" />
     </a-col>
   </a-row>
 </template>

@@ -81,11 +81,21 @@ export interface LCFormItemCfg<T extends ControlType> {
         required:boolean
     }
 }
-
+export interface FormCfg {
+    labelAlign:'left'|'right'
+    labelCol:{
+        span?:number,
+        offset?:number
+    }
+}
+export interface LCFormSchema {
+    formConfig:Partial<FormCfg>,
+    formCfgItemList:LCFormItemCfg<ControlType>[]
+}
 export interface LCFormCfg {
     name:string,
     id?:string,
-    schema:LCFormItemCfg<ControlType>[],
+    schema:LCFormSchema,
     img:string,
     description?:string,
     status?:number

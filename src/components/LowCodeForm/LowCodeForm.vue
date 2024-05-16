@@ -1,6 +1,6 @@
 <template>
-  <a-form :model="formData">
-    <template v-for="item in schema">
+  <a-form :model="formData" v-bind="schema.formConfig">
+    <template v-for="item in schema.formCfgItemList">
       <template v-if="['grid', 'card'].includes(item.type)">
         <low-code-card
           :key="item.name"
@@ -83,7 +83,7 @@ const { schema, formData } = toRefs(props)
 const dictKeys = ref<string[]>([])
 const dict = ref<Obj<any>>({})
 const collectDictKey = () => {
-  schema.value.map((e: LCFormItemCfg<ControlType>) => {
+  schema.value.formCfgItemList.map((e: LCFormItemCfg<ControlType>) => {
     if ('dict' in e.controlProp!) {
       dictKeys.value.push(e.controlProp.dict!)
     }

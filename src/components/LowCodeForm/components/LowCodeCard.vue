@@ -8,7 +8,10 @@
     :bordered="schema.controlProp.bordered"
     :hoverable="schema.controlProp.hoverable"
   >
-    <low-code-form :schema="schema.controlProp.children" :formData="formData"></low-code-form>
+    <low-code-form
+      :schema="{ formCfgItemList: schema.controlProp.children }"
+      :formData="formData"
+    ></low-code-form>
   </a-card>
 </template>
 

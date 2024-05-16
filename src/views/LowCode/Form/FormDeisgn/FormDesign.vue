@@ -21,7 +21,9 @@
   <div class="form-design" v-loading.fullscreen="saveLoading">
     <material-area class="left-part"></material-area>
     <div class="middle-part">
-      <material-view v-model="formConfig" class="middle-part-content"></material-view>
+      <a-form v-bind="formConfig" class="middle-part-content">
+        <material-view v-model="formCfgItemList"></material-view>
+      </a-form>
     </div>
     <material-cfg class="right-part"></material-cfg>
   </div>
@@ -33,7 +35,7 @@
     ></schema-form>
   </a-modal>
   <a-modal v-model:open="previewShow" title="预览">
-    <low-code-form :formData="formData" :schema="formConfig"></low-code-form>
+    <low-code-form :formData="formData" :schema="{ formCfgItemList, formConfig }"></low-code-form>
   </a-modal>
 </template>
 
@@ -57,7 +59,7 @@ const props = defineProps<Props>()
 const { id } = toRefs(props)
 
 const formStore = useFormDesignStore()
-const { formConfig, extraFormConfig, saveLoading } = storeToRefs(formStore)
+const { formCfgItemList, extraFormConfig, saveLoading, formConfig } = storeToRefs(formStore)
 const { onSave, setFormDetail } = formStore
 if (id.value) {
   api.getDetail(id.value).then((res) => {
@@ -71,7 +73,16 @@ if (id.value) {
     id: '',
     name: '',
     description: '',
-    schema: [],
+    schema: {
+      formCfgItemList: [],
+      formConfig: {
+        labelCol: {
+          span: undefined,
+          offset: undefined
+        },
+        labelAlign: 'left'
+      }
+    },
     img: '',
     status: 1
   })
@@ -151,7 +162,7 @@ const onDownload = () => {
   display: grid;
   grid-template-columns: 1fr 6fr 2fr;
   gap: 10px;
-  height: 100%;
+  height: calc(100% - 60px);
   margin-top: 10px;
   .left-part {
     padding: 20px;
@@ -173,7 +184,7 @@ const onDownload = () => {
     }
   }
   .right-part {
-    padding: 20px 20px 0 0;
+    padding: 0 20px 0 20px;
     background-color: #fff;
   }
 }
