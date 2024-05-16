@@ -1,10 +1,4 @@
 <template>
-  <a-button
-    type="text"
-    @click="onAdd"
-    :icon="h(PlusCircleOutlined)"
-    v-if="tableData.length == 0"
-  ></a-button>
   <a-table
     :columns="tableColumns"
     :data-source="tableData"
@@ -12,7 +6,7 @@
     :rowKey="(record: any) => record._id_"
     size="small"
     :scroll="{
-      y: 150
+      y: height
     }"
   >
     <template #bodyCell="{ column, index, record }">
@@ -40,6 +34,9 @@
         </div>
       </template>
     </template>
+    <template #emptyText>
+      <a-button type="text" @click="onAdd" :icon="h(PlusCircleOutlined)"> 新增数据</a-button>
+    </template>
   </a-table>
 </template>
 
@@ -63,6 +60,7 @@ export interface EditColumn {
 interface Props {
   columns: EditColumn[]
   action?: boolean
+  height?: number
 }
 const data: ModelRef<any> = defineModel()
 const tableData = ref<any[]>([])
@@ -81,7 +79,8 @@ watch(
   }
 )
 let props = withDefaults(defineProps<Props>(), {
-  action: true
+  action: true,
+  height: 150
 })
 const { columns, action } = toRefs(props)
 const inputColumns = computed(() => {
