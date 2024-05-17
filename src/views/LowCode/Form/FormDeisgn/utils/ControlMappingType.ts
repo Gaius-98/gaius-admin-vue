@@ -3,7 +3,8 @@ import { Select,Input,InputNumber,RadioGroup,Switch,CheckboxGroup,DatePicker} fr
 import type { Component } from "vue";
 import MaterialGrid from "../components/MaterialGrid.vue";
 import MaterialCard from "../components/MaterialCard.vue";
-
+import MaterialDivider from "../components/MaterialDivider.vue";
+import MaterialCollapse from '../components/MaterialCollapse.vue'
 export default <Obj<Component>>{
     input:Input,
     select:Select,
@@ -13,5 +14,7 @@ export default <Obj<Component>>{
     checkbox:CheckboxGroup,
     grid:MaterialGrid,
     card:MaterialCard,
-    date:DatePicker
+    date:DatePicker,
+    divider:MaterialDivider,
+    collapse:MaterialCollapse
 }

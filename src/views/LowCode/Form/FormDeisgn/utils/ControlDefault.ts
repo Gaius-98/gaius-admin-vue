@@ -116,6 +116,32 @@ const cardDefault = {
     show:undefined
 }
 
+const dividerDefault = {
+    type:'divider',
+    controlProp:{
+        type:'horizontal',
+        plain:false,
+        orientation:'left',
+        dashed:false,
+        title:''
+    },
+    id:'',
+    show:undefined
+}
+
+const collapseDefault = {
+    type:'collapse',
+    controlProp:{
+        bordered: true,
+        ghost: false,
+        header: '折叠面板',
+        showArrow: true,
+        defaultExpanded: true,
+        children: [],
+    },
+    id:'',
+    show:undefined
+}
 
 const controlDefault:any[] = [
     inputDefault,
@@ -126,7 +152,9 @@ const controlDefault:any[] = [
     gridDefault,
     cardDefault,
     dateDefault,
-    numberDefalt
+    numberDefalt,
+    dividerDefault,
+    collapseDefault
 ]
 
 

@@ -44,6 +44,14 @@ const materials = ref({
     {
       label: '卡片',
       value: 'card'
+    },
+    {
+      label: '分割线',
+      value: 'divider'
+    },
+    {
+      label: '折叠框',
+      value: 'collapse'
     }
   ],
   dataMaterials: [
