@@ -6,7 +6,7 @@
       :key="index"
       v-for="(item, index) in schema.controlProp.children"
     >
-      <low-code-form :schema="{ formCfgItemList: item }" :formData="formData" />
+      <low-code-form-item :schema="item" :formData="formData" />
     </a-col>
   </a-row>
 </template>
@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { reactive, toRefs, ref, computed } from 'vue'
 import type { Obj } from '@/model'
-import LowCodeForm from '../LowCodeForm.vue'
+import LowCodeFormItem from './LowCodeFormItem.vue'
 interface Props {
   schema: any
   formData: Obj<any>

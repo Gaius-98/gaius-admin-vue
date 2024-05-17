@@ -8,15 +8,15 @@
     :bordered="schema.controlProp.bordered"
     :hoverable="schema.controlProp.hoverable"
   >
-    <low-code-form
-      :schema="{ formCfgItemList: schema.controlProp.children }"
+    <low-code-form-item
+      :schema="schema.controlProp.children"
       :formData="formData"
-    ></low-code-form>
+    ></low-code-form-item>
   </a-card>
 </template>
 
 <script lang="ts" setup>
-import LowCodeForm from '../LowCodeForm.vue'
+import LowCodeFormItem from './LowCodeFormItem.vue'
 import { reactive, toRefs, ref } from 'vue'
 import type { Obj } from '@/model'
 interface Props {
