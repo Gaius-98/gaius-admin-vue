@@ -71,6 +71,11 @@
         :options="dict[item.controlProp.dict]"
       >
       </a-checkbox-group>
+      <a-switch
+        v-if="item.type == 'switch'"
+        v-model:checked="formData[item.formItemProp.name]"
+        v-bind="item.controlProp"
+      ></a-switch>
     </a-form-item>
   </template>
 </template>
