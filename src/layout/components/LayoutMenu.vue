@@ -1,5 +1,12 @@
 <template>
-  <a-menu v-bind="$attrs" :items="realMenuTree" :theme="themeCfg.menuTheme" @select="onSelectMenu">
+  <a-menu
+    v-bind="$attrs"
+    :items="realMenuTree"
+    :theme="themeCfg.menuTheme"
+    @select="onSelectMenu"
+    v-model:openKeys="openKeys"
+    v-model:selectedKeys="selectedKeys"
+  >
   </a-menu>
 </template>
 
@@ -10,10 +17,13 @@ import * as icons from '@ant-design/icons-vue'
 import { h, computed } from 'vue'
 import type { VNode, FunctionalComponent } from 'vue'
 import type { UIMenuItem, Obj, ResMenuItem } from '@/model'
+import { useStorage } from '@vueuse/core'
 import jump from '@/utils/jump'
 const systemStore = useSystemStore()
 const { menuTree, themeCfg } = storeToRefs(systemStore)
 
+const selectedKeys = useStorage('gaius-admin-menu-selected', [])
+const openKeys = useStorage('gaius-admin-menu-open', [])
 const realMenuTree = computed(() => {
   return transformMenuData(menuTree.value)
 })
