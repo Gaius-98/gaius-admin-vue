@@ -5,9 +5,9 @@
         {{ local == 'en' ? '中文' : 'English' }}
       </a-button>
     </div>
-    <div class="layout-opt-search">
+    <!-- <div class="layout-opt-search">
       <SearchOutlined />
-    </div>
+    </div> -->
     <div class="layout-opt-theme" @click="onOpenConfigDrawer">
       <SettingOutlined />
     </div>
@@ -31,7 +31,7 @@
             <img src="../../assets/user.jpg" alt="" />
           </template>
         </a-avatar>
-        <span class="layout-opt-userinfo-name">测试</span>
+        <span class="layout-opt-userinfo-name">{{ userInfo.name }}</span>
       </a-popover>
     </div>
   </div>
