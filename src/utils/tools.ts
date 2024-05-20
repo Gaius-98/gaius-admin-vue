@@ -21,3 +21,10 @@ export const downloadFile = (content:string, fileName?:string, fileType = 'json'
   a.click()
   document.body.removeChild(a)
 }
+
+export const uninstallPreLoad = () =>{
+  const element =  document.querySelector('.pre-loading')
+  if(element){
+    element.remove()
+  }
+}
