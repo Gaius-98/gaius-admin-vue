@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import type { ResMenuItem, SystemThemeCfg,CreateAuthInfo } from '@/model'
+import type { ResMenuItem, SystemThemeCfg, CreateAuthInfo } from '@/model'
 import systemApi from '@/api/system'
 import userApi from '@/views/System/api/user'
 export const useSystemStore = defineStore('system', () => {
@@ -37,8 +37,8 @@ export const useSystemStore = defineStore('system', () => {
     const { data } = await systemApi.getMenu()
     menuTree.value = data
   }
-  const getUserInfo = async () =>{
-    const {data} = await userApi.getUserInfo()
+  const getUserInfo = async () => {
+    const { data } = await userApi.getUserInfo()
     userInfo.value = data
   }
 
@@ -59,6 +59,6 @@ export const useSystemStore = defineStore('system', () => {
     startUp,
     getMenu,
     userInfo,
-    getUserInfo,
+    getUserInfo
   }
 })

@@ -8,10 +8,10 @@ export interface SystemMenuItem {
   children?: SystemMenuItem[]
 }
 export interface UIMenuItem extends Pick<ResMenuItem, 'id' | 'label'> {
-  icon?: VNode|string
-  children?: UIMenuItem[],
-  key:string,
-  [key:string]:any
+  icon?: VNode | string
+  children?: UIMenuItem[]
+  key: string
+  [key: string]: any
 }
 export interface ResMenuItem {
   id?: string
@@ -24,8 +24,8 @@ export interface ResMenuItem {
   address?: string
   // table 预置列表爷 page 预置设计页面 front 前端代码页面 form 表单页面
   type: 'table' | 'page' | 'front' | 'form'
-  openType: '_blank' | '_self',
-  children?:ResMenuItem[]
+  openType: '_blank' | '_self'
+  children?: ResMenuItem[]
 }
 export interface ResMenuDict {
   id: string
@@ -53,14 +53,14 @@ export interface SystemThemeCfg {
   menuTheme: themeType
 }
 export interface SystemDictTypeItem {
-  dictType:string
-  dictTypeDesc:string
+  dictType: string
+  dictTypeDesc: string
 }
 export interface SystemDictItem extends SystemDictTypeItem {
-  id?:string
-  label:string
-  value:string
-  sortNum:number
-  desc?:string
-  status?:number
+  id?: string
+  label: string
+  value: string
+  sortNum: number
+  desc?: string
+  status?: number
 }

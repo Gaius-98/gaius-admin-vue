@@ -3,7 +3,7 @@
     v-bind="$attrs"
     :bodyStyle="{
       padding: 0,
-      'min-height': '40px',
+      'min-height': '40px'
     }"
   >
     <material-view v-model="children" />

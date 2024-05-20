@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import {message} from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import auth from './auth'
 //接口返回格式
 export type Res<T = any> = {
@@ -24,8 +24,8 @@ service.interceptors.request.use(
 //响应拦截器
 service.interceptors.response.use(
   (res: AxiosResponse<any, any>) => {
-    const {code,msg} = res.data
-    if(code != 200){
+    const { code, msg } = res.data
+    if (code != 200) {
       message.error(msg)
     }
     return res.data
@@ -35,7 +35,6 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
 
 const request = <T>(config: AxiosRequestConfig) =>
   new Promise<Res<T>>((resolve, reject) => {
