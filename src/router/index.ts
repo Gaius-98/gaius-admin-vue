@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import {h}from 'vue'
+import { h } from 'vue'
 import NotFound from '@/views/ErrorTemplate/NotFound.vue'
 import BlankView from '@/layout/BlankView.vue'
 import auth from '@/utils/auth'
@@ -9,86 +9,91 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component:()=>import('@/layout/LayoutView.vue'),
-      children:[
+      component: () => import('@/layout/LayoutView.vue'),
+      children: [
         {
-          path:'/home',
-          name:'home',
-          component: () => import('@/views/Home/HomeView.vue'),
+          path: '/home',
+          name: 'home',
+          component: () => import('@/views/Home/HomeView.vue')
         },
         {
-          path:'/system',
-          name:'system',
-          component:BlankView,
-          children:[        
+          path: '/system',
+          name: 'system',
+          component: BlankView,
+          children: [
             {
-              path:'menu',
-              name:'menu',
-              component:()=>import('@/views/System/MenuView.vue')
+              path: 'menu',
+              name: 'menu',
+              component: () => import('@/views/System/MenuView.vue')
             },
             {
-              path:'user',
-              name:'user',
-              component:()=>import('@/views/System/UserView.vue')
+              path: 'user',
+              name: 'user',
+              component: () => import('@/views/System/UserView.vue')
             },
             {
-              path:'dict',
-              name:'dict',
-              component:()=>import('@/views/System/DictView.vue')
+              path: 'dict',
+              name: 'dict',
+              component: () => import('@/views/System/DictView.vue')
             },
             {
-              path:'role',
-              name:'role',
-              component:()=>import('@/views/System/RoleView.vue')
+              path: 'role',
+              name: 'role',
+              component: () => import('@/views/System/RoleView.vue')
             },
             {
-              path:'request',
-              name:'request',
-              component:()=>import('@/views/System/RequestView.vue')
+              path: 'request',
+              name: 'request',
+              component: () => import('@/views/System/RequestView.vue')
             },
+            {
+              path: 'resource',
+              name: 'resource',
+              component: () => import('@/views/System/ResourceView.vue')
+            }
           ]
         },
         {
-          path:'/low-code',
-          name:'lowCode',
-          component:BlankView,
-          children:[
+          path: '/low-code',
+          name: 'lowCode',
+          component: BlankView,
+          children: [
             {
-              path:'form',
-              name:'form',
-              component:()=>import('@/views/LowCode/Form/FormView.vue'),
-              props:(route)=>(route.query)
+              path: 'form',
+              name: 'form',
+              component: () => import('@/views/LowCode/Form/FormView.vue'),
+              props: (route) => route.query
             },
             {
-              path:'form-list',
-              name:'formList',
-              component:()=>import('@/views/LowCode/Form/FormList/FormList.vue')
+              path: 'form-list',
+              name: 'formList',
+              component: () => import('@/views/LowCode/Form/FormList/FormList.vue')
             }
           ]
         },
 
         {
-          path:'/:pathMatch(.*)*',
-          name:'404',
-          component:NotFound
+          path: '/:pathMatch(.*)*',
+          name: '404',
+          component: NotFound
         }
       ]
     },
-    
+
     {
-      path:'/login',
-      name:'login',
-      component:()=>import('@/views/Login/LoginView.vue')
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/Login/LoginView.vue')
     }
   ]
 })
-router.beforeEach((to,from,next)=>{
-  if(to.path == '/login'){
+router.beforeEach((to, from, next) => {
+  if (to.path == '/login') {
     next()
-  }else{
-    if(auth.get()){
+  } else {
+    if (auth.get()) {
       next()
-    }else{
+    } else {
       next('/login')
     }
   }
