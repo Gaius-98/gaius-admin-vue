@@ -5,6 +5,7 @@ export interface ImageItem {
   originalname:string,
   size:number,
   createTime:string
+  id:string
 }
 export default {
   getList: (params: PageParams) => {
@@ -24,7 +25,7 @@ export default {
     })
   },
   add: (data: any) => {
-    return request({
+    return request<ImageItem>({
       method: 'post',
       url: 'upload/images',
       data
