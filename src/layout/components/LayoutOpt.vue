@@ -28,7 +28,7 @@
         </template>
         <a-avatar>
           <template #icon>
-            <img src="../../assets/user.jpg" alt="" />
+            <img :src="userInfo.avatar || ''" alt="" />
           </template>
         </a-avatar>
         <span class="layout-opt-userinfo-name">{{ userInfo.name }}</span>
