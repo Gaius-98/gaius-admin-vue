@@ -68,6 +68,9 @@
             :options="roleDictList"
           ></a-select>
         </a-form-item>
+        <a-form-item label="头像">
+          <image-picker v-model="formData.avatar"></image-picker>
+        </a-form-item>
         <a-form-item label="名称">
           <a-input v-model:value="formData.name"></a-input>
         </a-form-item>
@@ -84,6 +87,7 @@ import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/user'
 import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem } from '@/model'
+import ImagePicker from '@/components/ImagePicker.vue'
 const userParamsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
