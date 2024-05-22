@@ -6,10 +6,12 @@
     :group="{ name: 'column', pull: true, put: true }"
     ghost-class="ghost"
     chosen-class="chosen"
-    filter=".line"
+    fallback-class="chosen"
+    :handle="'.drag-icon'"
+    :force-fallback="true"
   >
     <div
-      v-for="item in columns"
+      v-for="(item, idx) in columns"
       :key="item"
       :style="{
         width: item.width + 'px' || 'auto'
@@ -18,8 +20,11 @@
     >
       <SwapOutlined class="drag-icon" />
       {{ item.title }}
-
-      <div class="line" @mousedown.stop="handleMouseDown($event, item)"></div>
+      <div
+        class="line"
+        v-show="idx != columns!.length - 1"
+        @mousedown.stop="handleMouseDown($event, item)"
+      ></div>
     </div>
   </vue-draggable-next>
 </template>
@@ -34,9 +39,9 @@ interface Props {
 const columns = defineModel<any[]>()
 const props = defineProps<Props>()
 const handleMouseDown = (event: MouseEvent, column: any) => {
-  const width = column?.width || 0
+  const width =
+    column?.width || ((event.target as HTMLElement).parentNode! as HTMLElement).offsetWidth
   const startX = event.clientX
-  console.log('mouse')
   const move = (moveEvent: MouseEvent) => {
     const currX = moveEvent.clientX
     const disX = currX - startX
@@ -73,15 +78,16 @@ const handleMouseDown = (event: MouseEvent, column: any) => {
     transition: background 0.2s ease;
     padding: 16px;
     resize: horizontal;
-    flex: 1;
+    flex-grow: 1;
     .drag-icon {
-      display: none;
+      cursor: move;
     }
+
     .line {
       position: absolute;
       top: 50%;
       right: 0;
-      width: 40px;
+      width: 20px;
       height: 100%;
       transform: translateY(-50%);
       transition: background-color 0.2s;
@@ -89,15 +95,25 @@ const handleMouseDown = (event: MouseEvent, column: any) => {
       &::before {
         display: block;
         position: absolute;
-        left: 50%;
+        right: 0;
         top: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(0, -50%);
         content: '';
         width: 1px;
         height: 1.6em;
         background-color: #f0f0f0;
       }
+      &:hover {
+        &::before {
+          background-color: #169cff;
+          height: 100%;
+          width: 3px;
+        }
+      }
     }
+  }
+  .drag-table-header-item[style^='width'] {
+    flex-grow: 0;
   }
 }
 .ghost {
@@ -109,8 +125,5 @@ const handleMouseDown = (event: MouseEvent, column: any) => {
   color: #fff !important;
   display: flex;
   flex-wrap: nowrap;
-  .drag-icon {
-    display: block !important;
-  }
 }
 </style>
