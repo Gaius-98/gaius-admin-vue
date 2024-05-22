@@ -68,7 +68,18 @@ const router = createRouter({
               path: 'form-list',
               name: 'formList',
               component: () => import('@/views/LowCode/Form/FormList/FormList.vue')
-            }
+            },
+            {
+              path: 'table',
+              name: 'table',
+              component: () => import('@/views/LowCode/Table/TableEditor/TableEditor.vue'),
+              props: (route) => route.query
+            },
+            {
+              path: 'table-list',
+              name: 'tableList',
+              component: () => import('@/views/LowCode/Table/TableList/TableList.vue')
+            },
           ]
         },
 
