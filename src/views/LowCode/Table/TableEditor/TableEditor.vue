@@ -17,9 +17,8 @@
       <a-tag color="#f50">停用</a-tag>
     </template>
   </a-page-header>
-  <div class="form-design">
+  <div class="table-design">
     <div class="left-part"></div>
-    <div class="middle-part"></div>
     <div class="right-part"></div>
   </div>
   <a-modal v-model:open="show" title="保存" @ok="onConfirm">
@@ -49,7 +48,7 @@ const { id } = toRefs(props)
 // } else {
 // }
 const title = computed(() => {
-  return '新建表单'
+  return '新建表格'
 })
 const desc = computed(() => {
   return ''
@@ -108,27 +107,24 @@ const onOpenPreviewModal = () => {
 }
 </script>
 <style scoped lang="scss">
-.form-design {
+.table-design {
   display: grid;
   grid-template-columns: 1fr 6fr 2fr;
   gap: 10px;
   height: calc(100% - 60px);
   margin-top: 10px;
+
   .left-part {
-    padding: 20px;
-    background-color: #fff;
-  }
-  .middle-part {
     display: flex;
     flex-direction: column;
-    .middle-part-header {
+    .left-part-header {
       display: flex;
       justify-content: flex-end;
       align-items: center;
       height: 40px;
       background-color: #fff;
     }
-    .middle-part-content {
+    .left-part-content {
       flex: 1;
       background-color: #fff;
     }

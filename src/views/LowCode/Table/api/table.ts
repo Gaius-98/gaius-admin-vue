@@ -1,18 +1,18 @@
 import request from '@/utils/request'
-import type { LCFormItemCfg, ControlType, PageParams, LCFormCfg, ResPage } from '@/model'
+import type { PageParams,  ResPage,LCTableCfg } from '@/model'
 
 export default {
   getList: (params: PageParams) => {
-    return request<ResPage<LCFormCfg[]>>({
+    return request<ResPage<LCTableCfg[]>>({
       method: 'get',
-      url: 'form/list',
+      url: 'table/list',
       params
     })
   },
   getDetail: (id: string) => {
-    return request<LCFormCfg>({
+    return request<LCTableCfg>({
       method: 'get',
-      url: 'form/detail',
+      url: 'table/detail',
       params: {
         id
       }
@@ -21,33 +21,25 @@ export default {
   remove: (id: string) => {
     return request<string>({
       method: 'get',
-      url: 'form/remove',
+      url: 'table/remove',
       params: {
         id
       }
     })
   },
-  add: (data: LCFormCfg) => {
+  add: (data: LCTableCfg) => {
     return request({
       method: 'post',
-      url: 'form/add',
+      url: 'table/add',
       data
     })
   },
-  update: (data: LCFormCfg) => {
+  update: (data: LCTableCfg) => {
     return request({
       method: 'post',
-      url: 'form/update',
+      url: 'table/update',
       data
     })
   },
-  getTemplate: (id: string) => {
-    return request<string>({
-      method: 'get',
-      url: '/form/template',
-      params: {
-        id
-      }
-    })
-  }
+
 }

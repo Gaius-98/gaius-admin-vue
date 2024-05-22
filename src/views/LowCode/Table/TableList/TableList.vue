@@ -1,11 +1,11 @@
 <template>
   <div class="table">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="paramsForm" @finish="getList">
+      <a-form ref="searchFormRef" :model="params" @finish="getList">
         <a-row :gutter="24">
           <a-col :span="4">
             <a-form-item label="表格名称" name="keyword">
-              <a-input v-model:value="paramsForm.keyword"> </a-input>
+              <a-input v-model:value="params.keyword"> </a-input>
             </a-form-item>
           </a-col>
           <a-col :span="4" style="text-align: right">
@@ -73,7 +73,7 @@
       </div>
       <a-pagination
         style="display: flex; justify-content: flex-end"
-        v-model:current="paramsForm.pageNumber"
+        v-model:current="params.pageNumber"
         :total="total"
         show-less-items
       />
@@ -82,13 +82,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, h } from 'vue'
-import { EditOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icons-vue'
+import { ref, reactive, onMounted } from 'vue'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import api from '../api/table'
 import type { FormInstance } from 'ant-design-vue'
-import type { LCFormCfg, PageParams } from '@/model'
+import type { LCTableCfg, PageParams } from '@/model'
 import { useRouter } from 'vue-router'
-import { downloadFile } from '@/utils/tools'
 import { SwapOutlined } from '@ant-design/icons-vue'
 const router = useRouter()
 const columns = ref([
@@ -125,12 +124,12 @@ const columns = ref([
     dataIndex: 'action'
   }
 ])
-const paramsForm = reactive<PageParams>({
+const params = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
   pageSize: 10
 })
-const tableData = ref<LCFormCfg[]>([])
+const tableData = ref<LCTableCfg[]>([])
 const total = ref(0)
 const loading = ref(false)
 const searchFormRef = ref<FormInstance>()
@@ -144,7 +143,7 @@ const onToggleType = () => {
 }
 const getList = () => {
   loading.value = true
-  api.getList(paramsForm).then((res) => {
+  api.getList(params).then((res) => {
     const { code, data } = res
     if (code == 200) {
       tableData.value = data.data
