@@ -145,9 +145,9 @@ const onClear = () => {
   searchFormRef.value?.resetFields()
   getList()
 }
-const type = ref<'visual' | 'form'>('form')
+const type = ref<'visual' | 'table'>('table')
 const onToggleType = () => {
-  type.value == 'form' ? (type.value = 'visual') : (type.value = 'form')
+  type.value == 'table' ? (type.value = 'visual') : (type.value = 'table')
 }
 const getList = () => {
   loading.value = true
