@@ -3,7 +3,7 @@
   {{ formData }}
   <icon-select v-model="icon" style="width: 300px"></icon-select>
   <drag-table-header v-model="columns"></drag-table-header>
-
+  <code-editor v-model="formData.code"></code-editor>
   <schema-form
     :layout="schema.layout"
     :properties="schema.properties"
@@ -19,6 +19,7 @@ import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/schema'
 import IconSelect from './../../components/IconSelect/IconSelect.vue'
 import dict from '../System/api/dict'
+import CodeEditor from './../../components/CodeEditor.vue'
 import common from '@/api/common'
 const icon = ref('')
 const validatePass2 = async (_rule: any, value: string) => {
@@ -138,7 +139,9 @@ const schema = ref<Schema>({
     }
   }
 })
-const formData = ref({})
+const formData = ref({
+  code: 'code'
+})
 </script>
 
 <style scoped lang="scss"></style>

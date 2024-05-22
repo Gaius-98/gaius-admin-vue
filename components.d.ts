@@ -54,6 +54,7 @@ declare module 'vue' {
     ATreeSelect: typeof import('ant-design-vue/es')['TreeSelect']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AWatermark: typeof import('ant-design-vue/es')['Watermark']
+    CodeEditor: typeof import('./src/components/CodeEditor.vue')['default']
     ColorPicker: typeof import('./src/components/ColorPicker.vue')['default']
     DragTableHeader: typeof import('./src/components/DragTableHeader.vue')['default']
     EditTable: typeof import('./src/components/EditTable.vue')['default']
