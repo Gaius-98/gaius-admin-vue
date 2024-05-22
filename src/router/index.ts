@@ -61,7 +61,7 @@ const router = createRouter({
             {
               path: 'form',
               name: 'form',
-              component: () => import('@/views/LowCode/Form/FormView.vue'),
+              component: () => import('@/views/LowCode/Form/FormEditor/FormEditor.vue'),
               props: (route) => route.query
             },
             {

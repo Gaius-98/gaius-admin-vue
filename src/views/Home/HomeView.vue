@@ -2,6 +2,27 @@
   <a-button type="primary"> test </a-button>
   {{ formData }}
   <icon-select v-model="icon" style="width: 300px"></icon-select>
+  <drag-table-header v-model="columns"></drag-table-header>
+  <a-table :columns="columns" :data-source="tableData" :scroll="{ y: 440 }">
+    <template #bodyCell="{ column, record }">
+      <template v-if="column.key == 'status'">
+        <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+        <a-tag color="#f50" v-else>停用</a-tag>
+      </template>
+      <template v-if="column.key == 'action'">
+        <a-button type="link" @click="onOpenEditdict(record)">编辑</a-button>
+        <a-divider type="vertical" />
+        <a-popconfirm
+          title="确定要删除吗?"
+          ok-text="确定"
+          cancel-text="取消"
+          @confirm="onDeletedict(record)"
+        >
+          <a-button type="link" danger>删除</a-button>
+        </a-popconfirm>
+      </template>
+    </template>
+  </a-table>
   <schema-form
     :layout="schema.layout"
     :properties="schema.properties"
@@ -12,6 +33,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import DragTableHeader from '@/components/DragTableHeader.vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/schema'
 import IconSelect from './../../components/IconSelect/IconSelect.vue'
@@ -27,6 +49,46 @@ const validatePass2 = async (_rule: any, value: string) => {
     return Promise.resolve()
   }
 }
+const columns = ref([
+  {
+    title: '归属字典',
+    key: 'dictTypeDesc',
+    dataIndex: 'dictTypeDesc'
+  },
+  {
+    title: '字典描述',
+    key: 'label',
+    dataIndex: 'label'
+  },
+  {
+    title: '字典值',
+    key: 'value',
+    dataIndex: 'value'
+  },
+  {
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status'
+  },
+  {
+    title: '创建时间',
+    key: 'createTime',
+    dataIndex: 'createTime'
+  },
+  {
+    title: '操作',
+    key: 'action',
+    dataIndex: 'action'
+  }
+])
+const tableData = ref([
+  {
+    dictTypeDesc: '11',
+    label: '22',
+    value: '33',
+    status: '44'
+  }
+])
 const form = ref()
 const schema = ref<Schema>({
   layout: {

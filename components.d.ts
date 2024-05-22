@@ -55,6 +55,7 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AWatermark: typeof import('ant-design-vue/es')['Watermark']
     ColorPicker: typeof import('./src/components/ColorPicker.vue')['default']
+    DragTableHeader: typeof import('./src/components/DragTableHeader.vue')['default']
     EditTable: typeof import('./src/components/EditTable.vue')['default']
     IconSelect: typeof import('./src/components/IconSelect/IconSelect.vue')['default']
     ImagePicker: typeof import('./src/components/ImagePicker.vue')['default']
