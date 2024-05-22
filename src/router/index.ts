@@ -8,8 +8,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'layout',
       component: () => import('@/layout/LayoutView.vue'),
+      redirect:{
+        path:'/home',
+      },
       children: [
         {
           path: '/home',
@@ -104,6 +107,7 @@ router.beforeEach((to, from, next) => {
   } else {
     if (auth.get()) {
       next()
+      
     } else {
       next('/login')
     }

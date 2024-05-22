@@ -14,16 +14,19 @@
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import * as icons from '@ant-design/icons-vue'
-import { h, computed } from 'vue'
+import { h, computed, watch } from 'vue'
 import type { VNode, FunctionalComponent } from 'vue'
 import type { UIMenuItem, Obj, ResMenuItem } from '@/model'
 import { useStorage } from '@vueuse/core'
 import jump from '@/utils/jump'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
 const systemStore = useSystemStore()
 const { menuTree, themeCfg } = storeToRefs(systemStore)
 
-const selectedKeys = useStorage('gaius-admin-menu-selected', [])
-const openKeys = useStorage('gaius-admin-menu-open', [])
+const selectedKeys = useStorage<string[]>('gaius-admin-menu-selected', [], sessionStorage)
+const openKeys = useStorage('gaius-admin-menu-open', [], sessionStorage)
 const realMenuTree = computed(() => {
   return transformMenuData(menuTree.value)
 })
@@ -44,7 +47,32 @@ const transformMenuData = (tree: ResMenuItem[]): UIMenuItem[] => {
     return newNode
   })
 }
-
+const findMenuIdByPath = (path: string, data: ResMenuItem[]): string | undefined => {
+  for (let i = 0; i < data.length; i++) {
+    const node = data[i]
+    if (node.address === path) {
+      return node.id
+    }
+    if (node.children) {
+      const id = findMenuIdByPath(path, node.children)
+      if (id) {
+        return id
+      }
+    }
+  }
+}
+watch(
+  () => route.path,
+  () => {
+    const id = findMenuIdByPath(route.path, menuTree.value)
+    if (id) {
+      selectedKeys.value = [id]
+    }
+  },
+  {
+    immediate: true
+  }
+)
 const onSelectMenu = ({ item }: { item: Obj<ResMenuItem> }) => {
   const { originItemValue } = item
   jump(originItemValue)
