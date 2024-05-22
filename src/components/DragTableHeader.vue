@@ -33,11 +33,8 @@
 import { VueDraggableNext } from 'vue-draggable-next'
 import { reactive, toRefs, ref } from 'vue'
 import { SwapOutlined } from '@ant-design/icons-vue'
-interface Props {
-  data: any[]
-}
+
 const columns = defineModel<any[]>()
-const props = defineProps<Props>()
 const handleMouseDown = (event: MouseEvent, column: any) => {
   const width =
     column?.width || ((event.target as HTMLElement).parentNode! as HTMLElement).offsetWidth

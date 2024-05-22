@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Obj, LCFormItemCfg, ControlType } from '@/model'
-import initFormControl from '@/views/LowCode/Form/FormDeisgn/utils/FormUI'
+import initFormControl from '@/views/LowCode/Form/FormEditor/utils/FormUI'
 import _ from 'lodash'
 import LowCodeForm from '@/components/LowCodeForm/LowCodeForm.vue'
 import { createApp } from 'vue'
