@@ -5,9 +5,9 @@ export interface LCTableCfg {
     id?:string
     status:number
     columns:Partial<LCTableColumnCfg>[]
-    global:LCTableGlobalCfg
-    dataSource:LCTableDataSource
-    variablePool:LCTableVariableCfg
+    global:Partial<LCTableGlobalCfg>
+    dataSource:Partial<LCTableDataSource>
+    variablePool:Partial<LCTableVariableCfg>
     img:string
 }
 export enum AlignType {
@@ -66,7 +66,6 @@ export interface LCTableDataSource{
     type:keyof typeof DataSourceType
     interfaceUrl:string
     handlerFunc:string
-    preDataFunc:string
 }
 export interface VariableItemCfg {
     key:string
