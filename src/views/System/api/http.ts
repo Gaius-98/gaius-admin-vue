@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { ResPage, ReqInfo, ReqPageParams } from '@/model'
+import type { ResPage, ReqInfo, ReqPageParams,Obj } from '@/model'
 import axios from 'axios'
 export default {
   getList: (params: ReqPageParams) => {
@@ -41,12 +41,13 @@ export default {
       data
     })
   },
-  run: (id: string) => {
+  run: (id: string,paramsData?:Obj<any>) => {
     return axios({
       method: 'get',
       url: import.meta.env.VITE_REQ_BASE_URL + '/request/proxy',
       params: {
-        id
+        id,
+        paramsData
       }
     })
   }
