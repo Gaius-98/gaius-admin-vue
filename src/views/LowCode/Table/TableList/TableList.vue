@@ -179,7 +179,7 @@ onMounted(() => {
 })
 </script>
 <style scoped lang="scss">
-.form {
+.table {
   display: flex;
   flex-direction: column;
   width: 100%;

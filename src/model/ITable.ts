@@ -1,10 +1,10 @@
 export interface LCTableCfg {
     name:string
-    description:string
+    description?:string
     createTime?:string
     id?:string
     status:number
-    columns:LCTableColumnCfg[]
+    columns:Partial<LCTableColumnCfg>[]
     global:LCTableGlobalCfg
     dataSource:LCTableDataSource
     variablePool:LCTableVariableCfg
@@ -25,7 +25,8 @@ export enum ColumnType {
     image='image'
 }
 export interface LCTableColumnCfg {
-    field:string
+    id:string
+    dataIndex:string
     title:string
     type:keyof typeof ColumnType
     width:number
@@ -65,6 +66,7 @@ export interface LCTableDataSource{
     type:keyof typeof DataSourceType
     interfaceUrl:string
     handlerFunc:string
+    preDataFunc:string
 }
 export interface VariableItemCfg {
     key:string

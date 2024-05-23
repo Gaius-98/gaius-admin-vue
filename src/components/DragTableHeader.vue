@@ -17,6 +17,10 @@
         width: item.width + 'px' || 'auto'
       }"
       class="drag-table-header-item"
+      :class="{
+        active: item[columnId] == active
+      }"
+      @click="onClickItem(item)"
     >
       <SwapOutlined class="drag-icon" />
       {{ item.title }}
@@ -33,8 +37,15 @@
 import { VueDraggableNext } from 'vue-draggable-next'
 import { reactive, toRefs, ref } from 'vue'
 import { SwapOutlined } from '@ant-design/icons-vue'
-
+interface Props {
+  columnId: string
+}
+const props = withDefaults(defineProps<Props>(), {
+  columnId: 'id'
+})
+const { columnId } = toRefs(props)
 const columns = defineModel<any[]>()
+const active = ref('')
 const handleMouseDown = (event: MouseEvent, column: any) => {
   const width =
     column?.width || ((event.target as HTMLElement).parentNode! as HTMLElement).offsetWidth
@@ -53,6 +64,11 @@ const handleMouseDown = (event: MouseEvent, column: any) => {
 
   document.addEventListener('mousemove', move)
   document.addEventListener('mouseup', up)
+}
+const emit = defineEmits(['onClick'])
+const onClickItem = (column: any) => {
+  active.value = column[columnId.value]
+  emit('onClick', column)
 }
 </script>
 <style scoped lang="scss">
@@ -76,6 +92,9 @@ const handleMouseDown = (event: MouseEvent, column: any) => {
     padding: 16px;
     resize: horizontal;
     flex-grow: 1;
+    &.active {
+      border: 1px solid #169cff;
+    }
     .drag-icon {
       cursor: move;
     }

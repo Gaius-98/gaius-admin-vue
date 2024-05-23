@@ -13,13 +13,17 @@
       </a-space>
     </template>
     <template #tags>
-      <a-tag color="#87d068">启用</a-tag>
-      <a-tag color="#f50">停用</a-tag>
+      <a-tag color="#87d068" v-if="tableCfg.status">启用</a-tag>
+      <a-tag color="#f50" v-else>停用</a-tag>
     </template>
   </a-page-header>
   <div class="table-design">
-    <div class="left-part"></div>
-    <div class="right-part"></div>
+    <div class="left-part">
+      <table-design></table-design>
+    </div>
+    <div class="right-part">
+      <table-cfg></table-cfg>
+    </div>
   </div>
   <a-modal v-model:open="show" title="保存" @ok="onConfirm">
     <schema-form :layout="schema.layout" :properties="schema.properties"></schema-form>
@@ -30,28 +34,64 @@
 <script lang="ts" setup>
 import { reactive, toRefs, ref, computed } from 'vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
-import type { Schema } from '@/components/SchemaForm/schema'
+import type { Schema } from '@/components/SchemaForm/ISchema'
+import TableDesign from './components/TableDesign.vue'
 import api from '../api/table'
 import { useRouter } from 'vue-router'
+import TableCfg from './components/TableCfg.vue'
+import { useTableDesignStore } from '@/stores/tableDesign'
+import { storeToRefs } from 'pinia'
 interface Props {
   id?: string
 }
 const props = defineProps<Props>()
 const { id } = toRefs(props)
+const tableDesignStore = useTableDesignStore()
+const { tableCfg } = storeToRefs(tableDesignStore)
+if (id.value) {
+  api.getDetail(id.value).then((res) => {
+    const { code, data, msg } = res
+    if (code == 200) {
+      tableCfg.value = data
+    }
+  })
+} else {
+  tableCfg.value = {
+    name: '',
+    description: '',
+    status: 1,
+    columns: [],
+    global: {
+      bordered: false,
+      pagination: {
+        show: false,
+        current: 1,
+        pageSize: 10,
+        pageSizeOptions: [],
+        total: 10
+      },
+      actionCfg: {},
+      filterCfg: {
+        show: false,
+        formId: ''
+      }
+    },
+    dataSource: {
+      type: 'dynamic',
+      interfaceUrl: '',
+      handlerFunc: '',
+      preDataFunc: ''
+    },
+    img: '',
+    variablePool: []
+  }
+}
 
-// if (id.value) {
-//   api.getDetail(id.value).then((res) => {
-//     const { code, data, msg } = res
-//     if (code == 200) {
-//     }
-//   })
-// } else {
-// }
 const title = computed(() => {
-  return '新建表格'
+  return tableCfg.value.name ? tableCfg.value.name : '新建表格'
 })
 const desc = computed(() => {
-  return ''
+  return tableCfg.value.description ? tableCfg.value.description : ''
 })
 const show = ref(false)
 const schema = ref<Schema>({
@@ -65,7 +105,7 @@ const schema = ref<Schema>({
   properties: {
     name: {
       type: 'string',
-      label: '表单名称'
+      label: '表格名称'
     },
     description: {
       type: 'string',
@@ -109,7 +149,7 @@ const onOpenPreviewModal = () => {
 <style scoped lang="scss">
 .table-design {
   display: grid;
-  grid-template-columns: 1fr 6fr 2fr;
+  grid-template-columns: 4fr 1fr;
   gap: 10px;
   height: calc(100% - 60px);
   margin-top: 10px;
