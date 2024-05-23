@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   height: 400
 })
 const { height } = toRefs(props)
-const value = defineModel()
+const value = defineModel<string>({ required: true })
 
 const extensions = [javascript()]
 </script>
