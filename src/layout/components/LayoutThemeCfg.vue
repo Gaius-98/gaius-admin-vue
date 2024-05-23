@@ -56,7 +56,7 @@ const globalSchema = ref<Schema>({
     },
     colorPrimary: {
       type: 'string',
-      label: '主题色配置',
+      label: '主题色',
       component: {
         name: 'color-picker'
       }
@@ -91,14 +91,14 @@ const headerSchema = ref<Schema>({
   properties: {
     headerBgColor: {
       type: 'string',
-      label: '主题色配置',
+      label: '背景色',
       component: {
         name: 'color-picker'
       }
     },
     headerFontColor: {
       type: 'string',
-      label: '主题色配置',
+      label: '字体颜色',
       component: {
         name: 'color-picker'
       }
