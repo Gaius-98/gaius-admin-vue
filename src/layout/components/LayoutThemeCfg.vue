@@ -36,7 +36,7 @@ import { storeToRefs } from 'pinia'
 import ColorPicker from '@/components/ColorPicker.vue'
 import { LayoutCategory, ThemeCategory } from '@/model'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
-import type { Schema } from '@/components/SchemaForm/schema'
+import type { Schema } from '@/components/SchemaForm/ISchema'
 const registeredComponents = ref({
   'color-picker': ColorPicker
 })

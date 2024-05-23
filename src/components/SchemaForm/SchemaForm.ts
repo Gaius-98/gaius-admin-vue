@@ -1,6 +1,6 @@
 import { h, toRefs, ref, inject } from 'vue'
 import type { Prop } from 'vue'
-import type { SchemaProperties, ControlType, Schema, SchemaLayout, FormFieldInfo } from './schema'
+import type { SchemaProperties, ControlType, Schema, SchemaLayout, FormFieldInfo } from './ISchema'
 import type { Obj } from '@/model'
 import {
   Input,

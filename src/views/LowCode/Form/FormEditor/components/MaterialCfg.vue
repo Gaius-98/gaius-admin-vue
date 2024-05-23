@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
-import type { Schema } from '@/components/SchemaForm/schema'
+import type { Schema } from '@/components/SchemaForm/ISchema'
 import { ref, watch } from 'vue'
 import { useFormDesignStore } from '@/stores/formDesign'
 import { storeToRefs } from 'pinia'

@@ -1,4 +1,4 @@
-import type { SchemaProperties } from '@/components/SchemaForm/schema'
+import type { SchemaProperties } from '@/components/SchemaForm/ISchema'
 import type { Obj } from '@/model'
 import dictApi from '@/views/System/api/dict'
 export interface ControlCfgSchema {

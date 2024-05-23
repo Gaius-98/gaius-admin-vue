@@ -16,7 +16,7 @@
 import { ref } from 'vue'
 import DragTableHeader from '@/components/DragTableHeader.vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
-import type { Schema } from '@/components/SchemaForm/schema'
+import type { Schema } from '@/components/SchemaForm/ISchema'
 import IconSelect from './../../components/IconSelect/IconSelect.vue'
 import dict from '../System/api/dict'
 import CodeEditor from './../../components/CodeEditor.vue'
