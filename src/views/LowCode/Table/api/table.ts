@@ -1,6 +1,9 @@
 import request from '@/utils/request'
 import type { PageParams,  ResPage,LCTableCfg } from '@/model'
-
+export interface ApiDictItem {
+  apiName:string,
+  id:string
+}
 export default {
   getList: (params: PageParams) => {
     return request<ResPage<LCTableCfg[]>>({
@@ -41,5 +44,10 @@ export default {
       data
     })
   },
-
+  getApiList:()=>{
+    return request<ApiDictItem[]>({
+      method: 'get',
+      url: 'request/dict',
+    })
+  }
 }
