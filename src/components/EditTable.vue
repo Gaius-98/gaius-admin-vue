@@ -1,36 +1,27 @@
 <template>
   <a-table
     :columns="tableColumns"
-    :data-source="tableData"
+    :data-source="data"
     :pagination="false"
-    :rowKey="(record: any) => record._id_"
     size="small"
     :scroll="{
       y: height
     }"
   >
-    <template #bodyCell="{ column, index, record }">
+    <template #bodyCell="{ column, index }">
       <template v-if="inputColumns.includes(column.dataIndex)">
-        <a-input
-          :value="tableData[index][column.dataIndex]"
-          @change="onChange(record._id_, column.dataIndex, $event.target.value)"
-        ></a-input>
+        <a-input v-model:value="data[index][column.dataIndex]"></a-input>
       </template>
       <template v-if="selectColumns.includes(column.dataIndex)">
         <a-select
-          :value="tableData[index][column.dataIndex]"
+          v-model:value="data[index][column.dataIndex]"
           :options="getColumnOptions(column.dataIndex)"
-          @change="
-            (val: string) => {
-              onChange(record._id_, column.dataIndex, val)
-            }
-          "
         ></a-select>
       </template>
       <template v-if="column.dataIndex == '_action_'">
         <div style="display: flex">
           <PlusCircleOutlined class="icon" @click="onAdd()" />
-          <MinusCircleOutlined class="icon" @click="onRemove(record._id_)" />
+          <MinusCircleOutlined class="icon" @click="onRemove(index)" />
         </div>
       </template>
     </template>
@@ -43,10 +34,8 @@
 <script lang="ts" setup>
 import { reactive, toRefs, ref, computed, watch, h } from 'vue'
 import type { ModelRef } from 'vue'
-import type { Obj } from '@/model'
-import { v4 as uuidV4 } from 'uuid'
+
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons-vue'
-import _ from 'lodash'
 export interface SelectOptionItem {
   value: string
   label: string
@@ -63,21 +52,7 @@ interface Props {
   height?: number
 }
 const data: ModelRef<any> = defineModel()
-const tableData = ref<any[]>([])
 
-watch(
-  () => data,
-  () => {
-    tableData.value = data.value.map((e: Obj<string>) => ({
-      _id_: uuidV4(),
-      ...e
-    }))
-  },
-  {
-    deep: true,
-    immediate: true
-  }
-)
 let props = withDefaults(defineProps<Props>(), {
   action: true,
   height: 150
@@ -110,39 +85,15 @@ const getFilterColumnByType = (type: 'input' | 'select') => {
   return columns.value.filter((e) => e.type == type).map((e) => e.dataIndex)
 }
 
-const onChange = (id: string, dataIndex: string, value: string) => {
-  tableData.value.find((e) => e._id_ == id)[dataIndex] = value
-  data.value = tableData.value.map((e) => {
-    let obj = _.cloneDeep(e)
-    Reflect.deleteProperty(obj, '_id_')
-    return obj
-  })
-}
 const onAdd = () => {
-  let id = uuidV4()
-  let obj = _.cloneDeep({
-    _id_: id
-  })
+  let obj = {}
   columns.value.map((column) => {
     Reflect.set(obj, column.dataIndex, '')
   })
-  tableData.value.push(obj)
+  data.value.push(obj)
 }
-const onRemove = (id: string) => {
-  let idx = tableData.value.findIndex((e) => e._id_ == id)
-  tableData.value.splice(idx, 1)
-  console.log(
-    tableData.value.map((e) => {
-      let obj = _.cloneDeep(e)
-      Reflect.deleteProperty(obj, '_id_')
-      return obj
-    })
-  )
-  data.value = tableData.value.map((e) => {
-    let obj = _.cloneDeep(e)
-    Reflect.deleteProperty(obj, '_id_')
-    return obj
-  })
+const onRemove = (idx: number) => {
+  data.value.splice(idx, 1)
 }
 </script>
 <style scoped lang="scss">
