@@ -78,7 +78,11 @@ const props = defineProps<Props>()
 const { id } = toRefs(props)
 const tableDesignStore = useTableDesignStore()
 const { tableCfg } = storeToRefs(tableDesignStore)
-const dataSourceFormData = ref<Partial<LCTableDataSource>>({})
+const dataSourceFormData = ref<LCTableDataSource>({
+  interfaceUrl: '',
+  handlerFunc: 'return res',
+  type: 'dynamic'
+})
 const result = ref('')
 if (id.value) {
   api.getDetail(id.value).then((res) => {
@@ -221,7 +225,11 @@ const onConfirmDataSource = () => {
   onCancelDataSource()
 }
 const onCancelDataSource = () => {
-  dataSourceFormData.value = {}
+  dataSourceFormData.value = {
+    type: 'dynamic',
+    interfaceUrl: '',
+    handlerFunc: 'return res'
+  }
   dataSourceShow.value = false
 }
 const transformParamsData = () => {

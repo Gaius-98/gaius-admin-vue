@@ -39,7 +39,6 @@ export const useTableDesignStore = defineStore('tableDesign',()=>{
             type:'dynamic',
             interfaceUrl:'',
             handlerFunc:'',
-            preDataFunc:''
         },
         variablePool:[],
         img:''

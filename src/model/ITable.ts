@@ -6,7 +6,7 @@ export interface LCTableCfg {
     status:number
     columns:Partial<LCTableColumnCfg>[]
     global:Partial<LCTableGlobalCfg>
-    dataSource:Partial<LCTableDataSource>
+    dataSource:LCTableDataSource
     variablePool:Partial<LCTableVariableCfg>
     img:string
 }
