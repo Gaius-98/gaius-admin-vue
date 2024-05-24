@@ -154,12 +154,12 @@ const createSchemaFormItem = (
     const { name } = component
     const itemProps = _.cloneDeep(component)
     Reflect.deleteProperty(itemProps, 'onChange')
-    if (!ctx.registeredComponents[name]) {
+    if (!ctx.sfProvideEL[name]) {
       throw new Error(
-        `${name} is not registered,provide('registeredComponents','${name}',Component)`
+        `${name} is not registered,provide('sfProvideEL','${name}',Component)`
       )
     }
-    childrenNode = h(ctx.registeredComponents[name], {
+    childrenNode = h(ctx.sfProvideEL[name], {
       ...itemProps,
       formData,
       value: getDeepValue(formData, key),
@@ -208,7 +208,7 @@ const SchemaForm = {
   },
   setup(props: Schema) {
     const { layout, properties, formData } = toRefs(props)
-    const registeredComponents = inject('registeredComponents')
+    const sfProvideEL = inject('sfProvideEL')
     const options = ref<Obj<any>>({})
     const linkData = Object.entries(properties.value).filter(([, propItem]) => {
       return propItem?.component?.dataSource || propItem?.component?.asyncData
@@ -273,7 +273,7 @@ const SchemaForm = {
       options,
       visibleInfo,
       pubSub,
-      registeredComponents,
+      sfProvideEL,
       onChange,
       expose
     }

@@ -122,9 +122,7 @@ if (id.value) {
   }
   dataSourceFormData.value = tableCfg.value.dataSource
 }
-provide('registeredComponents', {
-  'code-editor': CodeEditor
-})
+
 const title = computed(() => {
   return tableCfg.value.name ? tableCfg.value.name : '新建表格'
 })

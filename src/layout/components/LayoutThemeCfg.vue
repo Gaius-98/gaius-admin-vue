@@ -37,12 +37,6 @@ import ColorPicker from '@/components/ColorPicker.vue'
 import { LayoutCategory, ThemeCategory } from '@/model'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/ISchema'
-const registeredComponents = ref({
-  'color-picker': ColorPicker
-})
-
-// 提供已注册的子组件给子组件使用
-provide('registeredComponents', registeredComponents.value)
 
 const globalSchema = ref<Schema>({
   layout: {
