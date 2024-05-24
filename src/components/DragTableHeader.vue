@@ -24,6 +24,7 @@
     >
       <SwapOutlined class="drag-icon" />
       {{ item.title }}
+      <DeleteOutlined @click="onRemoveItem(item)" />
       <div
         class="line"
         v-show="idx != columns!.length - 1"
@@ -36,7 +37,7 @@
 <script lang="ts" setup>
 import { VueDraggableNext } from 'vue-draggable-next'
 import { reactive, toRefs, ref } from 'vue'
-import { SwapOutlined } from '@ant-design/icons-vue'
+import { SwapOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 interface Props {
   columnId: string
 }
@@ -65,10 +66,13 @@ const handleMouseDown = (event: MouseEvent, column: any) => {
   document.addEventListener('mousemove', move)
   document.addEventListener('mouseup', up)
 }
-const emit = defineEmits(['onClick'])
+const emit = defineEmits(['onClick', 'onRemove'])
 const onClickItem = (column: any) => {
   active.value = column[columnId.value]
   emit('onClick', column)
+}
+const onRemoveItem = (column: any) => {
+  emit('onRemove', column)
 }
 </script>
 <style scoped lang="scss">
