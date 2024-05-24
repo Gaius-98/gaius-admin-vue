@@ -24,9 +24,6 @@
       <div v-else>
         <div class="contain" v-if="type == 'visual'">
           <a-card :hoverable="true" v-for="item in tableData" :key="item.id">
-            <template #cover>
-              <a-image :src="item.img" height="130px" />
-            </template>
             <template #actions>
               <EditOutlined key="edit" title="编辑" @click="onJumpEdit(item.id!)" />
               <a-popconfirm
@@ -95,12 +92,6 @@ const columns = ref([
     title: '表格名称',
     key: 'name',
     dataIndex: 'name'
-  },
-  {
-    title: '预览图',
-    key: 'img',
-    dataIndex: 'img',
-    width: 150
   },
   {
     title: '状态',

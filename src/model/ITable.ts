@@ -8,7 +8,6 @@ export interface LCTableCfg {
     global:Partial<LCTableGlobalCfg>
     dataSource:LCTableDataSource
     variablePool:Partial<LCTableVariableCfg>
-    img:string
 }
 export enum AlignType {
     left = 'left',

@@ -19,7 +19,7 @@
       <a-tag color="#f50" v-else>停用</a-tag>
     </template>
   </a-page-header>
-  <div class="table-design">
+  <div class="table-design" v-loading.fullscreen="saveLoading">
     <div class="left-part">
       <table-design></table-design>
     </div>
@@ -28,7 +28,11 @@
     </div>
   </div>
   <a-modal v-model:open="show" title="保存" @ok="onConfirm">
-    <schema-form :layout="schema.layout" :properties="schema.properties"></schema-form>
+    <schema-form
+      v-model:formData="tableCfg"
+      :layout="schema.layout"
+      :properties="schema.properties"
+    ></schema-form>
   </a-modal>
   <a-modal v-model:open="previewShow" title="预览"> </a-modal>
   <a-modal
@@ -48,7 +52,13 @@
       <span>}</span>
     </a-form-item>
     <a-divider>结果区</a-divider>
-    <a-button type="primary" style="margin-bottom: 5px" @click="onGetResult">运行</a-button>
+    <a-button
+      type="primary"
+      style="margin-bottom: 5px"
+      @click="onGetResult"
+      :loading="resultLoading"
+      >运行</a-button
+    >
     <code-editor :height="200" disabled v-model="result"></code-editor>
   </a-modal>
   <a-modal title="变量池配置" :open="variableShow" :footer="false" @cancel="variableShow = false">
@@ -68,7 +78,7 @@ import { useTableDesignStore } from '@/stores/tableDesign'
 import { storeToRefs } from 'pinia'
 import type { LCTableDataSource, Obj } from '@/model'
 import CodeEditor from '@/components/CodeEditor.vue'
-import httpApi from '@/views/System/api/http'
+
 import EditTable from '@/components/EditTable.vue'
 import type { EditColumn } from '@/components/EditTable.vue'
 interface Props {
@@ -77,7 +87,8 @@ interface Props {
 const props = defineProps<Props>()
 const { id } = toRefs(props)
 const tableDesignStore = useTableDesignStore()
-const { tableCfg } = storeToRefs(tableDesignStore)
+const { tableCfg, tableData, saveLoading } = storeToRefs(tableDesignStore)
+const { onRefreshData, onSave } = tableDesignStore
 const dataSourceFormData = ref<LCTableDataSource>({
   interfaceUrl: '',
   handlerFunc: 'return res',
@@ -89,6 +100,9 @@ if (id.value) {
     const { code, data, msg } = res
     if (code == 200) {
       tableCfg.value = data
+      onRefreshData().then((res) => {
+        tableData.value = res
+      })
     }
   })
 } else {
@@ -117,7 +131,6 @@ if (id.value) {
       interfaceUrl: '',
       handlerFunc: 'return res'
     },
-    img: '',
     variablePool: []
   }
   dataSourceFormData.value = tableCfg.value.dataSource
@@ -174,10 +187,11 @@ const goBack = () => {
   router.go(-1)
 }
 const onConfirm = () => {
+  onSave()
   show.value = false
+  goBack()
 }
 const previewShow = ref(false)
-const formData = ref({})
 const onOpenPreviewModal = () => {
   previewShow.value = true
 }
@@ -205,17 +219,10 @@ const dataSourceSchema = ref<Schema>({
         }
       }
     }
-    // handlerFunc: {
-    //   type: 'string',
-    //   label: '数据预处理',
-    //   component: {
-    //     name: 'code-editor',
-    //     height: '200'
-    //   }
-    // }
   }
 })
 const onOpenDataSourceModal = () => {
+  dataSourceFormData.value = tableCfg.value.dataSource
   dataSourceShow.value = true
 }
 const onConfirmDataSource = () => {
@@ -223,29 +230,17 @@ const onConfirmDataSource = () => {
   onCancelDataSource()
 }
 const onCancelDataSource = () => {
-  dataSourceFormData.value = {
-    type: 'dynamic',
-    interfaceUrl: '',
-    handlerFunc: 'return res'
-  }
   dataSourceShow.value = false
 }
-const transformParamsData = () => {
-  let obj: Obj<any> = {}
-  tableCfg.value.variablePool.reduce((p: Obj<any>, c) => {
-    p[c!.key] = c!.defaultValue
-    return p
-  }, obj)
-  return obj
-}
+const resultLoading = ref(false)
 const onRun = async () => {
-  const res = await httpApi.run(tableCfg.value.dataSource.interfaceUrl!, transformParamsData())
-  const fun = new Function('res', `${dataSourceFormData.value.handlerFunc}`)
-  const resData = fun(res.data)
-  return resData
+  return await onRefreshData()
 }
+
 const onGetResult = async () => {
+  resultLoading.value = true
   const data = await onRun()
+  resultLoading.value = false
   result.value = JSON.stringify(data, null, 2)
 }
 const variableShow = ref(false)
