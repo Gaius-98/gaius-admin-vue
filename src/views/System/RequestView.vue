@@ -288,7 +288,6 @@ const onOpenEditrequest = async (record: ReqInfo) => {
   const { code, data } = await api.getDetail(record.id!)
   if (code == 200) {
     formData.value = data
-    console.log(formData.value)
     modalType.value = 'edit'
     modalOpen.value = true
   }

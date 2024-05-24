@@ -241,7 +241,6 @@ const transformParamsData = () => {
   return obj
 }
 const onRun = async () => {
-  console.log(transformParamsData())
   const res = await httpApi.run(tableCfg.value.dataSource.interfaceUrl!, transformParamsData())
   const fun = new Function('res', `${dataSourceFormData.value.handlerFunc}`)
   const resData = fun(res.data)
