@@ -3,18 +3,19 @@
     :columns="tableColumns"
     :data-source="data"
     :pagination="false"
+    :rowKey="(record: any, index: number) => index"
     size="small"
     :scroll="{
       y: height
     }"
   >
-    <template #bodyCell="{ column, index }">
+    <template #bodyCell="{ column, record, index }">
       <template v-if="inputColumns.includes(column.dataIndex)">
-        <a-input v-model:value="data[index][column.dataIndex]"></a-input>
+        <a-input v-model:value="record[column.dataIndex]"></a-input>
       </template>
       <template v-if="selectColumns.includes(column.dataIndex)">
         <a-select
-          v-model:value="data[index][column.dataIndex]"
+          v-model:value="record[column.dataIndex]"
           :options="getColumnOptions(column.dataIndex)"
         ></a-select>
       </template>
@@ -90,6 +91,7 @@ const onAdd = () => {
   columns.value.map((column) => {
     Reflect.set(obj, column.dataIndex, '')
   })
+  console.log(obj)
   data.value.push(obj)
 }
 const onRemove = (idx: number) => {
