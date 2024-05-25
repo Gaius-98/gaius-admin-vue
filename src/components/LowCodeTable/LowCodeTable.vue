@@ -27,6 +27,7 @@
         :columns="tableCfg.columns"
         :data-source="tableData"
         :scroll="{ y: showFilterForm ? 300 : 500 }"
+        :loading="loading"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.type == 'image'">
@@ -60,6 +61,7 @@ const { id } = toRefs(props)
 const tableCfg = ref<Partial<LCTableCfg>>({})
 const tableData = ref<Obj<any>[]>([])
 const filterData = ref({})
+const loading = ref(false)
 const onClear = () => {
   filterData.value = {}
   getList()
@@ -84,6 +86,7 @@ watch(
   }
 )
 const getList = async () => {
+  loading.value = true
   try {
     const data = await api.refreshData(
       tableCfg.value.dataSource!,
@@ -94,6 +97,7 @@ const getList = async () => {
   } catch (error) {
     message.error('获取数据失败:' + error)
   }
+  loading.value = false
 }
 </script>
 <style scoped lang="scss">
