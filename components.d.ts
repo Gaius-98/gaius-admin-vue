@@ -63,8 +63,10 @@ declare module 'vue' {
     LowCodeCard: typeof import('./src/components/LowCodeForm/components/LowCodeCard.vue')['default']
     LowCodeCollapse: typeof import('./src/components/LowCodeForm/components/LowCodeCollapse.vue')['default']
     LowCodeForm: typeof import('./src/components/LowCodeForm/LowCodeForm.vue')['default']
+    LowCodeFormId: typeof import('./src/components/LowCodeForm/LowCodeFormId.vue')['default']
     LowCodeFormItem: typeof import('./src/components/LowCodeForm/components/LowCodeFormItem.vue')['default']
     LowCodeGrid: typeof import('./src/components/LowCodeForm/components/LowCodeGrid.vue')['default']
+    LowCodeTable: typeof import('./src/components/LowCodeTable/LowCodeTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

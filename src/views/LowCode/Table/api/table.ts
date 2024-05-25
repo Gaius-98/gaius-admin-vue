@@ -1,7 +1,11 @@
 import request from '@/utils/request'
 import type { PageParams,  ResPage,LCTableCfg } from '@/model'
 export interface ApiDictItem {
-  apiName:string,
+  apiName:string
+  id:string
+}
+export interface FormDictItem {
+  name:string
   id:string
 }
 export default {
@@ -48,6 +52,12 @@ export default {
     return request<ApiDictItem[]>({
       method: 'get',
       url: 'request/dict',
+    })
+  },
+  getFormList:()=>{
+    return request<FormDictItem[]>({
+      method: 'get',
+      url: 'form/dict',
     })
   }
 }

@@ -82,7 +82,12 @@ const router = createRouter({
               path: 'table-list',
               name: 'tableList',
               component: () => import('@/views/LowCode/Table/TableList/TableList.vue')
-            },
+            },{
+              path:'preview-table',
+              name:'previewTable',
+              component:()=>import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
+              props: (route) => route.query
+            }
           ]
         },
 

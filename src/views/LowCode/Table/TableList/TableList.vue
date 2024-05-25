@@ -51,6 +51,8 @@
               <a-tag color="#f50" v-else>停用</a-tag>
             </template>
             <template v-if="column.key == 'action'">
+              <a-button type="link" @click="onJumpView(record.id!)">预览</a-button>
+              <a-divider type="vertical" />
               <a-button type="link" @click="onJumpEdit(record.id!)">编辑</a-button>
               <a-divider type="vertical" />
               <a-popconfirm
@@ -146,6 +148,14 @@ const getList = () => {
 const onOpenAdd = () => {
   router.push({
     path: '/low-code/table'
+  })
+}
+const onJumpView = (id: string) => {
+  router.push({
+    path: '/low-code/preview-table',
+    query: {
+      id
+    }
   })
 }
 const onJumpEdit = (id: string) => {

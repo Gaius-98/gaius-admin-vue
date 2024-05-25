@@ -30,6 +30,7 @@ import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/ISchema'
 import { useTableDesignStore } from '@/stores/tableDesign'
 import { storeToRefs } from 'pinia'
+import tableApi from '../../api/table'
 const tableStore = useTableDesignStore()
 const schema = ref<Schema>({
   layout: {
@@ -130,7 +131,34 @@ const globalSchema = ref<Schema>({
       type: 'number',
       label: '每页条数',
       show: '${formData.pagination.show}'
+    },
+    'filterCfg.show': {
+      type: 'switch',
+      label: '显示筛选区'
+    },
+    'filterCfg.formId': {
+      type: 'select',
+      label: '筛选区表单',
+      show: '${formData.filterCfg.show}',
+      component: {
+        asyncData: async () => {
+          let p = new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(formList.value)
+            }, 100)
+          })
+          return await p
+        }
+      }
     }
+  }
+})
+const formList = ref<{ value: string; label: string }[]>([])
+tableApi.getFormList().then((res) => {
+  const { code, data, msg } = res
+  if (code == 200) {
+    formList.value = data.map((e) => ({ value: e.id, label: e.name }))
+    console.log(formList)
   }
 })
 const { tableCfg, currentColumn } = storeToRefs(tableStore)

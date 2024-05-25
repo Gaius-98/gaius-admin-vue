@@ -9,8 +9,8 @@
     <template #extra>
       <a-space>
         <a-button @click="onOpenDataSourceModal"> 数据源配置 </a-button>
-        <a-button @click="onOpenVariableDrawer"> 变量池配置 </a-button>
-        <a-button @click="onOpenPreviewModal"> 预览 </a-button>
+        <a-button @click="onOpenVariableModal"> 变量池配置 </a-button>
+        <a-button @click="onPreview" v-show="tableCfg.id"> 预览 </a-button>
         <a-button @click="onOpenSaveModal" type="primary"> 保存 </a-button>
       </a-space>
     </template>
@@ -34,7 +34,6 @@
       :properties="schema.properties"
     ></schema-form>
   </a-modal>
-  <a-modal v-model:open="previewShow" title="预览"> </a-modal>
   <a-modal
     v-model:open="dataSourceShow"
     title="数据源配置"
@@ -120,7 +119,20 @@ if (id.value) {
         pageSizeOptions: [],
         total: 10
       },
-      actionCfg: {},
+      actionCfg: {
+        add: {
+          show: false,
+          formId: ''
+        },
+        edit: {
+          show: false,
+          formId: ''
+        },
+        view: {
+          show: false,
+          formId: ''
+        }
+      },
       filterCfg: {
         show: false,
         formId: ''
@@ -191,9 +203,13 @@ const onConfirm = () => {
   show.value = false
   goBack()
 }
-const previewShow = ref(false)
-const onOpenPreviewModal = () => {
-  previewShow.value = true
+const onPreview = () => {
+  router.push({
+    path: '/low-code/preview-table',
+    query: {
+      id: tableCfg.value.id
+    }
+  })
 }
 const dataSourceShow = ref(false)
 const dataSourceSchema = ref<Schema>({
@@ -256,7 +272,7 @@ const variableColumns = ref<EditColumn[]>([
     type: 'input'
   }
 ])
-const onOpenVariableDrawer = () => {
+const onOpenVariableModal = () => {
   variableShow.value = true
 }
 </script>
