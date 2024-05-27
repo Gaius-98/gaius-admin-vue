@@ -2,7 +2,7 @@
   <div class="table-design-container">
     <a-card class="filter-panel" v-if="showFilterForm">
       <low-code-form-id
-        v-model:formData="filterData"
+        :formData="filterData"
         :id="tableCfg.global.filterCfg!.formId"
         style="overflow-y: auto; max-height: 120px; margin-bottom: 10px"
       ></low-code-form-id>

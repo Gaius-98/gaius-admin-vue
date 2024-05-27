@@ -100,6 +100,11 @@ import { SwapOutlined } from '@ant-design/icons-vue'
 const router = useRouter()
 const columns = ref([
   {
+    title: 'id',
+    key: 'id',
+    dataIndex: 'id'
+  },
+  {
     title: '表单名称',
     key: 'name',
     dataIndex: 'name'
@@ -121,11 +126,7 @@ const columns = ref([
     key: 'createTime',
     dataIndex: 'createTime'
   },
-  {
-    title: '备注',
-    key: 'description',
-    dataIndex: 'description'
-  },
+
   {
     title: '操作',
     key: 'action',

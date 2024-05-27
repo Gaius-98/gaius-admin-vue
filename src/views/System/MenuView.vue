@@ -83,11 +83,15 @@
         <a-form-item label="排序号" name="sortNum">
           <a-input-number v-model:value="formData.sortNum"></a-input-number>
         </a-form-item>
-        <a-form-item label="是否外链" name="openType">
+        <a-form-item label="是否外链" name="openType" v-if="formData.menuType == 'app'">
           <a-radio-group v-model:value="formData.openType" button-style="solid">
             <a-radio-button value="_blank"> 是 </a-radio-button>
             <a-radio-button value="_self"> 否 </a-radio-button>
           </a-radio-group>
+        </a-form-item>
+        <a-form-item label="页面类型" name="type" v-if="formData.openType == '_self'&&formData.menuType == 'app'">
+          <a-select v-model:value="formData.type" :options="menuTypeList" show-search allowClear>
+          </a-select>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -101,6 +105,7 @@ import IconSelect from '@/components/IconSelect/IconSelect.vue'
 import type { ResMenuItem } from '@/model'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { MenuDict } from './api/menu'
+import common from '@/api/common'
 const menuParamsForm = reactive({
   keyword: ''
 })
@@ -143,6 +148,15 @@ const onClear = () => {
   searchFormRef.value?.resetFields()
   getList()
 }
+const menuTypeList = ref<MenuDict[]>([])
+const getMenuDict = () => {
+  common.getDict(['menuType']).then((res) => {
+    const { code, data, msg } = res
+    if (code == 200) {
+      menuTypeList.value = data.menuType
+    }
+  })
+}
 const getList = () => {
   loading.value = true
   api.getList(menuParamsForm.keyword).then((res) => {
@@ -155,6 +169,7 @@ const getList = () => {
 }
 onMounted(() => {
   getList()
+  getMenuDict()
 })
 const modalOpen = ref(false)
 const formData = ref<ResMenuItem>({

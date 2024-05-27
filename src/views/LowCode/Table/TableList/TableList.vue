@@ -91,6 +91,11 @@ import { SwapOutlined } from '@ant-design/icons-vue'
 const router = useRouter()
 const columns = ref([
   {
+    title: 'id',
+    key: 'id',
+    dataIndex: 'id'
+  },
+  {
     title: '表格名称',
     key: 'name',
     dataIndex: 'name'

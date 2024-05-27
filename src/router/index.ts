@@ -84,13 +84,29 @@ const router = createRouter({
               component: () => import('@/views/LowCode/Table/TableList/TableList.vue')
             },{
               path:'preview-table',
-              name:'previewTable',
+              name:'previewLowCodeTable',
               component:()=>import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
               props: (route) => route.query
             }
           ]
         },
-
+        {
+          path:'/preview',
+          name:'preview',
+          children:[
+            {
+              path:'form',
+              name:'preview-form',
+              component:()=>import('@/components/LowCodeForm/LowCodeFormId.vue'),
+              props: (route) => route.query
+            },{
+              path:'table',
+              name:'preview-table',
+              component:()=>import('@/components/LowCodeTable/LowCodeTable.vue'),
+              props: (route) => route.query
+            }
+          ]
+        },
         {
           path: '/:pathMatch(.*)*',
           name: '404',

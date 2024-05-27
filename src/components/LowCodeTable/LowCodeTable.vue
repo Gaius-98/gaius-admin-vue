@@ -2,7 +2,7 @@
   <div class="low-code-table">
     <a-card class="filter-panel" v-if="showFilterForm">
       <low-code-form-id
-        v-model:formData="filterData"
+        :formData="filterData"
         :id="tableCfg.global!.filterCfg!.formId"
         class="filter-form"
         :class="expand ? 'expand' : ''"
@@ -34,7 +34,7 @@
       <a-table
         :columns="tableCfg.columns"
         :data-source="tableData"
-        :scroll="{ y: showFilterForm ? 300 : 500 }"
+        :scroll="{ y: showFilterForm ? 470 : 670 }"
         :loading="loading"
         :pagination="false"
       >
@@ -140,6 +140,7 @@ const getList = async () => {
 .low-code-table {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   .filter-panel {
     margin-bottom: 20px;
     .filter-form {

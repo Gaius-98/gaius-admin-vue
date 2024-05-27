@@ -10,9 +10,11 @@ import formApi from '@/views/LowCode/Form/api/form'
 import type { Obj } from '@/model'
 interface Props {
   id: string
+  formData: Obj<any>
 }
-const props = defineProps<Props>()
-const formData = defineModel<Obj<any>>('formData', { required: true })
+const props = withDefaults(defineProps<Props>(), {
+  formData: () => ({})
+})
 const { id } = toRefs(props)
 const cfg = ref()
 const show = ref(false)

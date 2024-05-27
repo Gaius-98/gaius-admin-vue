@@ -20,8 +20,20 @@ export default (data: ResMenuItem) => {
     case 'page':
       break
     case 'form':
+      router.push({
+        path:'/preview/form',
+        query:{
+          id:address
+        }
+      })
       break
     case 'table':
+      router.push({
+        path:'/preview/table',
+        query:{
+          id:address
+        }
+      })
       break
     default:
       break
