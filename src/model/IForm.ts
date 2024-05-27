@@ -12,7 +12,7 @@ export enum RadioStyle {
   outline = 'outline',
   solid = 'solid'
 }
-export type ControlType = 'input' | 'select' | 'switch' | 'radio' | 'checkbox' | 'date' | 'number'
+export type ControlType = 'input' | 'select' | 'switch' | 'radio' | 'checkbox' | 'date' | 'number'|'grid'|'card'|'collapse'|'divider'
 export type ControlCfg<T extends ControlType> = T extends 'input'
   ? LCInputCfg
   : T extends 'select'
@@ -27,6 +27,14 @@ export type ControlCfg<T extends ControlType> = T extends 'input'
   ? LCDateCfg
   : T extends 'number'
   ? LCNumberCfg
+  : T extends 'grid'
+  ? LCGridCfg
+  : T extends 'card'
+  ? LCCardCfg
+  : T extends 'collapse'
+  ? LCCollapseCfg
+  : T extends 'divider'
+  ? {}
   : never
 export interface LCBaseCfg {
   allowClear: boolean
@@ -48,7 +56,32 @@ export interface LCSwitchCfg extends Partial<Pick<LCBaseCfg, 'disabled' | 'size'
 export interface LCRadioCfg extends Partial<Pick<LCBaseCfg, 'disabled' | 'size' | 'dict'>> {
   buttonStyle: keyof typeof RadioStyle
 }
-
+export interface LCGridCfg {
+  gutter: number
+  colNumber: number
+  children: Array<LCFormItemCfg<ControlType>[]>
+}
+export interface LCCardCfg {
+  title: string
+  bordered: boolean
+  hoverable: boolean
+  children: LCFormItemCfg<ControlType>[]
+}
+export interface LCCollapseCfg {
+  title: string
+  bordered: boolean
+  children: LCFormItemCfg<ControlType>[]
+  showArrow: true
+  defaultExpanded: true
+  header:string
+}
+export interface LCDividerCfg {
+  dashed: boolean
+  orientation: 'left' | 'right' | 'center'
+  plain: boolean
+  type: 'horizontal' | 'vertical'
+  title:string
+}
 export interface LCCheckCfg extends Partial<Pick<LCBaseCfg, 'disabled' | 'dict'>> {}
 
 export interface LCDateCfg extends Partial<LCBaseCfg> {
@@ -64,17 +97,8 @@ export interface LCNumberCfg extends Partial<Pick<LCBaseCfg, 'disabled' | 'size'
   step?: number
 }
 
-export interface LCGridCfg {
-  gutter?: number
-  colNumber?: number
-  children: Array<LCFormItemCfg<ControlType>[]>
-}
-export interface LCCardCfg {
-  title?: string
-  bordered?: boolean
-  hoverable?: boolean
-  children: LCFormItemCfg<ControlType>[]
-}
+
+
 export interface LCFormItemCfg<T extends ControlType> {
   id?: string
   type?: string

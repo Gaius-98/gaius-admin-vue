@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { Obj, LCFormItemCfg, ControlType } from '@/model'
-import initFormControl from '@/views/LowCode/Form/FormEditor/utils/FormUI'
+import type { Obj, LCFormItemCfg, ControlType, LCGridCfg, LCCardCfg, LCCollapseCfg } from '@/model'
 import _ from 'lodash'
 import LowCodeForm from '@/components/LowCodeForm/LowCodeForm.vue'
 import { createApp } from 'vue'
@@ -9,6 +8,7 @@ import html2canvas from 'html2canvas'
 import formApi from '@/views/LowCode/Form/api/form'
 import type { LCFormCfg, FormCfg } from '@/model'
 import { message } from 'ant-design-vue'
+import {v4 as uuid} from 'uuid'
 export const useFormDesignStore = defineStore('formDesign', () => {
   const formCfgItemList = ref<LCFormItemCfg<ControlType>[]>([])
   const formConfig = ref<Partial<FormCfg>>({})
@@ -45,9 +45,28 @@ export const useFormDesignStore = defineStore('formDesign', () => {
   }
   const copyControlItem = () => {
     const copyCfg = _.cloneDeep(curControlCfg.value)
+    changeControlItemId(copyCfg)
     Reflect.deleteProperty(copyCfg, 'id')
-    const copyControl = initFormControl(curControlCfg.value.type!, copyCfg)
+    const copyControl = copyCfg
     formCfgItemList.value.push(copyControl)
+  }
+  const changeControlItemId = (data: LCFormItemCfg<ControlType>) => {
+    data.id = uuid()
+    if(data.type == 'grid'){
+      (data.controlProp as LCGridCfg).children.forEach((item:LCFormItemCfg<ControlType>[])=>{
+        item.forEach((e)=>{
+          changeControlItemId(e)
+        })
+      })
+    }else if(data.type == 'card'){
+      (data.controlProp as LCCardCfg).children.forEach((item:LCFormItemCfg<ControlType>)=>{
+        changeControlItemId(item)
+      })
+    }else if(data.type == 'collapse'){
+      (data.controlProp as LCCollapseCfg).children.forEach((item:LCFormItemCfg<ControlType>)=>{
+        changeControlItemId(item)
+      })
+    }
   }
   const saveLoading = ref(false)
   const AddPreviewForm = () => {

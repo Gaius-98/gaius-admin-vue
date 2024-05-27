@@ -34,10 +34,10 @@
         :key="item.id"
       ></component>
       <div class="material-util">
-        <div class="icon-btn" @click="copyControlItem">
+        <div class="icon-btn" @click="copyControlItem" title="复制">
           <CopyFilled />
         </div>
-        <div class="icon-btn" @click="removeControlItem(item.id, data)">
+        <div class="icon-btn" @click="removeControlItem(item.id, data)" title="删除">
           <DeleteFilled />
         </div>
       </div>
