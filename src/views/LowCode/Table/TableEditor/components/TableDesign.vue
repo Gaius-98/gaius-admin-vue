@@ -9,7 +9,7 @@
       <a-row>
         <a-col :span="24" style="text-align: right">
           <a-button type="primary" html-type="submit">搜索</a-button>
-          <a-button style="margin: 0 8px">清空</a-button>
+          <a-button style="margin: 0 8px">重置</a-button>
         </a-col>
       </a-row>
     </a-card>

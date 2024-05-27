@@ -4,12 +4,20 @@
       <low-code-form-id
         v-model:formData="filterData"
         :id="tableCfg.global!.filterCfg!.formId"
-        style="overflow-y: auto; max-height: 120px; margin-bottom: 10px"
+        class="filter-form"
+        :class="expand ? 'expand' : ''"
       ></low-code-form-id>
       <a-row>
         <a-col :span="24" style="text-align: right">
           <a-button type="primary" html-type="submit" @click="getList">搜索</a-button>
-          <a-button style="margin: 0 8px" @click="onClear">清空</a-button>
+          <a-button style="margin: 0 8px" @click="onClear">重置</a-button>
+          <a-button
+            type="link"
+            :icon="h(expand ? UpOutlined : DownOutlined)"
+            @click="expand = !expand"
+          >
+            <span style="font-size: 12px">{{ expand ? '收起' : '展开' }}</span>
+          </a-button>
         </a-col>
       </a-row>
     </a-card>
@@ -45,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import { SyncOutlined } from '@ant-design/icons-vue'
+import { SyncOutlined, UpOutlined, DownOutlined } from '@ant-design/icons-vue'
 import LowCodeFormId from '@/components/LowCodeForm/LowCodeFormId.vue'
 import { reactive, toRefs, ref, watch, computed, h } from 'vue'
 import tableApi from '@/views/LowCode/Table/api/table'
@@ -69,7 +77,7 @@ const onClear = () => {
 const showFilterForm = computed(() => {
   return tableCfg.value?.global?.filterCfg?.show && tableCfg.value?.global?.filterCfg?.formId
 })
-
+const expand = ref(false)
 watch(
   () => id.value,
   () => {
@@ -105,8 +113,15 @@ const getList = async () => {
   display: flex;
   flex-direction: column;
   .filter-panel {
-    max-height: 200px;
     margin-bottom: 20px;
+    .filter-form {
+      max-height: 100px;
+      overflow-y: hidden;
+      &.expand {
+        overflow-y: auto;
+        max-height: 100%;
+      }
+    }
   }
 }
 </style>
