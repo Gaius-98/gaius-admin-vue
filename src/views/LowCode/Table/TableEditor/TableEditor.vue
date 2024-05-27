@@ -113,7 +113,6 @@ if (id.value) {
     global: {
       bordered: false,
       pagination: {
-        show: false,
         current: 1,
         pageSize: 10,
         pageSizeOptions: [],

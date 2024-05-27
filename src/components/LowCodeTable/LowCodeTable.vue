@@ -36,6 +36,7 @@
         :data-source="tableData"
         :scroll="{ y: showFilterForm ? 300 : 500 }"
         :loading="loading"
+        :pagination="{ total: total }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.type == 'image'">
@@ -93,15 +94,19 @@ watch(
     immediate: true
   }
 )
+const total = ref(0)
 const getList = async () => {
   loading.value = true
   try {
-    const data = await api.refreshData(
+    const { data, total: resTotal } = await api.refreshData(
       tableCfg.value.dataSource!,
       tableCfg.value.variablePool as LCTableVariableCfg,
       filterData.value
     )
     tableData.value = data
+    if (resTotal) {
+      total.value = resTotal
+    }
   } catch (error) {
     message.error('获取数据失败:' + error)
   }

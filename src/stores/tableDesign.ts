@@ -18,7 +18,6 @@ export const useTableDesignStore = defineStore('tableDesign',()=>{
         global:{
             bordered:false,
             pagination:{
-                show:false,
                 current:1,
                 pageSize:10,
                 pageSizeOptions:[],

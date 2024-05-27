@@ -49,9 +49,7 @@ export interface LCActionCfg{
 }
 export interface LCTableGlobalCfg{
     bordered:boolean
-    pagination: Partial<LCTablePaginationCfg> & {
-        show:boolean,
-    }
+    pagination: Partial<LCTablePaginationCfg>
     actionCfg:{
         [key:string]:LCActionCfg
     }
