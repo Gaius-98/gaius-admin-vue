@@ -45,7 +45,7 @@
       :properties="dataSourceSchema.properties"
       v-model:formData="dataSourceFormData"
     ></schema-form>
-    <a-form-item label="数据预处理">
+    <a-form-item label="数据预处理" tooltip="请保证输出的数据格式为:{data:any[],total:number}">
       <span>(res)=>{</span>
       <code-editor :height="200" v-model="dataSourceFormData.handlerFunc"></code-editor>
       <span>}</span>

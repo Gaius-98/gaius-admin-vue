@@ -30,12 +30,15 @@
         :columns="tableCfg.columns"
         :data-source="tableData"
         :scroll="{ y: showFilterForm ? 300 : 500 }"
+        :pagination="{
+          total: total
+        }"
       >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.type == 'image'">
+          <template v-if="column && column.type == 'image'">
             <a-image :src="`${record[column.dataIndex]}`" height="130px" width="100%" />
           </template>
-          <template v-if="column.type == 'link'">
+          <template v-if="column && column.type == 'link'">
             <a :href="`${record[column.dataIndex]}`" target="_blank">
               {{ record[column.dataIndex] }}
             </a>
@@ -64,9 +67,14 @@ const onClickColumn = (columnData: LCTableColumnCfg) => {
 const onRemove = (columnData: LCTableColumnCfg) => {
   onRemoveColumn(columnData.id, tableCfg.value.columns)
 }
+const total = ref(0)
 const onRefresh = () => {
   onRefreshData().then((res) => {
-    tableData.value = res
+    const { data, total: resTotal } = res
+    tableData.value = data
+    if (resTotal) {
+      total.value = resTotal
+    }
   })
 }
 const showFilterForm = computed(() => {
