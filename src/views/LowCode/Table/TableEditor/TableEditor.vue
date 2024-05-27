@@ -100,7 +100,10 @@ if (id.value) {
     if (code == 200) {
       tableCfg.value = data
       onRefreshData().then((res) => {
-        tableData.value = res
+        const { data } = res
+        if (data) {
+          tableData.value = data
+        }
       })
     }
   })
@@ -142,7 +145,12 @@ if (id.value) {
       interfaceUrl: '',
       handlerFunc: 'return res'
     },
-    variablePool: []
+    variablePool: [
+      {
+        key: 'pageNumber',
+        defaultValue: '1'
+      }
+    ]
   }
   dataSourceFormData.value = tableCfg.value.dataSource
 }

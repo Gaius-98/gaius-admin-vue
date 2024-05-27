@@ -36,7 +36,7 @@
         :data-source="tableData"
         :scroll="{ y: showFilterForm ? 300 : 500 }"
         :loading="loading"
-        :pagination="{ total: total }"
+        :pagination="false"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.type == 'image'">
@@ -49,6 +49,13 @@
           </template>
         </template>
       </a-table>
+      <a-pagination
+        style="display: flex; justify-content: flex-end"
+        v-model:current="variableObj.pageNumber"
+        :defaultPageSize="tableCfg.global?.pagination?.pageSize"
+        :total="total"
+        show-less-items
+      />
     </a-card>
   </div>
 </template>
@@ -75,10 +82,13 @@ const onClear = () => {
   filterData.value = {}
   getList()
 }
+const expand = ref(false)
 const showFilterForm = computed(() => {
   return tableCfg.value?.global?.filterCfg?.show && tableCfg.value?.global?.filterCfg?.formId
 })
-const expand = ref(false)
+
+const variableObj = ref<Obj<any>>({})
+
 watch(
   () => id.value,
   () => {
@@ -86,6 +96,9 @@ watch(
       const { code, data, msg } = res
       if (code == 200) {
         tableCfg.value = data
+        variableObj.value = api.transformParamsData(
+          tableCfg.value.variablePool as LCTableVariableCfg
+        )
         getList()
       }
     })
@@ -94,13 +107,23 @@ watch(
     immediate: true
   }
 )
+watch(
+  () => variableObj.value,
+  () => {
+    getList()
+  },
+  {
+    deep: true
+  }
+)
+
 const total = ref(0)
 const getList = async () => {
   loading.value = true
   try {
     const { data, total: resTotal } = await api.refreshData(
       tableCfg.value.dataSource!,
-      tableCfg.value.variablePool as LCTableVariableCfg,
+      variableObj.value,
       filterData.value
     )
     tableData.value = data

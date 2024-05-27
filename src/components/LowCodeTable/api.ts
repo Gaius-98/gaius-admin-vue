@@ -9,10 +9,10 @@ const transformParamsData = (variablePool:LCTableVariableCfg) => {
     }, obj)
     return obj
 }
-const refreshData = async (dataSource:LCTableDataSource,variablePool:LCTableVariableCfg,extra?:Obj<any>) =>{
+const refreshData = async (dataSource:LCTableDataSource,variableObj:Obj<any>,extra?:Obj<any>) =>{
     try {
         const res = await httpApi.run(dataSource.interfaceUrl, {
-            ...transformParamsData(variablePool),
+            ...variableObj,
             ...extra
         })
         const fun = new Function('res', dataSource.handlerFunc)

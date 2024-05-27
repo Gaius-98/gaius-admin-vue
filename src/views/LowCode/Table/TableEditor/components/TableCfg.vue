@@ -153,7 +153,6 @@ tableApi.getFormList().then((res) => {
   const { code, data, msg } = res
   if (code == 200) {
     formList.value = data.map((e) => ({ value: e.id, label: e.name }))
-    console.log(formList)
   }
 })
 const { tableCfg, currentColumn } = storeToRefs(tableStore)

@@ -71,7 +71,9 @@ const total = ref(0)
 const onRefresh = () => {
   onRefreshData().then((res) => {
     const { data, total: resTotal } = res
-    tableData.value = data
+    if (data) {
+      tableData.value = data
+    }
     if (resTotal) {
       total.value = resTotal
     }
