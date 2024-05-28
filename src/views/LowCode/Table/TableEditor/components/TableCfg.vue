@@ -79,11 +79,15 @@ const schema = ref<Schema>({
         dataSource: [
           {
             value: 'left',
-            label: '左固定'
+            label: '左'
           },
           {
             value: 'right',
-            label: '右固定'
+            label: '右'
+          },
+          {
+            value: false,
+            label: '不固定'
           }
         ],
         buttonStyle: 'solid'
