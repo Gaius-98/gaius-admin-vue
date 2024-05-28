@@ -14,7 +14,7 @@
       </a-row>
     </a-card>
     <a-card class="table-container">
-      <div class="tools">
+      <div class="tools" style="margin-bottom: 5px">
         <a-button type="primary" @click="onAddColumn">新增列</a-button>
         <a-button
           :icon="h(SyncOutlined)"

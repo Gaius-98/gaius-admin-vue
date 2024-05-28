@@ -151,6 +151,7 @@ if (id.value) {
     ]
   }
   dataSourceFormData.value = tableCfg.value.dataSource
+  tableData.value = []
 }
 
 const title = computed(() => {
