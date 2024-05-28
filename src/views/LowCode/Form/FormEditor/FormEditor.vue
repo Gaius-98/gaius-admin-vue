@@ -9,8 +9,8 @@
     <template #extra>
       <a-space>
         <a-button @click="onDownload" v-if="id"> 导出 </a-button>
-        <a-button @click="onOpenPreviewModal"> 预览 </a-button>
-        <a-button @click="onOpenSaveModal" type="primary"> 保存 </a-button>
+        <a-button @click="onOpenPreviewModal" class="preview-btn"> 预览 </a-button>
+        <a-button @click="onOpenSaveModal" type="primary" class="save-btn"> 保存 </a-button>
       </a-space>
     </template>
     <template #tags>
@@ -37,6 +37,7 @@
   <a-modal v-model:open="previewShow" title="预览">
     <low-code-form :formData="formData" :schema="{ formCfgItemList, formConfig }"></low-code-form>
   </a-modal>
+  <a-tour v-model:current="current" :open="open" :steps="steps" @close="open = false" />
 </template>
 
 <script lang="ts" setup>
@@ -61,6 +62,38 @@ const { id } = toRefs(props)
 const formStore = useFormDesignStore()
 const { formCfgItemList, extraFormConfig, saveLoading, formConfig } = storeToRefs(formStore)
 const { onSave, setFormDetail } = formStore
+// xin
+const open = ref<boolean>(false)
+
+const current = ref(0)
+const steps = [
+  {
+    title: '物料区',
+    description: '选择您需要的表单控件',
+    target: () => document.querySelector('.left-part')
+  },
+  {
+    title: '设计区',
+    description: '将物料区的表单控件拖拽到此区域,可以按照你需要的方式进行布局。',
+    target: () => document.querySelector('.middle-part')
+  },
+  {
+    title: '配置区',
+    description: '对设计区选中的控件进行配置',
+    target: () => document.querySelector('.right-part')
+  },
+  {
+    title: '查看实际效果',
+    description: '对已经配置完成的表单进行预览',
+    target: () => document.querySelector('.preview-btn')
+  },
+  {
+    title: '最后',
+    description: '保存您刚刚的配置',
+    target: () => document.querySelector('.save-btn')
+  }
+]
+
 if (id.value) {
   api.getDetail(id.value).then((res) => {
     const { code, data, msg } = res
@@ -86,6 +119,7 @@ if (id.value) {
     img: '',
     status: 1
   })
+  open.value = true
 }
 const title = computed(() => {
   return id.value ? extraFormConfig.value.name : '新建表单'
