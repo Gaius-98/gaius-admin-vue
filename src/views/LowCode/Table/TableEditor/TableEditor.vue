@@ -115,12 +115,6 @@ if (id.value) {
     columns: [],
     global: {
       bordered: false,
-      pagination: {
-        current: 1,
-        pageSize: 10,
-        pageSizeOptions: [],
-        total: 10
-      },
       actionCfg: {
         add: {
           show: false,
@@ -149,6 +143,10 @@ if (id.value) {
       {
         key: 'pageNumber',
         defaultValue: '1'
+      },
+      {
+        key: 'pageSize',
+        defaultValue: '10'
       }
     ]
   }

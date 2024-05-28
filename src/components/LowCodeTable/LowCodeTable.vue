@@ -50,9 +50,9 @@
         </template>
       </a-table>
       <a-pagination
-        style="display: flex; justify-content: flex-end"
+        style="display: flex; justify-content: flex-end; margin-top: 20px"
         v-model:current="variableObj.pageNumber"
-        :defaultPageSize="tableCfg.global?.pagination?.pageSize"
+        :pageSize="variableObj.pageSize || 10"
         :total="total"
         show-less-items
       />

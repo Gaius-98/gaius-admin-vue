@@ -4,7 +4,6 @@ import {ref} from 'vue'
 import {v4 as uuid} from 'uuid'
 import httpApi from '@/views/System/api/http'
 import tableApi from "@/views/LowCode/Table/api/table";
-import html2canvas from 'html2canvas'
 import { message } from 'ant-design-vue'
 export const useTableDesignStore = defineStore('tableDesign',()=>{
     const tableData = ref<Obj<any>[]>([])
@@ -17,12 +16,6 @@ export const useTableDesignStore = defineStore('tableDesign',()=>{
         ],
         global:{
             bordered:false,
-            pagination:{
-                current:1,
-                pageSize:10,
-                pageSizeOptions:[],
-                total:10
-            },
             actionCfg:{},
             filterCfg:{
                 show:false,
