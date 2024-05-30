@@ -1,17 +1,19 @@
 <template>
-  <component :is="LayoutComponent"></component>
-  <a-drawer
-    :width="300"
-    title="主题配置"
-    placement="right"
-    :open="isConfigVisible"
-    @close="onCloseConfigDrawer"
-    :bodyStyle="{
-      padding: 0
-    }"
-  >
-    <layout-theme-cfg></layout-theme-cfg>
-  </a-drawer>
+  <a-watermark :content="themeCfg.watermarkText" :zIndex="themeCfg.watermarkVisible ? 9 : -1">
+    <component :is="LayoutComponent"></component>
+    <a-drawer
+      :width="300"
+      title="主题配置"
+      placement="right"
+      :open="isConfigVisible"
+      @close="onCloseConfigDrawer"
+      :bodyStyle="{
+        padding: 0
+      }"
+    >
+      <layout-theme-cfg></layout-theme-cfg>
+    </a-drawer>
+  </a-watermark>
 </template>
 
 <script lang="ts" setup>

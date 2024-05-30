@@ -7,9 +7,7 @@
       }
     }"
   >
-    <a-watermark :content="themeCfg.watermarkText" :zIndex="themeCfg.watermarkVisible ? 9 : -1">
-      <router-view></router-view>
-    </a-watermark>
+    <router-view></router-view>
   </a-config-provider>
 </template>
 <script setup lang="ts">
