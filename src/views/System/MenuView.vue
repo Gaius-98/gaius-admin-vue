@@ -25,7 +25,7 @@
         :columns="columns"
         :data-source="tableData"
         :pagination="false"
-        :scroll="{ y: 440 }"
+        :scroll="{ y: 500 }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'action'">
@@ -89,7 +89,11 @@
             <a-radio-button value="_self"> 否 </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="页面类型" name="type" v-if="formData.openType == '_self'&&formData.menuType == 'app'">
+        <a-form-item
+          label="页面类型"
+          name="type"
+          v-if="formData.openType == '_self' && formData.menuType == 'app'"
+        >
           <a-select v-model:value="formData.type" :options="menuTypeList" show-search allowClear>
           </a-select>
         </a-form-item>
