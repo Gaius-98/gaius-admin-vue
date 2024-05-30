@@ -1,9 +1,8 @@
 <template>
   <div class="login">
-    <div class="login-left">
-      <div class="project-title">{{ themeCfg.projectName }}</div>
-    </div>
+    <div class="login-left"></div>
     <div class="login-right">
+      <div class="project-title">{{ themeCfg.projectName }}</div>
       <div class="login-right-form">
         <div class="form-title">用户登录</div>
         <a-form :model="authForm" :label-col="{ span: 8 }" hideRequiredMark @finish="onLogin">
@@ -85,19 +84,20 @@ onMounted(() => {
     flex: 4;
     height: 100%;
     background: url('../../assets/images/login/bg.webp');
-    .project-title {
-      padding: 15px 0 0 15px;
-      font-size: 25px;
-      color: v-bind('themeCfg.colorPrimary');
-    }
   }
   .login-right {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
     flex: 1;
     height: 100%;
+    .project-title {
+      font-size: 25px;
+      color: v-bind('themeCfg.colorPrimary');
+    }
     .login-right-form {
-      width: 100%;
+      width: calc(100% - 40px);
       padding: 20px;
       .form-title {
         font-size: 25px;
