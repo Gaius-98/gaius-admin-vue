@@ -9,12 +9,8 @@ export default (data: ResMenuItem) => {
           path: address
         })
       } else if (openType == '_blank') {
-        router.push({
-          path: '/link',
-          query: {
-            orgUrl: address
-          }
-        })
+        window.open(address,'_blank')
+
       }
       break
     case 'page':
@@ -32,6 +28,14 @@ export default (data: ResMenuItem) => {
         path:'/preview/table',
         query:{
           id:address
+        }
+      })
+      break
+    case 'iframe':
+      router.push({
+        path:'/preview/iframe',
+        query:{
+          id:encodeURIComponent(address!)
         }
       })
       break

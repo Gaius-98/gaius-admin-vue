@@ -104,6 +104,11 @@ const router = createRouter({
               name:'preview-table',
               component:()=>import('@/components/LowCodeTable/LowCodeTable.vue'),
               props: (route) => route.query
+            },{
+              path:'iframe',
+              name:'iframe',
+              component:()=>import('@/components/IframeView.vue'),
+              props: (route) => route.query
             }
           ]
         },

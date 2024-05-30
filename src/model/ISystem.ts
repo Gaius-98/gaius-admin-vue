@@ -23,7 +23,7 @@ export interface ResMenuItem {
   sortNum: number
   address?: string
   // table 预置列表页 page 预置设计页面 front 前端代码页面 form 表单页面
-  type: 'table' | 'page' | 'front' | 'form'
+  type: 'table' | 'page' | 'front' | 'form'|'iframe'
   openType: '_blank' | '_self'
   children?: ResMenuItem[]
 }
