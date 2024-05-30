@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import type { ResMenuItem, SystemThemeCfg, CreateAuthInfo } from '@/model'
 import systemApi from '@/api/system'
 import userApi from '@/views/System/api/user'
+import { useStorage } from '@vueuse/core'
 export const useSystemStore = defineStore('system', () => {
   const menuTree = ref<ResMenuItem[]>([])
   const isConfigVisible = ref(false)
@@ -17,7 +18,7 @@ export const useSystemStore = defineStore('system', () => {
     local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
   }
 
-  const themeCfg = reactive<SystemThemeCfg>({
+  const themeCfg = useStorage<SystemThemeCfg>('gaius-theme-json',{
     projectName: import.meta.env.VITE_TITLE,
     colorPrimary: '#1677ff',
     headerBgColor: '#001529',
