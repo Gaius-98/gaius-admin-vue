@@ -63,7 +63,7 @@ import { LeftOutlined, RightOutlined, PlusOutlined, CloseOutlined } from '@ant-d
 import resourceApi from './../views/System/api/resource'
 import type { ImageItem } from './../views/System/api/resource'
 
-const value = defineModel()
+const value = defineModel('value')
 const allImages = ref<ImageItem[]>([])
 const currentImages = ref<ImageItem[]>([])
 const params = ref({

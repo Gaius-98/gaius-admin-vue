@@ -7,13 +7,15 @@ import { uninstallPreLoad } from './utils/tools'
 import registerSFEl from './components/SchemaForm/registerSFEl'
 import CodeEditor from './components/CodeEditor.vue'
 import ColorPicker from './components/ColorPicker.vue'
+import ImagePicker from './components/ImagePicker.vue'
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(registerSFEl,{
     'code-editor':CodeEditor,
-    'color-picker':ColorPicker
+    'color-picker':ColorPicker,
+    'image-picker':ImagePicker
 })
 app.mount('#app')
 uninstallPreLoad()
