@@ -6,7 +6,7 @@
     </div>
     <div v-else class="preview-image">
       <CloseOutlined
-        @click="value = ''"
+        @click="onChange('')"
         style="position: absolute; top: 5px; right: 5px; color: #999; z-index: 99"
       ></CloseOutlined>
       <a-image :src="value" width="100px" height="100px" />
@@ -115,10 +115,16 @@ const open = ref(false)
 const showModal = () => {
   open.value = true
 }
+const emits = defineEmits(['change'])
+const onChange = (val: string) => {
+  value.value = val
+  emits('change', val)
+}
 const handleOk = () => {
-  value.value = selected.value
+  onChange(selected.value)
   onCancel()
 }
+
 const onCancel = () => {
   selected.value = ''
   open.value = false
