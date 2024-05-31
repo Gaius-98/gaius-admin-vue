@@ -69,7 +69,7 @@
           ></a-select>
         </a-form-item>
         <a-form-item label="头像">
-          <image-picker v-model="formData.avatar"></image-picker>
+          <image-picker v-model:value="formData.avatar"></image-picker>
         </a-form-item>
         <a-form-item label="名称">
           <a-input v-model:value="formData.name"></a-input>
