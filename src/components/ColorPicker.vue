@@ -1,12 +1,12 @@
 <template>
-  <input type="color" :value="model" @change="onChangeColor" class="gaius-color-picker" />
+  <input type="color" :value="value" @change="onChangeColor" class="gaius-color-picker" />
 </template>
 
 <script lang="ts" setup>
-const model = defineModel()
+const value = defineModel('value')
 const emits = defineEmits(['change'])
 const onChangeColor = (ev: Event) => {
-  model.value = (ev.target as HTMLInputElement).value
+  value.value = (ev.target as HTMLInputElement).value
   emits('change', (ev.target as HTMLInputElement).value)
 }
 </script>
