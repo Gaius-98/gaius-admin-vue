@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <img src="../../assets/logo.png" alt="" />
+    <img :src="themeCfg.logo" alt="" />
     <span class="title" v-show="!collapsed">{{ themeCfg.projectName }}</span>
   </div>
 </template>

@@ -1,6 +1,11 @@
 <template>
   <div class="login">
-    <div class="login-left"></div>
+    <div
+      class="login-left"
+      :style="{
+        background: `url(${themeCfg.loginBg})`
+      }"
+    ></div>
     <div class="login-right">
       <div class="project-title">{{ themeCfg.projectName }}</div>
       <div class="login-right-form">
@@ -45,7 +50,6 @@ import { reactive, ref, onMounted } from 'vue'
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import api from './api'
-import { setCookie } from '@/utils/cookie'
 import { useRouter } from 'vue-router'
 import auth from '@/utils/auth'
 const systemStore = useSystemStore()
@@ -83,7 +87,6 @@ onMounted(() => {
   .login-left {
     flex: 4;
     height: 100%;
-    background: url('../../assets/images/login/bg.webp');
   }
   .login-right {
     display: flex;
