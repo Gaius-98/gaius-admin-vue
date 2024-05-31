@@ -1,39 +1,31 @@
 <template>
-  <a-form :model="themeCfg" :label-col="{ span: 8 }">
-    <a-collapse ghost>
-      <a-collapse-panel header="全局配置">
-        <schema-form
-          :layout="globalSchema.layout"
-          :properties="globalSchema.properties"
-          :form-data="themeCfg"
-        >
-        </schema-form>
-      </a-collapse-panel>
-      <a-collapse-panel header="顶栏配置">
-        <schema-form
-          :layout="headerSchema.layout"
-          :properties="headerSchema.properties"
-          :form-data="themeCfg"
-        >
-        </schema-form>
-      </a-collapse-panel>
-      <a-collapse-panel header="菜单配置">
-        <schema-form
-          :layout="menuSchema.layout"
-          :properties="menuSchema.properties"
-          :form-data="themeCfg"
-        >
-        </schema-form>
-      </a-collapse-panel>
-    </a-collapse>
-  </a-form>
+  <a-divider>全局配置</a-divider>
+  <schema-form
+    :layout="globalSchema.layout"
+    :properties="globalSchema.properties"
+    :form-data="themeCfg"
+  >
+  </schema-form>
+  <a-divider>顶栏配置</a-divider>
+  <schema-form
+    :layout="headerSchema.layout"
+    :properties="headerSchema.properties"
+    :form-data="themeCfg"
+  >
+  </schema-form>
+  <a-divider>菜单配置</a-divider>
+  <schema-form
+    :layout="menuSchema.layout"
+    :properties="menuSchema.properties"
+    :form-data="themeCfg"
+  >
+  </schema-form>
 </template>
 
 <script lang="ts" setup>
 import { ref, provide } from 'vue'
 import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
-import ColorPicker from '@/components/ColorPicker.vue'
 import { LayoutCategory, ThemeCategory } from '@/model'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/ISchema'
@@ -41,12 +33,31 @@ import type { Schema } from '@/components/SchemaForm/ISchema'
 const globalSchema = ref<Schema>({
   layout: {
     labelAlign: 'left',
-    layout: 'horizontal'
+    layout: 'horizontal',
+    labelCol: {
+      style: {
+        width: '100px'
+      }
+    }
   },
   properties: {
     projectName: {
       type: 'string',
       label: '项目名称'
+    },
+    logo: {
+      type: 'string',
+      label: '项目logo',
+      component: {
+        name: 'image-picker'
+      }
+    },
+    loginBg: {
+      type: 'string',
+      label: '登录背景图',
+      component: {
+        name: 'image-picker'
+      }
     },
     colorPrimary: {
       type: 'string',
@@ -68,7 +79,7 @@ const globalSchema = ref<Schema>({
     },
     watermarkVisible: {
       type: 'switch',
-      label: '是否显示水印'
+      label: '显示水印'
     },
     watermarkText: {
       type: 'string',
@@ -80,7 +91,12 @@ const globalSchema = ref<Schema>({
 const headerSchema = ref<Schema>({
   layout: {
     labelAlign: 'left',
-    layout: 'horizontal'
+    layout: 'horizontal',
+    labelCol: {
+      style: {
+        width: '80px'
+      }
+    }
   },
   properties: {
     headerBgColor: {
@@ -102,7 +118,12 @@ const headerSchema = ref<Schema>({
 const menuSchema = ref<Schema>({
   layout: {
     labelAlign: 'left',
-    layout: 'horizontal'
+    layout: 'horizontal',
+    labelCol: {
+      style: {
+        width: '80px'
+      }
+    }
   },
   properties: {
     menuTheme: {

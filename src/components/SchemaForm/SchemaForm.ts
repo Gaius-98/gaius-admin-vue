@@ -159,6 +159,7 @@ const createSchemaFormItem = (
         `${name} is not registered,provide('sfProvideEL','${name}',Component)`
       )
     }
+    console.log(getDeepValue(formData, key),name)
     childrenNode = h(ctx.sfProvideEL[name], {
       ...itemProps,
       formData,

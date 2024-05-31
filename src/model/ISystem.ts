@@ -51,6 +51,8 @@ export interface SystemThemeCfg {
   watermarkVisible: boolean
   watermarkText: string
   menuTheme: themeType
+  logo:string
+  loginBg:string
 }
 export interface SystemDictTypeItem {
   dictType: string

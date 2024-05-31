@@ -3,12 +3,12 @@
     <component :is="LayoutComponent"></component>
     <a-drawer
       :width="300"
-      title="主题配置"
       placement="right"
       :open="isConfigVisible"
       @close="onCloseConfigDrawer"
+      :closable="false"
       :bodyStyle="{
-        padding: 0
+        padding: '0 12px'
       }"
     >
       <layout-theme-cfg></layout-theme-cfg>
