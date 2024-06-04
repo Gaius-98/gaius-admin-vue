@@ -94,25 +94,28 @@ const dataSourceFormData = ref<LCTableDataSource>({
   type: 'dynamic'
 })
 const result = ref('')
+const onRefresh = () => {
+  onRefreshData().then((res) => {
+    const { data } = res
+    if (data) {
+      tableData.value = data
+      try {
+        columnFields.value = Object.keys(data[0]).map((e) => ({
+          value: e,
+          label: e
+        }))
+      } catch (error) {
+        message.warning('接口数据解析失败')
+      }
+    }
+  })
+}
 if (id.value) {
   api.getDetail(id.value).then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
       tableCfg.value = data
-      onRefreshData().then((res) => {
-        const { data } = res
-        if (data) {
-          tableData.value = data
-          try {
-            columnFields.value = Object.keys(data[0]).map((e) => ({
-              value: e,
-              label: e
-            }))
-          } catch (error) {
-            message.warning('接口数据解析失败')
-          }
-        }
-      })
+      onRefresh()
     }
   })
 } else {
@@ -258,6 +261,7 @@ const onOpenDataSourceModal = () => {
 }
 const onConfirmDataSource = () => {
   tableCfg.value.dataSource = dataSourceFormData.value
+  onRefresh()
   onCancelDataSource()
 }
 const onCancelDataSource = () => {
