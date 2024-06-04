@@ -77,7 +77,7 @@ import { useTableDesignStore } from '@/stores/tableDesign'
 import { storeToRefs } from 'pinia'
 import type { LCTableDataSource, Obj } from '@/model'
 import CodeEditor from '@/components/CodeEditor.vue'
-
+import { message } from 'ant-design-vue'
 import EditTable from '@/components/EditTable.vue'
 import type { EditColumn } from '@/components/EditTable.vue'
 interface Props {
@@ -86,7 +86,7 @@ interface Props {
 const props = defineProps<Props>()
 const { id } = toRefs(props)
 const tableDesignStore = useTableDesignStore()
-const { tableCfg, tableData, saveLoading } = storeToRefs(tableDesignStore)
+const { tableCfg, tableData, saveLoading, columnFields } = storeToRefs(tableDesignStore)
 const { onRefreshData, onSave } = tableDesignStore
 const dataSourceFormData = ref<LCTableDataSource>({
   interfaceUrl: '',
@@ -103,6 +103,14 @@ if (id.value) {
         const { data } = res
         if (data) {
           tableData.value = data
+          try {
+            columnFields.value = Object.keys(data[0]).map((e) => ({
+              value: e,
+              label: e
+            }))
+          } catch (error) {
+            message.warning('接口数据解析失败')
+          }
         }
       })
     }
@@ -152,6 +160,7 @@ if (id.value) {
   }
   dataSourceFormData.value = tableCfg.value.dataSource
   tableData.value = []
+  columnFields.value = []
 }
 
 const title = computed(() => {

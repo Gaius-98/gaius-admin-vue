@@ -29,6 +29,7 @@ export const useTableDesignStore = defineStore('tableDesign',()=>{
         },
         variablePool:[],
     })
+    const columnFields = ref<{label:string,value:string}[]>([])
     const currentColumn = ref<Partial<LCTableColumnCfg>>({})
     const onAddColumn = () =>{
         const randomStr = new Date().getTime().toString().slice(-4)
@@ -88,6 +89,7 @@ export const useTableDesignStore = defineStore('tableDesign',()=>{
         tableData,
         onRefreshData,
         saveLoading,
-        onSave
+        onSave,
+        columnFields
     }
 })

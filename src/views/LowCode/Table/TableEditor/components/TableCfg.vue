@@ -2,14 +2,15 @@
   <a-tabs v-model:activeKey="activeKey">
     <a-tab-pane key="column" tab="列配置">
       <schema-form
-        v-if="currentColumn.id"
+        v-show="currentColumn.id"
         :layout="schema.layout"
         :properties="schema.properties"
         :formData="currentColumn"
         :key="currentColumn.id"
+        ref="columnForm"
       >
       </schema-form>
-      <div v-else>
+      <div v-show="!currentColumn.id">
         <a-empty />
       </div>
     </a-tab-pane>
@@ -25,13 +26,15 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref } from 'vue'
+import { reactive, toRefs, ref, watch } from 'vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/ISchema'
 import { useTableDesignStore } from '@/stores/tableDesign'
 import { storeToRefs } from 'pinia'
 import tableApi from '../../api/table'
 const tableStore = useTableDesignStore()
+const { tableCfg, currentColumn, columnFields } = storeToRefs(tableStore)
+
 const schema = ref<Schema>({
   layout: {
     layout: 'horizontal',
@@ -40,8 +43,17 @@ const schema = ref<Schema>({
   },
   properties: {
     dataIndex: {
-      type: 'string',
-      label: '字段名'
+      type: 'select',
+      label: '字段名',
+      component: {
+        asyncData: async () => {
+          return await new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(columnFields.value)
+            }, 100)
+          })
+        }
+      }
     },
     title: {
       type: 'string',
@@ -115,6 +127,20 @@ const schema = ref<Schema>({
     }
   }
 })
+const columnForm = ref()
+watch(
+  () => columnFields,
+  () => {
+    if (columnForm.value) {
+      console.log('columnForm', columnForm.value)
+      columnForm.value.refreshOption('dataIndex')
+    }
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 const activeKey = ref('column')
 const globalSchema = ref<Schema>({
   layout: {
@@ -137,12 +163,11 @@ const globalSchema = ref<Schema>({
       show: '${formData.filterCfg.show}',
       component: {
         asyncData: async () => {
-          let p = new Promise((resolve) => {
+          return await new Promise((resolve) => {
             setTimeout(() => {
               resolve(formList.value)
             }, 100)
           })
-          return await p
         }
       }
     }
@@ -155,6 +180,5 @@ tableApi.getFormList().then((res) => {
     formList.value = data.map((e) => ({ value: e.id, label: e.name }))
   }
 })
-const { tableCfg, currentColumn } = storeToRefs(tableStore)
 </script>
 <style scoped lang="scss"></style>

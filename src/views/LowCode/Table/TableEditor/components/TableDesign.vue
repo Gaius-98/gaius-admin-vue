@@ -58,9 +58,9 @@ import { storeToRefs } from 'pinia'
 import type { LCTableColumnCfg } from '@/model'
 import LowCodeFormId from '@/components/LowCodeForm/LowCodeFormId.vue'
 const tableStore = useTableDesignStore()
-const { tableCfg, tableData } = storeToRefs(tableStore)
+const { tableCfg, tableData, columnFields } = storeToRefs(tableStore)
 const { onSelectColumn, onRemoveColumn, onAddColumn, onRefreshData } = tableStore
-
+import { message } from 'ant-design-vue'
 const onClickColumn = (columnData: LCTableColumnCfg) => {
   onSelectColumn(columnData.id, tableCfg.value.columns)
 }
@@ -73,6 +73,14 @@ const onRefresh = () => {
     const { data, total: resTotal } = res
     if (data) {
       tableData.value = data
+      try {
+        columnFields.value = Object.keys(data[0]).map((e) => ({
+          value: e,
+          label: e
+        }))
+      } catch (error) {
+        message.warning('接口数据解析失败')
+      }
     }
     if (resTotal) {
       total.value = resTotal
