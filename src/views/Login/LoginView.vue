@@ -3,7 +3,8 @@
     <div
       class="login-left"
       :style="{
-        background: `url(${themeCfg.loginBg})`
+        background: `url(${themeCfg.loginBg})`,
+        backgroundSize: '100% 100%'
       }"
     ></div>
     <div class="login-right">
