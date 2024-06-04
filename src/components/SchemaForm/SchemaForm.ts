@@ -229,7 +229,7 @@ const SchemaForm = {
      * 用于刷新对应formItem的下拉数据
      * @param key  字段名称
      */
-    const refrehOption = (key: string) => {
+    const refreshOption = (key: string) => {
       const [pKey, propItem] = Object.entries(properties.value).find(([propKey]) => key == propKey)!
       if (propItem) {
         getOptions(pKey, propItem)
@@ -244,7 +244,7 @@ const SchemaForm = {
       }
     }
     const expose = defineExpose({
-      refrehOption
+      refreshOption
     })
     const setVisibleInfo = () => {
       Object.entries(properties.value).map(([key, propItem]) => {
@@ -269,7 +269,7 @@ const SchemaForm = {
     return {
       layout,
       properties,
-      refrehOption,
+      refreshOption,
       formData,
       options,
       visibleInfo,

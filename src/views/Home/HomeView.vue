@@ -111,7 +111,7 @@ const schema = ref<Schema>({
           }
         },
         onChange: () => {
-          form.value.refrehOption('dict')
+          form.value.refreshOption('dict')
         }
       }
     },
