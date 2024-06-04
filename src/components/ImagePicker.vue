@@ -104,7 +104,7 @@ const onUpload = (data: any) => {
   resourceApi.add(form).then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
-      value.value = `${basePath}/${data.path}`
+      onChange(`${basePath}/${data.path}`)
       message.success(msg)
       open.value = false
     }
