@@ -127,10 +127,6 @@ const globalSchema = ref<Schema>({
       type: 'switch',
       label: '边框'
     },
-    'pagination.pageSize': {
-      type: 'number',
-      label: '每页条数'
-    },
     'filterCfg.show': {
       type: 'switch',
       label: '显示筛选区'
