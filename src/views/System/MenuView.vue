@@ -110,6 +110,9 @@ import type { ResMenuItem } from '@/model'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { MenuDict } from './api/menu'
 import common from '@/api/common'
+import { useSystemStore } from '@/stores/system'
+const systemStore = useSystemStore()
+const { startUp } = systemStore
 const menuParamsForm = reactive({
   keyword: ''
 })
@@ -225,6 +228,7 @@ const onDeleteMenu = async (record: ResMenuItem) => {
   if (code == 200) {
     message.success(msg)
     getList()
+    startUp()
   }
 }
 const resetForm = () => {
@@ -242,6 +246,7 @@ const onConfirm = () => {
     if (code == 200) {
       message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
       getList()
+      startUp()
     }
     resetForm()
     modalOpen.value = false
