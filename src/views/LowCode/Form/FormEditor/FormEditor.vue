@@ -62,7 +62,7 @@ const { id } = toRefs(props)
 const formStore = useFormDesignStore()
 const { formCfgItemList, extraFormConfig, saveLoading, formConfig } = storeToRefs(formStore)
 const { onSave, setFormDetail } = formStore
-// xin
+// 引导
 const open = ref<boolean>(false)
 
 const current = ref(0)

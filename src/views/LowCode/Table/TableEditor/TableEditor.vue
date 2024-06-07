@@ -8,10 +8,10 @@
   >
     <template #extra>
       <a-space>
-        <a-button @click="onOpenDataSourceModal"> 数据源配置 </a-button>
-        <a-button @click="onOpenVariableModal"> 变量池配置 </a-button>
+        <a-button @click="onOpenDataSourceModal" class="data-source-btn"> 数据源配置 </a-button>
+        <a-button @click="onOpenVariableModal" class="variable-btn"> 变量池配置 </a-button>
         <a-button @click="onPreview" v-show="tableCfg.id"> 预览 </a-button>
-        <a-button @click="onOpenSaveModal" type="primary"> 保存 </a-button>
+        <a-button @click="onOpenSaveModal" type="primary" class="save-btn"> 保存 </a-button>
       </a-space>
     </template>
     <template #tags>
@@ -63,6 +63,7 @@
   <a-modal title="变量池配置" :open="variableShow" :footer="false" @cancel="variableShow = false">
     <edit-table :columns="variableColumns" v-model="tableCfg.variablePool"></edit-table>
   </a-modal>
+  <a-tour v-model:current="current" :open="open" :steps="steps" @close="open = false" />
 </template>
 
 <script lang="ts" setup>
@@ -88,6 +89,37 @@ const { id } = toRefs(props)
 const tableDesignStore = useTableDesignStore()
 const { tableCfg, tableData, saveLoading, columnFields } = storeToRefs(tableDesignStore)
 const { onRefreshData, onSave } = tableDesignStore
+// 引导
+const open = ref<boolean>(false)
+
+const current = ref(0)
+const steps = [
+  {
+    title: '数据配置',
+    description: '在开始配置列表前，请先配置数据源',
+    target: () => document.querySelector('.data-source-btn')
+  },
+  {
+    title: '变量配置',
+    description: '配置数据源后,为保证数据源的正常获取数据,还需要配置对应的参数',
+    target: () => document.querySelector('.variable-btn')
+  },
+  {
+    title: '表格布局区',
+    description: '现在可以通过新增列,来增加表格的列,支持拖拽表头改变列的位置及列宽',
+    target: () => document.querySelector('.left-part')
+  },
+  {
+    title: '配置区',
+    description: '可以对表格整体或者表格单独的列进行配置,满足您的需求',
+    target: () => document.querySelector('.right-part')
+  },
+  {
+    title: '最后',
+    description: '保存您刚刚的配置',
+    target: () => document.querySelector('.save-btn')
+  }
+]
 const dataSourceFormData = ref<LCTableDataSource>({
   interfaceUrl: '',
   handlerFunc: 'return res',
@@ -164,6 +196,7 @@ if (id.value) {
   dataSourceFormData.value = tableCfg.value.dataSource
   tableData.value = []
   columnFields.value = []
+  open.value = true
 }
 
 const title = computed(() => {
