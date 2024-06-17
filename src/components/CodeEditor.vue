@@ -1,4 +1,5 @@
 <template>
+  <span v-show="prepend">{{ prepend }}</span>
   <codemirror
     :style="{ height: `${height}px` }"
     :indent-with-tab="true"
@@ -7,6 +8,7 @@
     v-bind="$attrs"
     v-model="value"
   />
+  <span v-show="append">{{ append }}</span>
 </template>
 
 <script lang="ts" setup name="EvCode">
@@ -16,11 +18,13 @@ import { reactive, toRefs, ref } from 'vue'
 
 interface Props {
   height: number
+  prepend: string
+  append: string
 }
 const props = withDefaults(defineProps<Props>(), {
   height: 400
 })
-const { height } = toRefs(props)
+const { height, prepend, append } = toRefs(props)
 const value = defineModel<string>({ required: true })
 
 const extensions = [javascript()]
