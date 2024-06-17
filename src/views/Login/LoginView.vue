@@ -56,8 +56,8 @@ import auth from '@/utils/auth'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)
 const authForm = reactive({
-  username: '',
-  password: '',
+  username: 'test',
+  password: 'test',
   captcha: ''
 })
 const router = useRouter()
