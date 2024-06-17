@@ -16,7 +16,7 @@ export const useTableDesignStore = defineStore('tableDesign',()=>{
         ],
         global:{
             bordered:false,
-            actionCfg:{},
+            actionCfg:[],
             filterCfg:{
                 show:false,
                 formId:''

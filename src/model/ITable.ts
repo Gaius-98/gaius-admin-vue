@@ -47,11 +47,27 @@ export interface LCActionCfg{
         beforeHandleFunc?:string
     }
 }
+export interface LCTableInteractionCfg extends Partial<LCActionCfg> {
+    //按钮标识
+    id:string
+    //按钮名称
+    name:string
+    //按钮位置
+    position:'row'|'header'
+    // 点击是否请求接口
+    request:boolean
+    //接口地址
+    interfaceUrl:string
+    //处理函数
+    AfterHandleFunc:string
+    //点击事件类型
+    event:'modal'|'link'
+    //链接地址
+    linkUrl:string
+} 
 export interface LCTableGlobalCfg{
     bordered:boolean
-    actionCfg:{
-        [key:string]:LCActionCfg
-    }
+    actionCfg:Partial<LCTableInteractionCfg>[]
     filterCfg:LCActionCfg
 }
 export enum DataSourceType  {

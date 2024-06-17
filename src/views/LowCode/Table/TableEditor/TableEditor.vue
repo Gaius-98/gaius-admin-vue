@@ -158,20 +158,7 @@ if (id.value) {
     columns: [],
     global: {
       bordered: false,
-      actionCfg: {
-        add: {
-          show: false,
-          formId: ''
-        },
-        edit: {
-          show: false,
-          formId: ''
-        },
-        view: {
-          show: false,
-          formId: ''
-        }
-      },
+      actionCfg: [],
       filterCfg: {
         show: false,
         formId: ''
