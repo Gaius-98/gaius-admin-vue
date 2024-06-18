@@ -151,7 +151,8 @@ const schema = ref<Schema>({
     },
     request: {
       type: 'switch',
-      label: '是否请求接口'
+      label: '请求接口',
+      tooltip: '是否在点击按钮后请求接口获取数据'
     },
     interfaceUrl: {
       show: '${formData.request}',
@@ -172,6 +173,7 @@ const schema = ref<Schema>({
       show: '${formData.request}',
       type: 'string',
       label: '处理函数',
+      tooltip: '处理接口返回的数据,数据用于表单渲染或地址拼接',
       component: {
         name: 'code-editor',
         height: 100,
@@ -199,7 +201,8 @@ const schema = ref<Schema>({
     linkUrl: {
       show: "'${formData.event}' == 'link'",
       type: 'string',
-      label: '链接地址'
+      label: '链接地址',
+      tooltip: '可以通过${name}的方式拼接变量,name为变量名称'
     },
     formId: {
       show: "'${formData.event}' == 'modal'",
@@ -230,6 +233,7 @@ const schema = ref<Schema>({
       show: "'${formData.event}' == 'modal'",
       type: 'select',
       label: '接口地址',
+      tooltip: '一般用于提交数据,新增后保存当前的表单数据',
       component: {
         asyncData: async () => {
           const { code, data, msg } = await tableApi.getApiList()
