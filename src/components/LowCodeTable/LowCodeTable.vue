@@ -23,6 +23,11 @@
     </a-card>
     <a-card class="table-container">
       <div class="tools">
+        <a-space>
+          <a-button v-for="btn in headerBtns" :key="btn.id" @click="onClickBtn(btn)">
+            {{ btn.name }}
+          </a-button>
+        </a-space>
         <a-button
           :icon="h(SyncOutlined)"
           type="link"
@@ -32,7 +37,7 @@
         ></a-button>
       </div>
       <a-table
-        :columns="tableCfg.columns"
+        :columns="tableColumn"
         :data-source="tableData"
         :scroll="{ y: showFilterForm ? 470 : 670 }"
         :loading="loading"
@@ -47,6 +52,16 @@
               {{ record[column.dataIndex] }}
             </a>
           </template>
+          <template v-if="column.key == '_action'">
+            <a-button
+              type="link"
+              @click="onClickBtn(btn, record)"
+              v-for="btn in rowBtns"
+              :key="btn.id"
+            >
+              {{ btn.name }}
+            </a-button>
+          </template>
         </template>
       </a-table>
       <a-pagination
@@ -58,6 +73,9 @@
       />
     </a-card>
   </div>
+  <a-modal v-model:open="modalShow" @ok="onConfirm" @cancel="onCancel">
+    <low-code-form-id :formData="curData" :id="curModalInfo.id"> </low-code-form-id>
+  </a-modal>
 </template>
 
 <script lang="ts" setup>
@@ -65,9 +83,9 @@ import { SyncOutlined, UpOutlined, DownOutlined } from '@ant-design/icons-vue'
 import LowCodeFormId from '@/components/LowCodeForm/LowCodeFormId.vue'
 import { reactive, toRefs, ref, watch, computed, h } from 'vue'
 import tableApi from '@/views/LowCode/Table/api/table'
-import type { Obj, LCTableCfg, LCTableVariableCfg } from '@/model'
+import type { Obj, LCTableCfg, LCTableVariableCfg, LCTableInteractionCfg } from '@/model'
 import { message } from 'ant-design-vue'
-import api from './api'
+import core from './core'
 
 interface Props {
   id: string
@@ -86,9 +104,24 @@ const expand = ref(false)
 const showFilterForm = computed(() => {
   return tableCfg.value?.global?.filterCfg?.show && tableCfg.value?.global?.filterCfg?.formId
 })
-
+const tableColumn = computed(() => {
+  if (rowBtns.value.length > 0) {
+    return [
+      ...tableCfg.value.columns!,
+      {
+        title: '操作',
+        dataIndex: '_action',
+        key: '_action',
+        width: 200,
+        fixed: 'right'
+      }
+    ]
+  }
+  return tableCfg.value.columns
+})
 const variableObj = ref<Obj<any>>({})
-
+const headerBtns = ref<Partial<LCTableInteractionCfg>[]>([])
+const rowBtns = ref<Partial<LCTableInteractionCfg>[]>([])
 watch(
   () => id.value,
   () => {
@@ -96,7 +129,18 @@ watch(
       const { code, data, msg } = res
       if (code == 200) {
         tableCfg.value = data
-        variableObj.value = api.transformParamsData(
+        if (tableCfg.value.global!.actionCfg && tableCfg.value.global!.actionCfg?.length > 0) {
+          let actionCfg = tableCfg.value.global!.actionCfg!
+          actionCfg.map((e) => {
+            if (e.position == 'header') {
+              headerBtns.value.push(e)
+            } else {
+              rowBtns.value.push(e)
+            }
+          })
+        }
+
+        variableObj.value = core.transformParamsData(
           tableCfg.value.variablePool as LCTableVariableCfg
         )
         getList()
@@ -121,7 +165,7 @@ const total = ref(0)
 const getList = async () => {
   loading.value = true
   try {
-    const { data, total: resTotal } = await api.refreshData(
+    const { data, total: resTotal } = await core.getProxyData(
       tableCfg.value.dataSource!,
       variableObj.value,
       filterData.value
@@ -134,6 +178,61 @@ const getList = async () => {
     message.error('获取数据失败:' + error)
   }
   loading.value = false
+}
+const modalShow = ref(false)
+const curData = ref<any>({})
+const curModalInfo = ref<any>({})
+const onClickBtn = async (btnInfo: Partial<LCTableInteractionCfg>, extraData?: any) => {
+  const { formId, event, interfaceUrl, AfterHandleFunc, request, linkUrl, actionCfg } =
+    btnInfo as LCTableInteractionCfg
+  if (request) {
+    const data = await core.getProxyData(
+      {
+        type: 'dynamic',
+        interfaceUrl,
+        handlerFunc: AfterHandleFunc
+      },
+      {},
+      { ...extraData }
+    )
+    curData.value = data
+  } else {
+    curData.value = extraData
+  }
+  switch (event) {
+    case 'modal':
+      curModalInfo.value = {
+        id: formId,
+        modalUrl: actionCfg?.interfaceUrl
+      }
+      modalShow.value = true
+      break
+    case 'link':
+      window.open(linkUrl, '_blank')
+      break
+  }
+}
+const onCancel = () => {
+  modalShow.value = false
+}
+const onConfirm = () => {
+  core
+    .getProxyData(
+      {
+        type: 'dynamic',
+        interfaceUrl: curModalInfo.value.modalUrl,
+        handlerFunc: ''
+      },
+      {},
+      { ...curData.value }
+    )
+    .then((res) => {
+      message.info(res?.data?.msg)
+      onCancel()
+    })
+    .catch((error) => {
+      message.error(error)
+    })
 }
 </script>
 <style scoped lang="scss">
@@ -150,6 +249,11 @@ const getList = async () => {
         overflow-y: auto;
         max-height: 100%;
       }
+    }
+  }
+  .table-container {
+    .tools {
+      margin-bottom: 10px;
     }
   }
 }
