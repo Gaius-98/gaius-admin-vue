@@ -9,14 +9,19 @@ const transformParamsData = (variablePool:LCTableVariableCfg) => {
     }, obj)
     return obj
 }
-const refreshData = async (dataSource:LCTableDataSource,variableObj:Obj<any>,extra?:Obj<any>) =>{
+const getProxyData = async (dataSource:LCTableDataSource,variableObj:Obj<any>,extra?:Obj<any>) =>{
     try {
         const res = await httpApi.run(dataSource.interfaceUrl, {
             ...variableObj,
             ...extra
         })
-        const fun = new Function('res', dataSource.handlerFunc)
-        const resData = fun(res.data)
+        let resData
+        if(dataSource.handlerFunc){
+            const fun = new Function('res', dataSource.handlerFunc)
+            resData = fun(res.data)
+        }else{
+            resData = res
+        }
         return resData
     } catch (error) {
         return error
@@ -24,6 +29,6 @@ const refreshData = async (dataSource:LCTableDataSource,variableObj:Obj<any>,ext
 }
 
 export default {
-    refreshData,
+    getProxyData,
     transformParamsData
 }
