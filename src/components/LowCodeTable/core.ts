@@ -27,8 +27,11 @@ const getProxyData = async (dataSource:LCTableDataSource,variableObj:Obj<any>,ex
         return error
     }
 }
-
+const parseString= (str:string, variables:Obj<any>)=> {
+    return str.replace(/\${(.*?)}/g, (match, varName) => variables[varName.trim()]);
+}
 export default {
     getProxyData,
-    transformParamsData
+    transformParamsData,
+    parseString
 }

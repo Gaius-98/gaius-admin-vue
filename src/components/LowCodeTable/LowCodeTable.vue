@@ -208,7 +208,7 @@ const onClickBtn = async (btnInfo: Partial<LCTableInteractionCfg>, extraData?: a
       modalShow.value = true
       break
     case 'link':
-      window.open(linkUrl, '_blank')
+      window.open(core.parseString(linkUrl, curData.value), '_blank')
       break
   }
 }
