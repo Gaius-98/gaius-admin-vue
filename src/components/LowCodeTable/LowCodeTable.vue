@@ -197,7 +197,7 @@ const onClickBtn = async (btnInfo: Partial<LCTableInteractionCfg>, extraData?: a
     )
     curData.value = data
   } else {
-    curData.value = extraData
+    curData.value = extraData || {}
   }
   switch (event) {
     case 'modal':
@@ -213,6 +213,7 @@ const onClickBtn = async (btnInfo: Partial<LCTableInteractionCfg>, extraData?: a
   }
 }
 const onCancel = () => {
+  curData.value = {}
   modalShow.value = false
 }
 const onConfirm = () => {
