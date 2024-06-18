@@ -148,7 +148,7 @@ const createSchemaFormItem = (
   prop: SchemaProperties,
   ctx: any
 ) => {
-  const { type, label, component, rules } = prop
+  const { type, label, component, rules,tooltip } = prop
   let childrenNode
   if (component?.name) {
     const { name } = component
@@ -185,7 +185,8 @@ const createSchemaFormItem = (
       {
         label,
         name: key,
-        rules
+        rules,
+        tooltip
       },
       [childrenNode]
     )
