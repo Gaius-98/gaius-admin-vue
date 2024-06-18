@@ -18,8 +18,8 @@ import { reactive, toRefs, ref } from 'vue'
 
 interface Props {
   height: number
-  prepend: string
-  append: string
+  prepend?: string
+  append?: string
 }
 const props = withDefaults(defineProps<Props>(), {
   height: 400
