@@ -50,7 +50,7 @@
       </a-table>
     </a-card>
   </div>
-  <a-modal v-model:open="interactionShow">
+  <a-modal v-model:open="interactionShow" :footer="null" title="交互配置">
     <a-tabs v-model:activeKey="activeKey" type="editable-card" @edit="onEdit">
       <a-tab-pane v-for="pane in tableCfg.global.actionCfg" :key="pane.id" :tab="pane.name">
         <div class="action-container">
@@ -75,11 +75,13 @@ import type { LCTableColumnCfg } from '@/model'
 import LowCodeFormId from '@/components/LowCodeForm/LowCodeFormId.vue'
 import type { Schema } from '@/components/SchemaForm/ISchema'
 import { v4 as uuid } from 'uuid'
+import tableApi from '../../api/table'
+import { message } from 'ant-design-vue'
+import SchemaForm from '@/components/SchemaForm/SchemaForm'
 const tableStore = useTableDesignStore()
 const { tableCfg, tableData, columnFields } = storeToRefs(tableStore)
 const { onSelectColumn, onRemoveColumn, onAddColumn, onRefreshData } = tableStore
-import { message } from 'ant-design-vue'
-import SchemaForm from '@/components/SchemaForm/SchemaForm'
+
 const onClickColumn = (columnData: LCTableColumnCfg) => {
   onSelectColumn(columnData.id, tableCfg.value.columns)
 }
@@ -156,21 +158,14 @@ const schema = ref<Schema>({
       type: 'select',
       label: '接口地址',
       component: {
-        dataSource: [
-          {
-            value: 'left',
-            label: '左'
-          },
-          {
-            value: 'right',
-            label: '右'
-          },
-          {
-            value: false,
-            label: '不固定'
+        asyncData: async () => {
+          const { code, data, msg } = await tableApi.getApiList()
+          if (code == 200) {
+            return data.map((e) => ({ value: e.id, label: e.apiName }))
+          } else {
+            return []
           }
-        ],
-        buttonStyle: 'solid'
+        }
       }
     },
     AfterHandleFunc: {
@@ -209,23 +204,42 @@ const schema = ref<Schema>({
     formId: {
       show: "'${formData.event}' == 'modal'",
       type: 'select',
-      label: '表单'
-    },
-    'actionCfg.beforeHandleFunc': {
-      show: "'${formData.event}' == 'modal'",
-      type: 'string',
-      label: '请求前的处理函数',
+      label: '表单',
       component: {
-        name: 'code-editor',
-        height: 100,
-        prepend: '()=>{',
-        append: '}'
+        asyncData: async () => {
+          return await new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(formList.value)
+            }, 100)
+          })
+        }
       }
     },
+    // 'actionCfg.beforeHandleFunc': {
+    //   show: "'${formData.event}' == 'modal'",
+    //   type: 'string',
+    //   label: '预处理',
+    //   component: {
+    //     name: 'code-editor',
+    //     height: 100,
+    //     prepend: '()=>{',
+    //     append: '}'
+    //   }
+    // },
     'actionCfg.interfaceUrl': {
       show: "'${formData.event}' == 'modal'",
-      type: 'string',
-      label: '接口地址'
+      type: 'select',
+      label: '接口地址',
+      component: {
+        asyncData: async () => {
+          const { code, data, msg } = await tableApi.getApiList()
+          if (code == 200) {
+            return data.map((e) => ({ value: e.id, label: e.apiName }))
+          } else {
+            return []
+          }
+        }
+      }
     }
   }
 })
@@ -234,7 +248,7 @@ const activeKey = ref('')
 const add = () => {
   activeKey.value = uuid()
   tableCfg.value.global.actionCfg!.push({
-    name: 'New Tab',
+    name: '按钮',
     id: activeKey.value,
     actionCfg: {
       interfaceUrl: ''
@@ -267,6 +281,13 @@ const onEdit = (targetKey: string | MouseEvent, action: string) => {
     remove(targetKey as string)
   }
 }
+const formList = ref<{ value: string; label: string }[]>([])
+tableApi.getFormList().then((res) => {
+  const { code, data, msg } = res
+  if (code == 200) {
+    formList.value = data.map((e) => ({ value: e.id, label: e.name }))
+  }
+})
 </script>
 <style scoped lang="scss">
 .table-design-container {
