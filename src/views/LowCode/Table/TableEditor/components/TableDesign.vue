@@ -177,7 +177,7 @@ const schema = ref<Schema>({
       component: {
         name: 'code-editor',
         height: 100,
-        prepend: '()=>{',
+        prepend: '(res)=>{',
         append: '}'
       }
     },

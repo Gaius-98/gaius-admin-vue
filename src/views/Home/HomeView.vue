@@ -3,7 +3,7 @@
   {{ formData }}
   <icon-select v-model="icon" style="width: 300px"></icon-select>
   <drag-table-header v-model="columns"></drag-table-header>
-  <code-editor v-model="formData.code"></code-editor>
+  <code-editor v-model:value="formData.code"></code-editor>
   <schema-form
     :layout="schema.layout"
     :properties="schema.properties"

@@ -45,11 +45,6 @@
       :properties="dataSourceSchema.properties"
       v-model:formData="dataSourceFormData"
     ></schema-form>
-    <a-form-item label="数据预处理" tooltip="请保证输出的数据格式为:{data:any[],total:number}">
-      <span>(res)=>{</span>
-      <code-editor :height="200" v-model="dataSourceFormData.handlerFunc"></code-editor>
-      <span>}</span>
-    </a-form-item>
     <a-divider>结果区</a-divider>
     <a-button
       type="primary"
@@ -58,7 +53,7 @@
       :loading="resultLoading"
       >运行</a-button
     >
-    <code-editor :height="200" disabled v-model="result"></code-editor>
+    <code-editor :height="200" disabled v-model:value="result"></code-editor>
   </a-modal>
   <a-modal title="变量池配置" :open="variableShow" :footer="false" @cancel="variableShow = false">
     <edit-table :columns="variableColumns" v-model="tableCfg.variablePool"></edit-table>
@@ -255,7 +250,7 @@ const dataSourceSchema = ref<Schema>({
     labelAlign: 'left',
     layout: 'horizontal',
     labelCol: {
-      span: 4
+      span: 5
     }
   },
   properties: {
@@ -271,6 +266,17 @@ const dataSourceSchema = ref<Schema>({
             return []
           }
         }
+      }
+    },
+    handlerFunc: {
+      type: 'string',
+      label: '数据预处理',
+      tooltip: '请保证输出的数据格式为:{data:any[],total:number}',
+      component: {
+        name: 'code-editor',
+        height: 200,
+        prepend: '(res)=>{',
+        append: '}'
       }
     }
   }
