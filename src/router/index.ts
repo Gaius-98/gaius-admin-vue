@@ -87,6 +87,10 @@ const router = createRouter({
               name:'previewLowCodeTable',
               component:()=>import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
               props: (route) => route.query
+            },{
+              path:'visual-list',
+              name:'visualList',
+              component:()=>import('@/views/LowCode/Visual/VisualList/VisualList.vue')
             }
           ]
         },
