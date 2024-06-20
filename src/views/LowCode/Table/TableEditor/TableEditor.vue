@@ -326,7 +326,7 @@ const onOpenVariableModal = () => {
   display: grid;
   grid-template-columns: 4fr 1fr;
   gap: 10px;
-  height: calc(100% - 60px);
+  height: calc(100% - 70px);
   margin-top: 10px;
 
   .left-part {

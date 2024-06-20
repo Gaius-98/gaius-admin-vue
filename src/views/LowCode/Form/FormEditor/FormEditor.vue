@@ -196,7 +196,7 @@ const onDownload = () => {
   display: grid;
   grid-template-columns: 1fr 6fr 2fr;
   gap: 10px;
-  height: calc(100% - 60px);
+  height: calc(100% - 70px);
   margin-top: 10px;
   .left-part {
     padding: 20px;
