@@ -39,7 +39,7 @@
       <a-table
         :columns="tableColumn"
         :data-source="tableData"
-        :scroll="{ y: showFilterForm ? 470 : 670 }"
+        :scroll="{ y: showFilterForm ? 400 : 650 }"
         :loading="loading"
         :pagination="false"
       >
@@ -240,7 +240,7 @@ const onConfirm = () => {
 .low-code-table {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  height: 100%;
   .filter-panel {
     margin-bottom: 20px;
     .filter-form {

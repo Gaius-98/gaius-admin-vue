@@ -10,5 +10,6 @@
     margin: 24px 16px;
     padding: 16px;
     height: calc(100vh - $layout-header-height - 48px);
+    overflow-y: auto;
   }
 }
