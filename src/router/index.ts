@@ -91,6 +91,10 @@ const router = createRouter({
               path:'visual-list',
               name:'visualList',
               component:()=>import('@/views/LowCode/Visual/VisualList/VisualList.vue')
+            },{
+              path:'visual',
+              name:'visual',
+              component:()=>import('@/views/LowCode/Visual/VisualEditor/VisualEditor.vue'),
             }
           ]
         },
