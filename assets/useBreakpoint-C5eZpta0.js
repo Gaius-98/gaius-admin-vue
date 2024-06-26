@@ -1,0 +1,1 @@
+import{s as u,d2 as r,b as t,c as a}from"./index-CmoA2GoM.js";function b(){const e=u({});let s=null;const n=r();return t(()=>{s=n.value.subscribe(o=>{e.value=o})}),a(()=>{n.value.unsubscribe(s)}),e}export{b as u};
