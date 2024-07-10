@@ -31,7 +31,7 @@ import { ref, watch } from 'vue'
 import { useFormDesignStore } from '@/stores/formDesign'
 import { storeToRefs } from 'pinia'
 import ControlSchema from '../utils/ControlSchema'
-import _ from 'lodash'
+import { cloneDeep } from 'lodash-es'
 const formStore = useFormDesignStore()
 const { curControlCfg, formConfig } = storeToRefs(formStore)
 const schema = ref<Schema>({
@@ -84,7 +84,7 @@ watch(
     if (curControlCfg.value.type) {
       let cfg = ControlSchema.find((e) => e.type === curControlCfg.value.type)
       if (cfg) {
-        schema.value.properties = _.cloneDeep(cfg.properties)
+        schema.value.properties = cloneDeep(cfg.properties)
       }
     }
   },

@@ -54,7 +54,7 @@ import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/stores/system'
 import { CopyFilled, DeleteFilled } from '@ant-design/icons-vue'
 import commonApi from '@/api/common'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)
 const formStore = useFormDesignStore()
