@@ -18,7 +18,7 @@ import {
 import { compileText, execFun, getDeepValue, setDeepValue } from './core'
 import { GuPubSub } from 'gaius-utils'
 import { defineExpose } from 'vue'
-import _ from 'lodash'
+import {cloneDeep} from 'lodash-es'
 const createUIControl = (
   formData: Obj<any>,
   key: string,
@@ -152,7 +152,7 @@ const createSchemaFormItem = (
   let childrenNode
   if (component?.name) {
     const { name } = component
-    const itemProps = _.cloneDeep(component)
+    const itemProps = cloneDeep(component)
     Reflect.deleteProperty(itemProps, 'onChange')
     if (!ctx.sfProvideEL[name]) {
       throw new Error(

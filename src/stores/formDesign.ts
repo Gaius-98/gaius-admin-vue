@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Obj, LCFormItemCfg, ControlType, LCGridCfg, LCCardCfg, LCCollapseCfg } from '@/model'
-import _ from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import LowCodeForm from '@/components/LowCodeForm/LowCodeForm.vue'
 import { createApp } from 'vue'
 import html2canvas from 'html2canvas'
@@ -44,7 +44,7 @@ export const useFormDesignStore = defineStore('formDesign', () => {
     }
   }
   const copyControlItem = () => {
-    const copyCfg = _.cloneDeep(curControlCfg.value)
+    const copyCfg = cloneDeep(curControlCfg.value)
     changeControlItemId(copyCfg)
     Reflect.deleteProperty(copyCfg, 'id')
     const copyControl = copyCfg

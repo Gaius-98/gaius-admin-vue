@@ -1,13 +1,13 @@
 import type { Obj } from '@/model'
 import controlDefault from './ControlDefault'
-import _ from 'lodash'
+import {cloneDeep} from 'lodash-es'
 const createRandomField = () => {
   return 'field' + new Date().getTime().toString().slice(-4)
 }
 const initFormControl = (type: string, options?: Obj<any>) => {
   const cfg = controlDefault.find((e) => e.type === type)
   if (cfg) {
-    const cloneCfg = _.cloneDeep(cfg)
+    const cloneCfg = cloneDeep(cfg)
     if (cloneCfg.formItemProp) {
       const field = createRandomField()
       cloneCfg.formItemProp.label = field

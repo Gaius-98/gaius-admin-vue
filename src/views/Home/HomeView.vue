@@ -1,9 +1,10 @@
 <template>
-  <a-button type="primary"> test </a-button>
-  {{ formData }}
-  <icon-select v-model="icon" style="width: 300px"></icon-select>
-  <drag-table-header v-model="columns"></drag-table-header>
-  <code-editor v-model:value="formData.code"></code-editor>
+  <code-editor v-model:value="scheamStr" prepend="表单配置"></code-editor>
+  <code-editor
+    :value="JSON.stringify(formData, null, 4)"
+    prepend="表单数据"
+    :height="80"
+  ></code-editor>
   <schema-form
     :layout="schema.layout"
     :properties="schema.properties"
@@ -13,15 +14,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import DragTableHeader from '@/components/DragTableHeader.vue'
+import { ref, watchEffect } from 'vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/ISchema'
-import IconSelect from './../../components/IconSelect/IconSelect.vue'
+
 import dict from '../System/api/dict'
 import CodeEditor from './../../components/CodeEditor.vue'
 import common from '@/api/common'
-const icon = ref('')
+
 const validatePass2 = async (_rule: any, value: string) => {
   if (value === '') {
     return Promise.reject('Please input the password again')
@@ -31,46 +31,7 @@ const validatePass2 = async (_rule: any, value: string) => {
     return Promise.resolve()
   }
 }
-const columns = ref([
-  {
-    title: '归属字典',
-    key: 'dictTypeDesc',
-    dataIndex: 'dictTypeDesc'
-  },
-  {
-    title: '字典描述',
-    key: 'label',
-    dataIndex: 'label'
-  },
-  {
-    title: '字典值',
-    key: 'value',
-    dataIndex: 'value'
-  },
-  {
-    title: '状态',
-    key: 'status',
-    dataIndex: 'status'
-  },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
-  },
-  {
-    title: '操作',
-    key: 'action',
-    dataIndex: 'action'
-  }
-])
-const tableData = ref([
-  {
-    dictTypeDesc: '11',
-    label: '22',
-    value: '33',
-    status: '44'
-  }
-])
+
 const form = ref()
 const schema = ref<Schema>({
   layout: {
@@ -137,6 +98,16 @@ const schema = ref<Schema>({
         }
       }
     }
+  }
+})
+const scheamStr = ref('')
+scheamStr.value = JSON.stringify(schema.value, null, 4)
+const errmsg = ref('')
+watchEffect(() => {
+  try {
+    schema.value = JSON.parse(scheamStr.value)
+  } catch (error) {
+    errmsg.value = JSON.stringify(error)
   }
 })
 const formData = ref({

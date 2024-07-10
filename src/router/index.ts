@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { h } from 'vue'
-import NotFound from '@/views/ErrorTemplate/NotFound.vue'
-import BlankView from '@/layout/BlankView.vue'
 import auth from '@/utils/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +19,7 @@ const router = createRouter({
         {
           path: '/system',
           name: 'system',
-          component: BlankView,
+          component: ()=>import('@/layout/BlankView.vue'),
           children: [
             {
               path: 'menu',
@@ -59,7 +56,7 @@ const router = createRouter({
         {
           path: '/low-code',
           name: 'lowCode',
-          component: BlankView,
+           component: ()=>import('@/layout/BlankView.vue'),
           children: [
             {
               path: 'form',
@@ -123,7 +120,7 @@ const router = createRouter({
         {
           path: '/:pathMatch(.*)*',
           name: '404',
-          component: NotFound
+          component: ()=>import('@/views/ErrorTemplate/NotFound.vue')
         }
       ]
     },
