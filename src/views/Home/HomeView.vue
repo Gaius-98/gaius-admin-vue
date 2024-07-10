@@ -1,9 +1,11 @@
 <template>
-  <code-editor v-model:value="scheamStr" prepend="表单配置"></code-editor>
+  <h4>JSONForm组件(将json数据格式转换为对应的form)</h4>
+  <code-editor v-model:value="scheamStr" prepend="组件配置"></code-editor>
   <code-editor
     :value="JSON.stringify(formData, null, 4)"
     prepend="表单数据"
     :height="80"
+    disabled
   ></code-editor>
   <schema-form
     :layout="schema.layout"
@@ -18,9 +20,7 @@ import { ref, watchEffect } from 'vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
 import type { Schema } from '@/components/SchemaForm/ISchema'
 
-import dict from '../System/api/dict'
 import CodeEditor from './../../components/CodeEditor.vue'
-import common from '@/api/common'
 
 const validatePass2 = async (_rule: any, value: string) => {
   if (value === '') {
@@ -42,10 +42,15 @@ const schema = ref<Schema>({
     }
   },
   properties: {
+    field: {
+      type: 'string',
+      label: '字段名'
+    },
     test: {
       type: 'string',
       label: '测试',
-      show: '${formData.test2} != "1"',
+      tooltip: '字段名等于test时不显示此项',
+      show: "'${formData.field}' != 'test'",
       rules: [
         {
           validator: validatePass2,
@@ -53,49 +58,20 @@ const schema = ref<Schema>({
         }
       ]
     },
-    type: {
+    asyncData: {
+      label: '异步加载数据',
       type: 'select',
-      label: '字典类型',
-      show: '${formData.test} == ${formData.test3}',
-      rules: [],
-
       component: {
-        asyncData: async () => {
-          const { code, data, msg } = await dict.getDictTypeList()
-          if (code == 200) {
-            return data.map((e) => ({
-              label: e.dictTypeDesc,
-              value: e.dictType
-            }))
-          } else {
-            return []
+        dataSource: [
+          {
+            label: '1',
+            value: 1
+          },
+          {
+            label: '2',
+            value: 2
           }
-        },
-        onChange: () => {
-          form.value.refreshOption('dict')
-        }
-      }
-    },
-    dict: {
-      type: 'select',
-      label: '字典',
-      rules: [
-        {
-          required: true,
-          message: '必填'
-        }
-      ],
-      component: {
-        asyncData: async (formData, field) => {
-          if (formData.type) {
-            const { code, data, msg } = await common.getDict([formData.type])
-            if (code == 200) {
-              return data[formData.type]
-            } else {
-              return []
-            }
-          }
-        }
+        ]
       }
     }
   }
@@ -111,7 +87,9 @@ watchEffect(() => {
   }
 })
 const formData = ref({
-  code: 'code'
+  field: '1',
+  test: '测试',
+  asyncData: 1
 })
 </script>
 
