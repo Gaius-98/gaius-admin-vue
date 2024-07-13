@@ -3,15 +3,17 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
-import { visualizer } from "rollup-plugin-visualizer";
 // https://vitejs.dev/config/
 export default defineConfig({
+  esbuild:{
+    pure:['console.log'],
+    drop:['debugger'],
+  },
   plugins: [
     vue(),
     Components({
       resolvers: [AntDesignVueResolver({ importStyle: false })]
     }),
-    visualizer(),
   ],
   resolve: {
     alias: {
@@ -43,6 +45,7 @@ export default defineConfig({
     }
   },
   build:{
+    minify:'esbuild',
     rollupOptions:{
         output: {
           manualChunks(name) {
@@ -53,6 +56,4 @@ export default defineConfig({
         }
     }
   }
-
-
 })
