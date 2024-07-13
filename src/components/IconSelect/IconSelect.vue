@@ -1,7 +1,7 @@
 <template>
   <a-select v-model:value="value" show-search allowClear>
     <a-select-option v-for="icon in iconList" :key="icon.value">
-      <component :is="h(icon.node)"></component>
+      <span class="iconfont" :class="`icon-${icon.value}`"></span>
       {{ icon.label }}
     </a-select-option>
   </a-select>
@@ -9,16 +9,14 @@
 
 <script lang="ts" setup>
 import { reactive, toRefs, ref, h } from 'vue'
-import * as icons from '@ant-design/icons-vue'
-const iconList = ref(
-  Object.entries(icons).map(([key, VNode]) => {
-    return {
-      label: key,
-      value: key,
-      node: VNode
-    }
-  })
-)
+import iconJson from '@/assets/iconfont/iconfont.json'
+
+const iconList = iconJson.glyphs.map((e) => ({
+  label: e.name,
+  value: e.font_class,
+  key: e.icon_id
+}))
+
 const value = defineModel()
 const emits = defineEmits(['change'])
 </script>

@@ -8,6 +8,7 @@ import CodeEditor from './components/CodeEditor.vue'
 import ColorPicker from './components/ColorPicker.vue'
 import ImagePicker from './components/ImagePicker.vue'
 import registerSFEl from './components/SchemaForm/registerSFEl'
+import './assets/iconfont/iconfont.css'
 const app = createApp(App)
 
 app.use(createPinia())
