@@ -15,9 +15,10 @@ export const useVisualStore = defineStore('visual', () => {
     })
     const curCompData = ref<VisualComp>({
         name:'',
-        label:'',
+        type:'',
         id:'',
         props:{},
+        tag:'',
         position:{
             top:0,
             left:0

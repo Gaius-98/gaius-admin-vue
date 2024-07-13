@@ -1,25 +1,25 @@
 <template>
   <div ref="container" class="container" @dragover="allowDrop" @drop="dropComponent">
-    <gu-drag-resize
+    <gu-drag-resize-plus
       v-for="(item, idx) in visualData.componentData"
       :key="item.id"
-      minh="20"
-      minw="20"
+      :minh="20"
+      :minw="20"
       :width="item.size.width"
       :height="item.size.height"
       :top="item.position.top"
       :left="item.position.left"
       :node-key="item.id"
-      :class="item.id == curCompData.id ? 'active' : ''"
+      :active="item.id == curCompData.id"
       class="drag"
       :style="{
         zIndex: `${idx + 100}`
       }"
-      @on-drag-resize="dragResizeAfter"
+      @update="dragResizeAfter"
       @click="onClickComp(item)"
     >
       <component :is="item.tag" v-bind="item.props" :style="item.style || {}"> </component>
-    </gu-drag-resize>
+    </gu-drag-resize-plus>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ import { reactive, toRefs, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVisualStore } from '@/stores/visualDesign'
 import type { VisualComp } from '@/model'
-import { GuDragResize } from 'gaius-utils'
+import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
 import { v4 as uuid } from 'uuid'
 import { ViewCompNode } from '../../core/ViewCompNode'

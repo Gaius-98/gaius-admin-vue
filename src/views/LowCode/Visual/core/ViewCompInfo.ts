@@ -4,7 +4,8 @@ export default [
         type:'img',
         tag:'img',
         props:{
-            src:'https://avatars.githubusercontent.com/u/59641156?v=4'
+            src:'https://avatars.githubusercontent.com/u/59641156?v=4',
+            draggable:false
         },
         style:{
             width:'100%',
