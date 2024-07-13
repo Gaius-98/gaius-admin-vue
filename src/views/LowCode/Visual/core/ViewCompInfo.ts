@@ -1,0 +1,21 @@
+export default [
+    {
+        name:'图片',
+        type:'img',
+        tag:'img',
+        props:{
+            src:'https://avatars.githubusercontent.com/u/59641156?v=4'
+        },
+        style:{
+            width:'100%',
+            height:'100%'
+        }
+    },{
+        name:'文本',
+        type:'text',
+        tag:'span',
+        props:{
+            value:'text'
+        }
+    }
+]

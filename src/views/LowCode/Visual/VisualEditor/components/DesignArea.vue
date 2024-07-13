@@ -1,27 +1,25 @@
 <template>
-  <div ref="container" class="view-design-container">
-    <div class="container" :style="getContainerStyle()" @dragover="allowDrop" @drop="dropComponent">
-      <gu-drag-resize
-        v-for="(item, idx) in visualData.componentData"
-        :key="item.id"
-        minh="20"
-        minw="20"
-        :width="item.size.width"
-        :height="item.size.height"
-        :top="item.position.top"
-        :left="item.position.left"
-        :node-key="item.id"
-        :class="item.id == curCompData.id ? 'active' : ''"
-        class="drag"
-        :style="{
-          zIndex: `${idx + 100}`
-        }"
-        @on-drag-resize="dragResizeAfter"
-        @click="onClickComp(item)"
-      >
-        <component :is="item.name" v-bind="item.props"> </component>
-      </gu-drag-resize>
-    </div>
+  <div ref="container" class="container" @dragover="allowDrop" @drop="dropComponent">
+    <gu-drag-resize
+      v-for="(item, idx) in visualData.componentData"
+      :key="item.id"
+      minh="20"
+      minw="20"
+      :width="item.size.width"
+      :height="item.size.height"
+      :top="item.position.top"
+      :left="item.position.left"
+      :node-key="item.id"
+      :class="item.id == curCompData.id ? 'active' : ''"
+      class="drag"
+      :style="{
+        zIndex: `${idx + 100}`
+      }"
+      @on-drag-resize="dragResizeAfter"
+      @click="onClickComp(item)"
+    >
+      <component :is="item.tag" v-bind="item.props" :style="item.style || {}"> </component>
+    </gu-drag-resize>
   </div>
 </template>
 
@@ -31,7 +29,9 @@ import { storeToRefs } from 'pinia'
 import { useVisualStore } from '@/stores/visualDesign'
 import type { VisualComp } from '@/model'
 import { GuDragResize } from 'gaius-utils'
+import 'gaius-utils/lib/style.css'
 import { v4 as uuid } from 'uuid'
+import { ViewCompNode } from '../../core/ViewCompNode'
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
 const { onClickComp, setSnapshot, updateCompPosition, addComp } = store
@@ -41,11 +41,7 @@ const getContainerStyle = () => {
   if (container.value) {
     return {
       width: width + 'px',
-      height: height + 'px',
-      transform: `scale(${(container.value.offsetWidth - 40) / width},${
-        (container.value.offsetHeight - 40) / height
-      })`,
-      'transform-origin': '0 0 '
+      height: height + 'px'
     }
   }
   return {
@@ -59,15 +55,25 @@ const allowDrop = (ev: any) => {
 const dropComponent = (ev: any) => {
   ev.preventDefault()
   let data = JSON.parse(ev.dataTransfer.getData('componentData')) as VisualComp
-  data.id = uuid()
+  if (!data) {
+    return
+  }
+  data = new ViewCompNode(data.name)
   data.position = {
     top: ev.offsetY,
     left: ev.offsetX
   }
-  data.size.width = 100
-  data.size.height = 100
+  data.size = {
+    width: 100,
+    height: 100
+  }
+
   addComp(data)
 }
 const dragResizeAfter = () => {}
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.container {
+  flex: 1;
+}
+</style>

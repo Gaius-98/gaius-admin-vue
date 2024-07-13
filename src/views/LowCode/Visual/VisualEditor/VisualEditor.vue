@@ -8,6 +8,7 @@
   >
     <template #extra>
       <a-space>
+        <a-button>加载外部组件</a-button>
         <a-button @click="onOpenVariableModal" class="variable-btn"> 变量池配置 </a-button>
         <a-button @click="onOpenSaveModal" type="primary" class="save-btn"> 保存 </a-button>
       </a-space>
@@ -18,8 +19,7 @@
     </template>
   </a-page-header>
   <div class="design-container">
-    <node-relationship></node-relationship>
-    <material-area></material-area>
+    <left-side-bar></left-side-bar>
     <design-area></design-area>
     <cfg-area></cfg-area>
   </div>
@@ -28,11 +28,9 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { reactive, toRefs, ref, computed } from 'vue'
-import NodeRelationship from './components/NodeRelationship.vue'
-import MaterialArea from './components/MaterialArea.vue'
 import CfgArea from './components/CfgArea.vue'
 import DesignArea from './components/DesignArea.vue'
-
+import leftSideBar from './components/LeftSideBar.vue'
 const router = useRouter()
 
 const title = computed(() => 'title')
@@ -43,4 +41,10 @@ const goBack = () => {
   router.go(-1)
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.design-container {
+  display: flex;
+  height: calc(100% - 60px);
+  padding-top: 10px;
+}
+</style>

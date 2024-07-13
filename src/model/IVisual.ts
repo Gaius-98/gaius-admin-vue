@@ -1,8 +1,10 @@
 export interface VisualComp {
     name:string
-    label:string
+    type:string
     id:string
-    props:Record<string,any>
+    props?:Record<string,any>
+    style?:Record<string,any>
+    tag:string
     position:{
         top:number
         left:number
