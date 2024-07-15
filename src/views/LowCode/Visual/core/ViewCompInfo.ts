@@ -11,7 +11,8 @@ export default [
         style:{
             width:'100%',
             height:'100%'
-        }
+        },
+        formId:'c0c67e96-858b-4303-999c-92d0d39cb792'
     },
     {
         name:'文本',

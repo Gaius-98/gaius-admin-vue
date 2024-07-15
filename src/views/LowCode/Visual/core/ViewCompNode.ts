@@ -8,6 +8,7 @@ export class ViewCompNode {
     icon:string
     props?:Record<string,any>
     style?:Record<string,any>
+    formId:string=''
     position:{
         top:number,
         left:number
@@ -32,6 +33,7 @@ export class ViewCompNode {
             this.name=info.name
             this.style=info.style
             this.icon = info.icon
+            this.formId=info.formId!
         }else{
             this.tag = 'div'
             this.icon='icon'

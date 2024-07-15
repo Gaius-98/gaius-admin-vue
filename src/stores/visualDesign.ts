@@ -26,7 +26,8 @@ export const useVisualStore = defineStore('visual', () => {
         size:{
             width:0,
             height:0
-        }
+        },
+        formId:''
     })
    /**
    * 快照数据 -- 只有影响布局的操作才会保存快照

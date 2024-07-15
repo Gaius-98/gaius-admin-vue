@@ -12,7 +12,8 @@ export interface VisualComp {
     size:{
         width:number
         height:number
-    }
+    },
+    formId:string
 }
 export interface VisualData {
     componentData:VisualComp[]

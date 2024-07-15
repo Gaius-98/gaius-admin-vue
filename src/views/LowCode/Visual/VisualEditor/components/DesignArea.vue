@@ -30,7 +30,6 @@ import { useVisualStore } from '@/stores/visualDesign'
 import type { VisualComp } from '@/model'
 import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
-import { v4 as uuid } from 'uuid'
 import { ViewCompNode } from '../../core/ViewCompNode'
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
@@ -75,5 +74,7 @@ const dragResizeAfter = () => {}
 <style scoped lang="scss">
 .container {
   flex: 1;
+  background-color: #fff;
+  margin: 0 10px;
 }
 </style>
