@@ -5,6 +5,7 @@ export class ViewCompNode {
     id:string
     type:string
     tag:string
+    icon:string
     props?:Record<string,any>
     style?:Record<string,any>
     position:{
@@ -30,8 +31,10 @@ export class ViewCompNode {
             this.props = info.props
             this.name=info.name
             this.style=info.style
+            this.icon = info.icon
         }else{
             this.tag = 'div'
+            this.icon='icon'
         }
     }
 }

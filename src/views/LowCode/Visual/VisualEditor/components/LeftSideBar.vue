@@ -13,9 +13,14 @@
       ></li>
     </ul>
   </div>
-  <div class="left-part" v-if="active" :key="active.value">
+  <div class="left-part" v-if="active" :key="active.value" :class="affix ? 'affix' : ''">
     <div class="header">
       <div class="title">{{ active.label }}</div>
+      <div
+        class="affix iconfont"
+        @click="onAffix"
+        :class="affix ? 'icon-pushpin-fill' : 'icon-pushpin'"
+      ></div>
       <div class="close iconfont icon-close" @click="onClose"></div>
     </div>
     <div class="container">
@@ -43,6 +48,10 @@ const nodeList = [
   }
 ]
 const active = ref()
+const affix = ref(false)
+const onAffix = () => {
+  affix.value = !affix.value
+}
 const onClick = (item: Record<string, any>) => {
   active.value = item
 }
@@ -82,12 +91,19 @@ const onClose = () => {
   border-left: 1px solid #eee;
   box-shadow: 4px 6px 6px 0 var(--color-block-background-shallow, rgba(31, 50, 88, 0.08));
   .header {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 40px 40px;
     padding: 0 5px;
     height: 40px;
     line-height: 40px;
     border-bottom: 1px solid #eee;
+    .iconfont {
+      text-align: center;
+    }
+    .affix {
+      font-size: 18px;
+      cursor: pointer;
+    }
     .close {
       font-size: 16px;
       cursor: pointer;
@@ -96,6 +112,12 @@ const onClose = () => {
   .container {
     width: 100%;
     height: calc(100% - 40px);
+  }
+  &.affix {
+    position: absolute;
+    top: 0;
+    left: 40px;
+    z-index: 999;
   }
 }
 </style>

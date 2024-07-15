@@ -19,7 +19,7 @@
     </template>
   </a-page-header>
   <div class="design-container">
-    <left-side-bar></left-side-bar>
+    <left-side-bar class="left-sider"></left-side-bar>
     <design-area></design-area>
     <cfg-area></cfg-area>
   </div>
@@ -43,8 +43,11 @@ const goBack = () => {
 </script>
 <style scoped lang="scss">
 .design-container {
+  position: relative;
   display: flex;
-  height: calc(100% - 60px);
-  padding-top: 10px;
+  height: calc(100% - 70px);
+  margin-top: 10px;
+  .left-side {
+  }
 }
 </style>

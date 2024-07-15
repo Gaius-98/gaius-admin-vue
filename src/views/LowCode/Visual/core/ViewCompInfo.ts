@@ -3,6 +3,7 @@ export default [
         name:'图片',
         type:'img',
         tag:'img',
+        icon:'icon-image1',
         props:{
             src:'https://avatars.githubusercontent.com/u/59641156?v=4',
             draggable:false
@@ -11,10 +12,12 @@ export default [
             width:'100%',
             height:'100%'
         }
-    },{
+    },
+    {
         name:'文本',
         type:'text',
         tag:'span',
+        icon:'icon-text',
         props:{
             value:'text'
         }
