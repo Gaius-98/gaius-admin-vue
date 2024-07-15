@@ -75,6 +75,7 @@
         v-model:current="params.pageNumber"
         :total="total"
         show-less-items
+        @change="getList()"
       />
     </a-card>
   </div>

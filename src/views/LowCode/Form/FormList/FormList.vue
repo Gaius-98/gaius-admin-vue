@@ -83,6 +83,7 @@
         v-model:current="paramsForm.pageNumber"
         :total="total"
         show-less-items
+        @change="getList()"
       />
     </a-card>
   </div>
