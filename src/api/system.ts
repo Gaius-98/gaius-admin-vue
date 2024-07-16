@@ -9,5 +9,14 @@ export default {
         keyword: ''
       }
     })
+  },
+  recordMenu:(url:string)=>{
+    return request({
+      url:'/accessLog/record',
+      method:'get',
+      params:{
+        path:url
+      }
+    })
   }
 }
