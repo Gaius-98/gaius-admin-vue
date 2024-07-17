@@ -4,6 +4,12 @@ export interface MenuDict {
   id: string
   label: string
 }
+export interface MenuTreeDict {
+  id: string
+  label: string
+  children: MenuTreeDict[]
+  pid?:string
+}
 export default {
   getList: (keyword: string) => {
     return request<ResMenuItem[]>({
@@ -49,6 +55,12 @@ export default {
   dict: () => {
     return request<MenuDict[]>({
       url: 'menu/directory',
+      method: 'get'
+    })
+  },
+  getAllMenu:() =>{
+    return request<MenuTreeDict[]>({
+      url: 'menu/all',
       method: 'get'
     })
   }

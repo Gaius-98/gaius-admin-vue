@@ -94,7 +94,7 @@
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/role'
 import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
-import type { RoleInfo, PageParams, ResMenuItem } from '@/model'
+import type { RoleInfo, PageParams } from '@/model'
 import apiMenu from './api/menu'
 import { TreeSelect } from 'ant-design-vue'
 const SHOW_ALL = TreeSelect.SHOW_ALL
@@ -232,9 +232,15 @@ const onConfirm = () => {
     modalOpen.value = false
   })
 }
-const menuTree = ref<ResMenuItem[]>([])
+const menuTree = ref<
+  {
+    id: string
+    label: string
+    pid?: string
+  }[]
+>([])
 const getMenuTree = () => {
-  apiMenu.getList('').then((res) => {
+  apiMenu.getAllMenu().then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
       menuTree.value = data
