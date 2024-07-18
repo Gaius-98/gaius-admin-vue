@@ -14,7 +14,7 @@ export interface SchemaLayout {
   }
   layout?: 'horizontal' | 'vertical' | 'inline'
 }
-export type ControlType = 'string' | 'date' | 'number' | 'select' | 'tree' | 'radio' | 'switch'
+export type ControlType = 'string' | 'date' | 'number' | 'select' | 'tree' | 'radio' | 'switch'|'textarea'
 export interface SchemaProperties {
   label: string
   required?: boolean

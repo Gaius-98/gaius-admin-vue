@@ -13,7 +13,8 @@ import {
   RadioButton,
   RadioGroup,
   type RadioChangeEvent,
-  Switch
+  Switch,
+  Textarea
 } from 'ant-design-vue'
 import { compileText, execFun } from './core'
 import { getDeepValue,setDeepValue } from '@/utils/tools'
@@ -44,6 +45,21 @@ const createUIControl = (
         }
       })
       break
+      case 'textarea':
+        Node = h(Textarea, {
+          ...component,
+          value: getDeepValue(formData, key),
+          onChange: (e: Event) => {
+            setDeepValue(formData, key, (e.target as HTMLInputElement).value)
+            ctx.pubSub.onPublish(key)
+            ctx.onChange({
+              formData: formData,
+              field: key,
+              value: (e.target as HTMLInputElement).value
+            })
+          }
+        })
+        break
     case 'select':
       Node = h(Select, {
         ...component,
