@@ -1,4 +1,5 @@
 import type { Obj } from '@/model'
+import { getDeepValue } from '@/utils/tools'
 export const compileText = (text: string) => {
   const regex = /\$\{([^}]+)\}/g
   const matches = text.match(regex)
@@ -28,18 +29,3 @@ export const execFun = (text: string, formData: Obj<any>) => {
   return runFun()
 }
 
-export const getDeepValue = (obj: Obj<any>, path: string) => {
-  const paths = path.split('.')
-  return paths.reduce((pre, cur) => {
-    return pre[cur]
-  }, obj) as any
-}
-export const setDeepValue = (obj: Obj<any>, path: string, value: any) => {
-  const paths = path.split('.')
-  paths.reduce((pre, cur, index) => {
-    if (index === paths.length - 1) {
-      pre[cur] = value
-    }
-    return pre[cur]
-  }, obj)
-}

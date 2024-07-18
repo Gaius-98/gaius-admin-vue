@@ -40,7 +40,8 @@ export default [
             'object-fit':'fill',
             'z-index':-1
         }
-    },{
+    },
+    {
         name:'嵌入页',
         type:'iframe',
         tag:'iframe',

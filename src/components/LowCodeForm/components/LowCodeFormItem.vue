@@ -35,46 +35,59 @@
     >
       <a-input
         v-if="item.type == 'input'"
-        v-model:value="formData[item.formItemProp.name]"
+        :value="getDeepValue(formData, item.formItemProp.name)"
+        @change="
+          (e: Event) =>
+            setDeepValue(formData, item.formItemProp.name, (e.target as HTMLInputElement).value)
+        "
         v-bind="item.controlProp"
       />
       <a-select
         v-if="item.type == 'select'"
-        v-model:value="formData[item.formItemProp.name]"
+        :value="getDeepValue(formData, item.formItemProp.name)"
         v-bind="item.controlProp"
         :options="dict[item.controlProp.dict]"
+        @change="(value: any) => setDeepValue(formData, item.formItemProp.name, value)"
       >
       </a-select>
       <a-radio-group
         v-if="item.type == 'radio'"
-        v-model:value="formData[item.formItemProp.name]"
+        :value="getDeepValue(formData, item.formItemProp.name)"
         v-bind="item.controlProp"
         :options="dict[item.controlProp.dict]"
+        @change="
+          (e: Event) =>
+            setDeepValue(formData, item.formItemProp.name, (e.target as HTMLInputElement).value)
+        "
       >
       </a-radio-group>
       <a-date-picker
         v-if="item.type == 'date'"
-        v-model:value="formData[item.formItemProp.name]"
+        :value="getDeepValue(formData, item.formItemProp.name)"
         v-bind="item.controlProp"
+        @change="(value: any) => setDeepValue(formData, item.formItemProp.name, value)"
       >
       </a-date-picker>
       <a-input-number
         v-if="item.type == 'number'"
-        v-model:value="formData[item.formItemProp.name]"
+        :value="getDeepValue(formData, item.formItemProp.name)"
         v-bind="item.controlProp"
+        @change="(value: any) => setDeepValue(formData, item.formItemProp.name, value)"
       >
       </a-input-number>
       <a-checkbox-group
         v-if="item.type == 'checkbox'"
-        v-model:value="formData[item.formItemProp.name]"
+        :value="getDeepValue(formData, item.formItemProp.name)"
         v-bind="item.controlProp"
         :options="dict[item.controlProp.dict]"
+        @change="(value: any) => setDeepValue(formData, item.formItemProp.name, value)"
       >
       </a-checkbox-group>
       <a-switch
         v-if="item.type == 'switch'"
-        v-model:checked="formData[item.formItemProp.name]"
+        :checked="getDeepValue(formData, item.formItemProp.name)"
         v-bind="item.controlProp"
+        @change="(value: any) => setDeepValue(formData, item.formItemProp.name, value)"
       ></a-switch>
     </a-form-item>
   </template>
@@ -88,6 +101,7 @@ import { reactive, toRefs, ref, onMounted } from 'vue'
 import type { Obj } from '@/model'
 import common from '@/api/common'
 import type { LCFormItemCfg, ControlType } from '@/model'
+import { getDeepValue, setDeepValue } from '@/utils/tools'
 interface Props {
   schema: any
   formData: Obj<any>

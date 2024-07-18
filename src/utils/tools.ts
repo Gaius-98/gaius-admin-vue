@@ -25,3 +25,19 @@ export const uninstallPreLoad = () => {
     element.remove()
   }
 }
+
+export const getDeepValue = (obj: Obj<any>, path: string) => {
+  const paths = path.split('.')
+  return paths.reduce((pre, cur) => {
+    return pre[cur]
+  }, obj) as any
+}
+export const setDeepValue = (obj: Obj<any>, path: string, value: any) => {
+  const paths = path.split('.')
+  paths.reduce((pre, cur, index) => {
+    if (index === paths.length - 1) {
+      pre[cur] = value
+    }
+    return pre[cur]
+  }, obj)
+}

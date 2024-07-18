@@ -15,7 +15,8 @@ import {
   type RadioChangeEvent,
   Switch
 } from 'ant-design-vue'
-import { compileText, execFun, getDeepValue, setDeepValue } from './core'
+import { compileText, execFun } from './core'
+import { getDeepValue,setDeepValue } from '@/utils/tools'
 import { GuPubSub } from 'gaius-utils'
 import { defineExpose } from 'vue'
 import {cloneDeep} from 'lodash-es'
