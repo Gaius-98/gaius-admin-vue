@@ -53,6 +53,7 @@ import { storeToRefs } from 'pinia'
 import api from './api'
 import { useRouter } from 'vue-router'
 import auth from '@/utils/auth'
+import system from '@/api/system'
 const systemStore = useSystemStore()
 const { themeCfg } = storeToRefs(systemStore)
 const authForm = reactive({
@@ -67,6 +68,7 @@ const onLogin = () => {
     if (code == 200) {
       auth.set(data)
       router.push('/home')
+      system.recordMenu('/home')
     }
   })
 }

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import system from '@/api/system'
 import auth from '@/utils/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -145,7 +144,5 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-router.afterEach((to, from) => {
-  system.recordMenu(to.path)
-})
+
 export default router
