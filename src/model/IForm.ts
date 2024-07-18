@@ -1,3 +1,4 @@
+import type { Obj } from "./ICommon"
 export enum Size {
   middle = '中',
   large = '大',
@@ -127,4 +128,9 @@ export interface LCFormCfg {
   img: string
   description?: string
   status?: number
+}
+export interface SchemaItemChangeEventData {
+  formData: Obj<any>
+  field: string
+  value: any
 }

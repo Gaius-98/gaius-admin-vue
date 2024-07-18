@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import type { Obj } from '@/model'
 /**
  *
  * @param content string -- 文件内容
@@ -29,15 +30,21 @@ export const uninstallPreLoad = () => {
 export const getDeepValue = (obj: Obj<any>, path: string) => {
   const paths = path.split('.')
   return paths.reduce((pre, cur) => {
-    return pre[cur]
+    if (pre == undefined) {
+      return undefined
+    }
+    return pre[cur] || null
   }, obj) as any
 }
 export const setDeepValue = (obj: Obj<any>, path: string, value: any) => {
   const paths = path.split('.')
   paths.reduce((pre, cur, index) => {
+    
     if (index === paths.length - 1) {
-      pre[cur] = value
+      pre[cur] = value || undefined
+    }else if(!pre[cur]){
+      pre[cur] = {}
     }
-    return pre[cur]
+    return pre[cur] 
   }, obj)
 }

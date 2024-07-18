@@ -32,6 +32,7 @@ import { useFormDesignStore } from '@/stores/formDesign'
 import { storeToRefs } from 'pinia'
 import ControlSchema from '../utils/ControlSchema'
 import { cloneDeep } from 'lodash-es'
+import type { SchemaItemChangeEventData } from '@/model'
 const formStore = useFormDesignStore()
 const { curControlCfg, formConfig } = storeToRefs(formStore)
 const schema = ref<Schema>({
@@ -67,13 +68,45 @@ const formSchema = ref<Schema>({
         ]
       }
     },
+    layout: {
+      label: '响应式布局',
+      type: 'radio',
+      component: {
+        dataSource: [
+          {
+            label: '响应式',
+            value: 'resLayout'
+          },
+          {
+            label: '固定',
+            value: 'fixedLayout'
+          }
+        ],
+        onChange({ field, formData, value }: SchemaItemChangeEventData) {
+          if (value == 'fixedLayout') {
+            Reflect.deleteProperty(formData.labelCol, 'span')
+            Reflect.deleteProperty(formData.labelCol, 'offset')
+          } else {
+            Reflect.deleteProperty(formData.labelCol, 'style')
+          }
+        }
+      }
+    },
     'labelCol.span': {
       label: '标签宽度',
-      type: 'number'
+      type: 'number',
+      show: "'${formData.layout}' == 'resLayout'"
     },
     'labelCol.offset': {
       label: '偏移量',
-      type: 'number'
+      type: 'number',
+      show: "'${formData.layout}' == 'resLayout'"
+    },
+    'labelCol.style.width': {
+      label: '宽度',
+      type: 'string',
+      show: "'${formData.layout}' == 'fixedLayout'",
+      tooltip: '单位为百分比或px,如: 100% 或 100px'
     }
   }
 })
