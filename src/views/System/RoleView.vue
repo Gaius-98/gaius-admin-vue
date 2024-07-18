@@ -66,7 +66,20 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="权限">
-          <a-tree-select
+          <div style="height: 200px; overflow-y: auto">
+            <a-tree
+              v-model:checkedKeys="formData.roleValue"
+              :tree-data="menuTree"
+              checkable
+              :field-names="{
+                children: 'children',
+                title: 'label',
+                key: 'id'
+              }"
+            >
+            </a-tree>
+          </div>
+          <!-- <a-tree-select
             v-model:value="formData.roleValue"
             style="width: 100%"
             :tree-data="menuTree"
@@ -80,7 +93,7 @@
               label: 'label',
               value: 'id'
             }"
-          />
+          /> -->
         </a-form-item>
         <a-form-item label="备注">
           <a-input v-model:value="formData.desc"></a-input>
