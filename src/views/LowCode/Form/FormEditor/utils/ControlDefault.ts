@@ -18,6 +18,18 @@ const inputDefault = {
   type: 'input',
   id: ''
 }
+const textareaDefault = {
+  ...formDefault,
+  controlProp: {
+    allowClear: true,
+    autosize: false,
+    disabled: false,
+    maxlength: null,
+    size: 'middle'
+  },
+  type: 'textarea',
+  id: ''
+}
 const selectDefault = {
   ...formDefault,
   controlProp: {
@@ -152,7 +164,8 @@ const controlDefault: any[] = [
   dateDefault,
   numberDefalt,
   dividerDefault,
-  collapseDefault
+  collapseDefault,
+  textareaDefault
 ]
 
 export default controlDefault

@@ -60,6 +60,59 @@ export default [
     }
   },
   {
+    type: 'textarea',
+    properties: {
+      'formItemProp.label': {
+        type: 'string',
+        label: '标签文本'
+      },
+      'formItemProp.name': {
+        type: 'string',
+        label: '字段名'
+      },
+      show: {
+        type: 'string',
+        label: '显隐条件'
+      },
+      'controlProp.allowClear': {
+        type: 'switch',
+        label: '可清除'
+      },
+      'controlProp.autosize': {
+        type: 'switch',
+        label: '自适应内容高度'
+      },
+      'controlProp.disabled': {
+        type: 'switch',
+        label: '禁用'
+      },
+      'controlProp.size': {
+        type: 'radio',
+        label: '大小',
+        component: {
+          dataSource: [
+            {
+              label: '大',
+              value: 'large'
+            },
+            {
+              label: '中',
+              value: 'middle'
+            },
+            {
+              label: '小',
+              value: 'small'
+            }
+          ]
+        }
+      },
+      'controlProp.maxlength': {
+        type: 'number',
+        label: '最大长度'
+      }
+    }
+  },
+  {
     type: 'select',
     properties: {
       'formItemProp.label': {

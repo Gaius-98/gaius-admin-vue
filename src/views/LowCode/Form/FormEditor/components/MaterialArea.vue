@@ -82,6 +82,10 @@ const materials = ref({
     {
       label: '多选框',
       value: 'checkbox'
+    },
+    {
+      label: '文本域',
+      value: 'textarea'
     }
   ]
 })

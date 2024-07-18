@@ -42,6 +42,15 @@
         "
         v-bind="item.controlProp"
       />
+      <a-textarea
+        v-if="item.type == 'textarea'"
+        :value="getDeepValue(formData, item.formItemProp.name)"
+        @change="
+          (e: Event) =>
+            setDeepValue(formData, item.formItemProp.name, (e.target as HTMLInputElement).value)
+        "
+        v-bind="item.controlProp"
+      />
       <a-select
         v-if="item.type == 'select'"
         :value="getDeepValue(formData, item.formItemProp.name)"

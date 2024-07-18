@@ -6,13 +6,15 @@ import {
   RadioGroup,
   Switch,
   CheckboxGroup,
-  DatePicker
+  DatePicker,
+  Textarea
 } from 'ant-design-vue'
 import type { Component } from 'vue'
 import MaterialGrid from '../components/MaterialGrid.vue'
 import MaterialCard from '../components/MaterialCard.vue'
 import MaterialDivider from '../components/MaterialDivider.vue'
 import MaterialCollapse from '../components/MaterialCollapse.vue'
+
 export default <Obj<Component>>{
   input: Input,
   select: Select,
@@ -24,5 +26,6 @@ export default <Obj<Component>>{
   card: MaterialCard,
   date: DatePicker,
   divider: MaterialDivider,
-  collapse: MaterialCollapse
+  collapse: MaterialCollapse,
+  textarea:Textarea
 }
