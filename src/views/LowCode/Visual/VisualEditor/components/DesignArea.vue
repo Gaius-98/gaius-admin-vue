@@ -31,6 +31,7 @@ import type { VisualComp } from '@/model'
 import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
 import { ViewCompNode } from '../../core/ViewCompNode'
+
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
 const { onClickComp, setSnapshot, updateCompPosition, addComp } = store

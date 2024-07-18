@@ -9,6 +9,7 @@ import ColorPicker from './components/ColorPicker.vue'
 import ImagePicker from './components/ImagePicker.vue'
 import registerSFEl from './components/SchemaForm/registerSFEl'
 import './assets/iconfont/iconfont.css'
+import GEchart from '@/components/GEchart/GEchart.vue'
 const app = createApp(App)
 
 app.use(createPinia())
@@ -18,5 +19,6 @@ app.use(registerSFEl,{
     'color-picker':ColorPicker,
     'image-picker':ImagePicker
 })
+app.component('GEchart',GEchart)
 app.mount('#app')
 uninstallPreLoad()

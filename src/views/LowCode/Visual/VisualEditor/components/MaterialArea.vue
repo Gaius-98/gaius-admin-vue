@@ -47,6 +47,22 @@ const materialList = [
         icon: 'icon-HTML'
       }
     ]
+  },
+  {
+    title: '图表',
+    value: 'echart',
+    list: [
+      {
+        label: '柱状图',
+        icon: 'icon-barchart',
+        name: 'bar'
+      },
+      {
+        label: '折线图',
+        icon: 'icon-linechart',
+        name: 'line'
+      }
+    ]
   }
 ]
 const onDrag = (ev: any) => {
