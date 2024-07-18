@@ -35,6 +35,16 @@ const materialList = [
         label: '文本',
         icon: 'icon-text',
         name: 'text'
+      },
+      {
+        label: '视频',
+        name: 'video',
+        icon: 'icon-video'
+      },
+      {
+        label: '嵌入页',
+        name: 'iframe',
+        icon: 'icon-HTML'
       }
     ]
   }

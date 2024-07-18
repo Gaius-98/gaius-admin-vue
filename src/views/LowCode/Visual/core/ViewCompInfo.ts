@@ -1,3 +1,4 @@
+
 export default [
     {
         name:'图片',
@@ -21,6 +22,37 @@ export default [
         icon:'icon-text',
         props:{
             value:'text'
+        }
+    },
+    {
+        name:'视频',
+        type:'video',
+        tag:'video',
+        icon:'icon-video',
+        props:{
+            src:'',
+            controls:true,
+            draggable:false
+        },
+        style:{
+            width:'100%',
+            height:'100%',
+            'object-fit':'fill',
+            'z-index':-1
+        }
+    },{
+        name:'嵌入页',
+        type:'iframe',
+        tag:'iframe',
+        icon:'icon-HTML',
+        props:{
+            src:'http://120.26.161.36:8080/',
+            draggable:false
+        },
+        style:{
+            width:'100%',
+            height:'100%',
+            'z-index':-1
         }
     }
 ]
