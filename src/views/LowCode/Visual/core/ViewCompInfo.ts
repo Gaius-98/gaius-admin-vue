@@ -35,6 +35,7 @@ export default [
             draggable:false
         },
         style:{
+            position:'relative',
             width:'100%',
             height:'100%',
             'object-fit':'fill',
@@ -51,6 +52,7 @@ export default [
             draggable:false
         },
         style:{
+            position:'relative',
             width:'100%',
             height:'100%',
             'z-index':-1
