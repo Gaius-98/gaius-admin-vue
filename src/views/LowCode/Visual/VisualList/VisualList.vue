@@ -192,7 +192,7 @@ const onDownload = (id: string, name: string) => {
   })
 }
 onMounted(() => {
-  getList()
+  // getList()
 })
 </script>
 <style scoped lang="scss">

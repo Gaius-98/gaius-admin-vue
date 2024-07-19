@@ -35,8 +35,8 @@ dependencies:
     specifier: ^5.5.1
     version: 5.5.1
   gaius-utils:
-    specifier: ^1.1.0
-    version: 1.1.0(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6)
+    specifier: ^1.1.1
+    version: 1.1.1(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6)
   html2canvas:
     specifier: ^1.4.1
     version: 1.4.1
@@ -2239,8 +2239,8 @@ packages:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
     dev: false
 
-  /gaius-utils@1.1.0(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6):
-    resolution: {integrity: sha512-9yVw8qNW9MMs5yaoIUarIUwvj9zn5/NYBaKY1BjtfM2Zv9vZbNYkcyrfRXpTL2zQ6kiShMy65NDS/SVQLyEJhQ==}
+  /gaius-utils@1.1.1(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6):
+    resolution: {integrity: sha512-VrYvsKRV9XdSX3x9+Ag3dTopoYr4uERuT7ZwBrc4YDJgl04sW/uCXlKyYPEyptaVBlP4evMo96QW+rDtFZa5ng==}
     dependencies:
       sass: 1.74.1
       uuid: 8.3.2
@@ -3428,7 +3428,7 @@ packages:
       '@vue/language-core': 1.8.27(typescript@5.4.2)
       debug: 4.3.4
       kolorist: 1.8.0
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       typescript: 5.4.2
       vite: 5.1.6(@types/node@20.11.28)(sass@1.74.1)
       vue-tsc: 1.8.27(typescript@5.4.2)
