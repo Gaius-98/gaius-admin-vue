@@ -24,7 +24,7 @@ export interface VisualData {
     width:number
 }
 export interface VisualCompNodeInfo {
-    id:string
+    nodeKey:string
     height:number
     width:number
     top:number

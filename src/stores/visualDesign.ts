@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { cloneDeep } from 'lodash-es'
 import type { VisualComp,VisualData,VisualCompNodeInfo } from '@/model'
+// 快照保存的长度
+const SNAPSHOTLEN = 10
 export const useVisualStore = defineStore('visual', () => {
     const visualData = ref<VisualData>({
         componentData:[
@@ -32,7 +34,7 @@ export const useVisualStore = defineStore('visual', () => {
    /**
    * 快照数据 -- 只有影响布局的操作才会保存快照
    */
-  const snapshotData = reactive<any[][]>([])
+  const snapshotData = ref<any[][]>([])
   /**
    * 当前快照idx
    */
@@ -41,7 +43,11 @@ export const useVisualStore = defineStore('visual', () => {
    * 保存快照
    */
   const setSnapshot = () => {
-    snapshotData[curSnapshotIdx.value++] = cloneDeep(visualData.value.componentData)
+    snapshotData.value[curSnapshotIdx.value++] = cloneDeep(visualData.value.componentData)
+    if(snapshotData.value.length > SNAPSHOTLEN){
+      snapshotData.value = snapshotData.value.slice(snapshotData.value.length - SNAPSHOTLEN)
+      curSnapshotIdx.value = SNAPSHOTLEN
+    }
   }
   /**
    * 撤销
@@ -49,16 +55,16 @@ export const useVisualStore = defineStore('visual', () => {
   const undo = () => {
     if (curSnapshotIdx.value > 0) {
       curSnapshotIdx.value--
-      visualData.value.componentData = cloneDeep(snapshotData[curSnapshotIdx.value])
+      visualData.value.componentData = cloneDeep(snapshotData.value[curSnapshotIdx.value])
     }
   }
   /**
    * 重做
    */
   const redo = () => {
-    if (curSnapshotIdx.value < snapshotData.length - 1) {
+    if (curSnapshotIdx.value < snapshotData.value.length - 1) {
       curSnapshotIdx.value++
-      visualData.value.componentData = cloneDeep(snapshotData[curSnapshotIdx.value])
+      visualData.value.componentData = cloneDeep(snapshotData.value[curSnapshotIdx.value])
     }
   }
     /**
@@ -91,7 +97,7 @@ export const useVisualStore = defineStore('visual', () => {
    * 更新组件
    */
   const updateCompPosition = (item: VisualCompNodeInfo) => {
-    const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
+    const idx = visualData.value.componentData.findIndex(e => e.id === item.nodeKey)
     if (idx != -1) {
         visualData.value.componentData[idx] = {
             ...visualData.value.componentData[idx],
@@ -118,6 +124,8 @@ export const useVisualStore = defineStore('visual', () => {
     curCompData,
     addComp,
     removeComp,
-    updateCompPosition
+    updateCompPosition,
+    snapshotData,
+    curSnapshotIdx
   }
 })

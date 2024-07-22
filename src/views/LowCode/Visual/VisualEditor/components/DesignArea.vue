@@ -31,7 +31,7 @@ import type { VisualComp } from '@/model'
 import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
 import { ViewCompNode } from '../../core/ViewCompNode'
-
+import type { VisualCompNodeInfo } from '@/model'
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
 const { onClickComp, setSnapshot, updateCompPosition, addComp } = store
@@ -70,7 +70,9 @@ const dropComponent = (ev: any) => {
 
   addComp(data)
 }
-const dragResizeAfter = () => {}
+const dragResizeAfter = (data: VisualCompNodeInfo) => {
+  updateCompPosition(data)
+}
 </script>
 <style scoped lang="scss">
 .container {
