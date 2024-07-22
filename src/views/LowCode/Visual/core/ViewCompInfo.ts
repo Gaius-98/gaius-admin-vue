@@ -56,7 +56,8 @@ export default [
             width:'100%',
             height:'100%',
             'z-index':-1
-        }
+        },
+        formId:'6ba21979-d5ec-4715-831e-62046fbfb0d9'
     },
     {
         name:'柱状图',

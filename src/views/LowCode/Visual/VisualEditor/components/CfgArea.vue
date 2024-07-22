@@ -1,6 +1,11 @@
 <template>
   <div class="cfg">
-    <low-code-form-id :form-data="curCompData" :id="curCompData.formId" />
+    <low-code-form-id
+      :form-data="curCompData"
+      :id="curCompData.formId"
+      v-if="curCompData.formId"
+      :key="curCompData.formId"
+    />
   </div>
 </template>
 
@@ -11,7 +16,6 @@ import { storeToRefs } from 'pinia'
 import { useVisualStore } from '@/stores/visualDesign'
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
-console.log(curCompData)
 </script>
 <style scoped lang="scss">
 .cfg {

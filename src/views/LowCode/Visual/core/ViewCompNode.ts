@@ -1,5 +1,6 @@
 import {v4 as uuid} from 'uuid'
 import ViewCompInfo from './ViewCompInfo'
+import {cloneDeep} from 'lodash-es'
 export class ViewCompNode {
     name:string='组件'
     id:string
@@ -27,16 +28,18 @@ export class ViewCompNode {
         this.id = id || uuid()
         this.type = type
         const info = ViewCompInfo.find(item=>item.type === type)
+        const cloneInfo = cloneDeep(info)!
         if(info){
-            this.tag = info.tag
-            this.props = info.props
-            this.name=info.name
-            this.style=info.style
-            this.icon = info.icon
-            this.formId=info.formId!
+        this.tag = cloneInfo.tag
+        this.props = cloneInfo.props
+        this.name=cloneInfo.name
+        this.style=cloneInfo.style
+        this.icon = cloneInfo.icon
+        this.formId=cloneInfo.formId!
         }else{
             this.tag = 'div'
             this.icon='icon'
         }
     }
+
 }
