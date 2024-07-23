@@ -93,28 +93,7 @@ export const useVisualStore = defineStore('visual', () => {
         setSnapshot()
     }
   }
-  /**
-   * 更新组件
-   */
-  const updateCompPosition = (item: VisualCompNodeInfo) => {
-    const idx = visualData.value.componentData.findIndex(e => e.id === item.nodeKey)
-    if (idx != -1) {
-        visualData.value.componentData[idx] = {
-            ...visualData.value.componentData[idx],
-            position: {
-                ...visualData.value.componentData[idx].position,
-                top:item.top,
-                left:item.left
-            },
-            size:{
-                ...visualData.value.componentData[idx].size,
-                width:item.width,
-                height:item.height
-            }
-        }
-        setSnapshot()
-    }
-  }
+
   return {
     undo,
     redo,
@@ -124,7 +103,6 @@ export const useVisualStore = defineStore('visual', () => {
     curCompData,
     addComp,
     removeComp,
-    updateCompPosition,
     snapshotData,
     curSnapshotIdx
   }

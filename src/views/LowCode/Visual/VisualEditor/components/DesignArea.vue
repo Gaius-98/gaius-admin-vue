@@ -5,16 +5,17 @@
       :key="item.id"
       :minh="20"
       :minw="20"
-      :width="item.size.width"
-      :height="item.size.height"
-      :top="item.position.top"
-      :left="item.position.left"
+      v-model:width="item.size.width"
+      v-model:height="item.size.height"
+      v-model:top="item.position.top"
+      v-model:left="item.position.left"
       :node-key="item.id"
       :active="item.id == curCompData.id"
       class="drag"
       :style="{
         zIndex: `${idx + 100}`
       }"
+      :wait="10"
       @update="dragResizeAfter"
       @click="onClickComp(item)"
     >
@@ -31,10 +32,9 @@ import type { VisualComp } from '@/model'
 import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
 import { ViewCompNode } from '../../core/ViewCompNode'
-import type { VisualCompNodeInfo } from '@/model'
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
-const { onClickComp, setSnapshot, updateCompPosition, addComp } = store
+const { onClickComp, setSnapshot, addComp } = store
 const container = ref()
 const getContainerStyle = () => {
   const { width, height } = visualData.value
@@ -70,8 +70,8 @@ const dropComponent = (ev: any) => {
 
   addComp(data)
 }
-const dragResizeAfter = (data: VisualCompNodeInfo) => {
-  updateCompPosition(data)
+const dragResizeAfter = () => {
+  setSnapshot()
 }
 </script>
 <style scoped lang="scss">
