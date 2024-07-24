@@ -5,32 +5,32 @@ import type { VisualComp,VisualData,VisualCompNodeInfo } from '@/model'
 // 快照保存的长度
 const SNAPSHOTLEN = 10
 export const useVisualStore = defineStore('visual', () => {
-    const visualData = ref<VisualData>({
-        componentData:[
+  const visualData = ref<VisualData>({
+      componentData:[
 
-        ],
-        name:'',
-        id:'',
-        img:'',
-        height:1080,
-        width:1920
-    })
-    const curCompData = ref<VisualComp>({
-        name:'',
-        type:'',
-        id:'',
-        props:{},
-        tag:'',
-        position:{
-            top:0,
-            left:0
-        },
-        size:{
-            width:0,
-            height:0
-        },
-        formId:''
-    })
+      ],
+      name:'',
+      id:'',
+      img:'',
+      height:1080,
+      width:1920
+  })
+  const curCompData = ref<VisualComp>({
+      name:'',
+      type:'',
+      id:'',
+      props:{},
+      tag:'',
+      position:{
+          top:0,
+          left:0
+      },
+      size:{
+          width:0,
+          height:0
+      },
+      formId:''
+  })
    /**
    * 快照数据 -- 只有影响布局的操作才会保存快照
    */
@@ -67,6 +67,22 @@ export const useVisualStore = defineStore('visual', () => {
       visualData.value.componentData = cloneDeep(snapshotData.value[curSnapshotIdx.value])
     }
   }
+  const oldCompData = ref<VisualComp>({
+      name:'',
+      type:'',
+      id:'',
+      props:{},
+      tag:'',
+      position:{
+          top:0,
+          left:0
+      },
+      size:{
+          width:0,
+          height:0
+      },
+      formId:''
+  })
     /**
    * 选择组件
    */
@@ -74,6 +90,22 @@ export const useVisualStore = defineStore('visual', () => {
     const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
     if (idx != -1) {
         curCompData.value = visualData.value.componentData[idx]
+        oldCompData.value = cloneDeep(visualData.value.componentData[idx])
+    }
+  }
+  /**
+   * 更新组件位置信息
+   */
+  const updateCompPosition = (id:string,disY:number,disX:number) =>{
+    const idx = visualData.value.componentData.findIndex(e => e.id === id)
+    console.log(disX,disY)
+    if (idx != -1) {
+        visualData.value.componentData[idx].position = {
+          top: visualData.value.componentData[idx].position.top + disY,
+          left: visualData.value.componentData[idx].position.left + disX
+        }
+
+        setSnapshot()
     }
   }
   /**
@@ -81,6 +113,7 @@ export const useVisualStore = defineStore('visual', () => {
    */
   const addComp = (item: VisualComp) => {
     visualData.value.componentData.push(item)
+    onClickComp(item)
     setSnapshot()
   }
   /**
@@ -93,7 +126,6 @@ export const useVisualStore = defineStore('visual', () => {
         setSnapshot()
     }
   }
-
   return {
     undo,
     redo,
@@ -104,6 +136,8 @@ export const useVisualStore = defineStore('visual', () => {
     addComp,
     removeComp,
     snapshotData,
-    curSnapshotIdx
+    curSnapshotIdx,
+    oldCompData,
+    updateCompPosition
   }
 })
