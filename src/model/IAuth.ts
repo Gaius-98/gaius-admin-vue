@@ -5,7 +5,7 @@ export interface AuthLogin {
 }
 export type AuthToken = string
 export interface AuthInfo {
-  avatar: string | null
+  avatar: string
   email: string
   username: string
   name: string
