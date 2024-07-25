@@ -1,4 +1,5 @@
 import type { VisualComp } from "@/model"
+import { ViewCompNode } from "./ViewCompNode"
 export const getGroupCompInitInfo = (data:VisualComp[]) =>{
     let minLeft:number|null = null
     let minTop:number|null = null
@@ -16,4 +17,28 @@ export const getGroupCompInitInfo = (data:VisualComp[]) =>{
         width:maxRight - minLeft!,
         height:maxBottom - minTop!
     }
+}
+export const createGroup = (data:VisualComp[]) =>{
+    const {left,top,width,height} = getGroupCompInitInfo(data)
+    const group = new ViewCompNode('group')
+    group.position = {
+        top,
+        left
+    }
+    group.size = {
+        width,
+        height
+    }
+    group.props = {
+        data:data.map(compNode =>{
+            return {
+                ...compNode,
+                position:{
+                    left: compNode.position.left - left,
+                    top: compNode.position.top - top
+                }
+            }
+        })
+    }
+    return group
 }

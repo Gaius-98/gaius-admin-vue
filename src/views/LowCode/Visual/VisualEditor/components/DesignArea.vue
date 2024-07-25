@@ -23,8 +23,8 @@
       }"
       :wait="10"
       @update="dragResizeAfter"
-      @click="onClickComp(item)"
-      @mousedown="onClickComp(item)"
+      @click.stop="onClickComp(item)"
+      @mousedown.stop="onClickComp(item)"
     >
       <component :is="item.tag" v-bind="item.props" :style="item.style || {}"> </component>
     </gu-drag-resize-plus>
@@ -38,40 +38,24 @@
         left: startInfo.x + 'px'
       }"
     ></div>
-    <div
-      class="group"
-      v-show="isShowGroup"
-      :style="{
-        width: groupInfo.width + 'px',
-        height: groupInfo.height + 'px',
-        top: groupInfo.top + 'px',
-        left: groupInfo.left + 'px'
-      }"
-    ></div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, nextTick } from 'vue'
+import { reactive, toRefs, ref, nextTick, defineComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVisualStore } from '@/stores/visualDesign'
 import type { VisualComp } from '@/model'
 import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
 import { ViewCompNode } from '../../core/ViewCompNode'
-import { getGroupCompInitInfo } from '../../core/calculate'
+import { createGroup } from '../../core/calculate'
 const store = useVisualStore()
 const { visualData, curCompData, oldCompData } = storeToRefs(store)
-const { onClickComp, setSnapshot, addComp, updateCompPosition } = store
+const { onClickComp, setSnapshot, addComp, updateCompPosition, removeComp } = store
 const container = ref()
 const frameSelection = ref<string[]>([])
-const isShowGroup = ref(false)
-const groupInfo = ref({
-  width: 0,
-  height: 0,
-  top: 0,
-  left: 0
-})
+
 const getContainerStyle = () => {
   const { width, height } = visualData.value
   if (container.value) {
@@ -161,11 +145,11 @@ const dropComponent = (ev: any) => {
   addComp(data)
 }
 const dragResizeAfter = (data: any) => {
-  const { top: endTop, left: endLeft, nodeKey: curId } = data
-  const {
-    position: { top: startTop, left: startLeft }
-  } = oldCompData.value
-  updateFrameSelectCompPosition(curId, endTop - startTop, endLeft - startLeft)
+  // const { top: endTop, left: endLeft, nodeKey: curId } = data
+  // const {
+  //   position: { top: startTop, left: startLeft }
+  // } = oldCompData.value
+  // updateFrameSelectCompPosition(curId, endTop - startTop, endLeft - startLeft)
   setSnapshot()
 }
 const updateFrameSelectCompPosition = (curId: string, disY: number, disX: number) => {
@@ -183,9 +167,11 @@ document.body.addEventListener('keydown', (e: KeyboardEvent) => {
       let data = visualData.value.componentData.filter((item) =>
         frameSelection.value.includes(item.id)
       )
-      groupInfo.value = getGroupCompInitInfo(data)
-      isShowGroup.value = true
-      frameSelection.value = []
+      const newGroup = createGroup(data)
+      data.forEach((item) => {
+        removeComp(item)
+      })
+      addComp(newGroup)
     }
   }
 })

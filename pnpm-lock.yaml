@@ -35,8 +35,8 @@ dependencies:
     specifier: ^5.5.1
     version: 5.5.1
   gaius-utils:
-    specifier: ^1.1.4
-    version: 1.1.4(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6)
+    specifier: ^1.1.6
+    version: 1.1.6(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6)
   html2canvas:
     specifier: ^1.4.1
     version: 1.4.1
@@ -181,20 +181,12 @@ packages:
       picocolors: 1.0.0
     dev: false
 
-  /@babel/parser@7.24.4:
-    resolution: {integrity: sha512-zTvEBcghmeBma9QIGunWevvBAp4/Qu9Bdq+2k0Ot4fVMD6v3dsC9WOcRSKk7tRRyBM/53yKMJko9xOatGQAwSg==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.24.0
-
   /@babel/parser@7.24.8:
     resolution: {integrity: sha512-WzfbgXOkGzZiXXCqk43kKwZjzwx4oulxZi3nq2TYL9mOjQv6kYwul9mz6ID36njuL7Xkp6nJEfok848Zj10j/w==}
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
       '@babel/types': 7.24.0
-    dev: false
 
   /@babel/runtime@7.24.4:
     resolution: {integrity: sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==}
@@ -1217,7 +1209,7 @@ packages:
   /@vue/compiler-core@3.4.21:
     resolution: {integrity: sha512-MjXawxZf2SbZszLPYxaFCjxfibYrzr3eYbKxwpLR9EQN+oaziSu3qKVbwBERj1IFIB8OLUewxB5m/BFzi613og==}
     dependencies:
-      '@babel/parser': 7.24.4
+      '@babel/parser': 7.24.8
       '@vue/shared': 3.4.21
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -1249,13 +1241,13 @@ packages:
   /@vue/compiler-sfc@3.4.21:
     resolution: {integrity: sha512-me7epoTxYlY+2CUM7hy9PCDdpMPfIwrOvAXud2Upk10g4YLv9UBW7kL798TvMeDhPthkZ0CONNrK2GoeI1ODiQ==}
     dependencies:
-      '@babel/parser': 7.24.4
+      '@babel/parser': 7.24.8
       '@vue/compiler-core': 3.4.21
       '@vue/compiler-dom': 3.4.21
       '@vue/compiler-ssr': 3.4.21
       '@vue/shared': 3.4.21
       estree-walker: 2.0.2
-      magic-string: 0.30.9
+      magic-string: 0.30.10
       postcss: 8.4.38
       source-map-js: 1.2.0
 
@@ -2239,8 +2231,8 @@ packages:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
     dev: false
 
-  /gaius-utils@1.1.4(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6):
-    resolution: {integrity: sha512-vAd11PjSwT0NscwkavMWJuiFjFxDskrlcQEAqJ78Ch31J+FnWsLTdRFSnV27fMj+9TorqrxAPyYRlP2MOtgusQ==}
+  /gaius-utils@1.1.6(@types/node@20.11.28)(typescript@5.4.2)(vite@5.1.6):
+    resolution: {integrity: sha512-Od+c9J0dujKsFRunLEQ7FLhK03HIXvTr7veVqacCGHY9137/6tAFC5ONFQ5jnKodP3ysGtAivzLpH/EM7fxmhg==}
     dependencies:
       sass: 1.74.1
       uuid: 8.3.2
@@ -2661,13 +2653,13 @@ packages:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
-    dev: false
 
   /magic-string@0.30.9:
     resolution: {integrity: sha512-S1+hd+dIrC8EZqKyT9DstTH/0Z+f76kmmvZnkfQVmOpDEF9iVgdYif3Q/pIWHmCoo59bQVGW0kVL3e2nl+9+Sw==}
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
 
   /memorystream@0.3.1:
     resolution: {integrity: sha512-S3UwM3yj5mtUSEfP41UZmt/0SCoVYUcU1rkXv+BQ5Ig8ndL4sPoJNBUJERafdPb5jjHJGuMgytgKvKIf58XNBw==}

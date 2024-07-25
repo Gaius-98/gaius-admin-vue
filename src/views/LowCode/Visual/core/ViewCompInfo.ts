@@ -127,5 +127,14 @@ export default [
             width:'100%',
             height:'100%'
         }
+    },{
+        name:'组',
+        type:'group',
+        tag:'visual-group',
+        icon:'icon-deploymentunit',
+        props:{
+            data:[]
+        },
+        
     }
 ]

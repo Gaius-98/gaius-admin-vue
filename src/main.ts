@@ -10,6 +10,7 @@ import ImagePicker from './components/ImagePicker.vue'
 import registerSFEl from './components/SchemaForm/registerSFEl'
 import './assets/iconfont/iconfont.css'
 import GEchart from '@/components/GEchart/GEchart.vue'
+import VisualGroup from '@/components/VisualGroup/VisualGroup.vue'
 const app = createApp(App)
 
 app.use(createPinia())
@@ -20,5 +21,6 @@ app.use(registerSFEl,{
     'image-picker':ImagePicker
 })
 app.component('GEchart',GEchart)
+app.component('VisualGroup',VisualGroup)
 app.mount('#app')
 uninstallPreLoad()
