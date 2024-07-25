@@ -51,8 +51,8 @@ import 'gaius-utils/lib/style.css'
 import { ViewCompNode } from '../../core/ViewCompNode'
 import { createGroup } from '../../core/calculate'
 const store = useVisualStore()
-const { visualData, curCompData, oldCompData } = storeToRefs(store)
-const { onClickComp, setSnapshot, addComp, updateCompPosition, removeComp } = store
+const { visualData, curCompData } = storeToRefs(store)
+const { onClickComp, setSnapshot, addComp, removeComp } = store
 const container = ref()
 const frameSelection = ref<string[]>([])
 
@@ -83,8 +83,9 @@ const onMouseDown = (ev: MouseEvent) => {
   startInfo.value.x = ev.offsetX
   startInfo.value.y = ev.offsetY
   const move = (e: Event) => {
-    endInfo.value.x = e.offsetX
-    endInfo.value.y = e.offsetY
+    let ev = e as MouseEvent
+    endInfo.value.x = ev.offsetX
+    endInfo.value.y = ev.offsetY
   }
   const up = () => {
     document.querySelector('.container')!.removeEventListener('mousemove', move)
@@ -114,10 +115,6 @@ const handleFrameSelectData = () => {
     x: 0,
     y: 0
   }
-  const clear = () => {
-    document.querySelector('.container')?.removeEventListener('click', clear)
-    clearFrameSelection()
-  }
 }
 const clearFrameSelection = () => {
   frameSelection.value = []
@@ -144,35 +141,27 @@ const dropComponent = (ev: any) => {
 
   addComp(data)
 }
-const dragResizeAfter = (data: any) => {
-  // const { top: endTop, left: endLeft, nodeKey: curId } = data
-  // const {
-  //   position: { top: startTop, left: startLeft }
-  // } = oldCompData.value
-  // updateFrameSelectCompPosition(curId, endTop - startTop, endLeft - startLeft)
+const dragResizeAfter = () => {
   setSnapshot()
 }
-const updateFrameSelectCompPosition = (curId: string, disY: number, disX: number) => {
-  if (!frameSelection.value.length) return
-  frameSelection.value.map((id) => {
-    if (curId != id) {
-      updateCompPosition(id, disY, disX)
-    }
-  })
+
+const addGroup = () => {
+  if (frameSelection.value.length) {
+    let data = visualData.value.componentData.filter((item) =>
+      frameSelection.value.includes(item.id)
+    )
+    const newGroup = createGroup(data)
+    data.forEach((item) => {
+      removeComp(item)
+    })
+    addComp(newGroup)
+    clearFrameSelection()
+  }
 }
 document.body.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === 'g') {
     e.preventDefault()
-    if (frameSelection.value.length) {
-      let data = visualData.value.componentData.filter((item) =>
-        frameSelection.value.includes(item.id)
-      )
-      const newGroup = createGroup(data)
-      data.forEach((item) => {
-        removeComp(item)
-      })
-      addComp(newGroup)
-    }
+    addGroup()
   }
 })
 </script>

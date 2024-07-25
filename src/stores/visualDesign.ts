@@ -67,22 +67,7 @@ export const useVisualStore = defineStore('visual', () => {
       visualData.value.componentData = cloneDeep(snapshotData.value[curSnapshotIdx.value])
     }
   }
-  const oldCompData = ref<VisualComp>({
-      name:'',
-      type:'',
-      id:'',
-      props:{},
-      tag:'',
-      position:{
-          top:0,
-          left:0
-      },
-      size:{
-          width:0,
-          height:0
-      },
-      formId:''
-  })
+
     /**
    * 选择组件
    */
@@ -90,24 +75,9 @@ export const useVisualStore = defineStore('visual', () => {
     const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
     if (idx != -1) {
         curCompData.value = visualData.value.componentData[idx]
-        oldCompData.value = cloneDeep(visualData.value.componentData[idx])
     }
   }
-  /**
-   * 更新组件位置信息
-   */
-  const updateCompPosition = (id:string,disY:number,disX:number) =>{
-    const idx = visualData.value.componentData.findIndex(e => e.id === id)
-    console.log(disX,disY)
-    if (idx != -1) {
-        visualData.value.componentData[idx].position = {
-          top: visualData.value.componentData[idx].position.top + disY,
-          left: visualData.value.componentData[idx].position.left + disX
-        }
 
-        setSnapshot()
-    }
-  }
   /**
    *  新增组件
    */
@@ -137,7 +107,5 @@ export const useVisualStore = defineStore('visual', () => {
     removeComp,
     snapshotData,
     curSnapshotIdx,
-    oldCompData,
-    updateCompPosition
   }
 })
