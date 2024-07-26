@@ -22,9 +22,10 @@
         zIndex: `${idx + 100}`
       }"
       :wait="10"
-      @update="dragResizeAfter"
+      @update="debounceDragResizeAfter"
       @click.stop="onClickComp(item)"
       @mousedown.stop="onClickComp(item)"
+      @before-transform="onBeforeTransform"
     >
       <component :is="item.tag" v-bind="item.props" :style="item.style || {}"> </component>
     </gu-drag-resize-plus>
@@ -45,14 +46,15 @@
 import { reactive, toRefs, ref, nextTick, defineComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVisualStore } from '@/stores/visualDesign'
-import type { VisualComp } from '@/model'
+import type { VisualComp, TransformNode } from '@/model'
 import { GuDragResizePlus } from 'gaius-utils'
 import 'gaius-utils/lib/style.css'
 import { ViewCompNode } from '../../core/ViewCompNode'
-import { createGroup } from '../../core/calculate'
+import { createGroup, scaleGroupChildren } from '../../core/calculate'
+import { debounce } from 'lodash-es'
 const store = useVisualStore()
 const { visualData, curCompData } = storeToRefs(store)
-const { onClickComp, setSnapshot, addComp, removeComp } = store
+const { onClickComp, setSnapshot, addComp, removeComp, updateComp } = store
 const container = ref()
 const frameSelection = ref<string[]>([])
 
@@ -141,10 +143,30 @@ const dropComponent = (ev: any) => {
 
   addComp(data)
 }
-const dragResizeAfter = () => {
-  setSnapshot()
+const beforeTransformNodeInfo = ref<Partial<TransformNode>>({})
+const onBeforeTransform = (data: TransformNode) => {
+  beforeTransformNodeInfo.value = data
 }
 
+const dragResizeAfter = (data: TransformNode) => {
+  const { nodeKey } = data
+  let idx = visualData.value.componentData.findIndex((item) => item.id === nodeKey)
+  if (
+    idx != -1 &&
+    visualData.value.componentData[idx].type == 'group' &&
+    nodeKey == beforeTransformNodeInfo.value.nodeKey
+  ) {
+    updateComp(
+      scaleGroupChildren(
+        beforeTransformNodeInfo.value as TransformNode,
+        data,
+        visualData.value.componentData[idx]
+      )
+    )
+  }
+  setSnapshot()
+}
+const debounceDragResizeAfter = debounce(dragResizeAfter, 100)
 const addGroup = () => {
   if (frameSelection.value.length) {
     let data = visualData.value.componentData.filter((item) =>

@@ -87,6 +87,16 @@ export const useVisualStore = defineStore('visual', () => {
     setSnapshot()
   }
   /**
+   * 更新组件
+   */
+  const updateComp = (item: VisualComp) => {
+    const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
+    if (idx != -1) {
+        visualData.value.componentData[idx] = item
+        setSnapshot()
+    }
+  }
+  /**
    * 删除组件
    */
   const removeComp = (item: VisualComp) => {
@@ -107,5 +117,6 @@ export const useVisualStore = defineStore('visual', () => {
     removeComp,
     snapshotData,
     curSnapshotIdx,
+    updateComp
   }
 })

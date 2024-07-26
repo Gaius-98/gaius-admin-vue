@@ -30,3 +30,10 @@ export interface VisualCompNodeInfo {
     top:number
     left:number
 }
+export interface TransformNode {
+  nodeKey: string
+  width: number
+  height: number
+  left: number
+  top: number
+}

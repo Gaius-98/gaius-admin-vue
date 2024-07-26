@@ -1,4 +1,4 @@
-import type { VisualComp } from "@/model"
+import type { VisualComp,TransformNode } from "@/model"
 import { ViewCompNode } from "./ViewCompNode"
 export const getGroupCompInitInfo = (data:VisualComp[]) =>{
     let minLeft:number|null = null
@@ -41,4 +41,25 @@ export const createGroup = (data:VisualComp[]) =>{
         })
     }
     return group
+}
+export const scaleGroupChildren = (raw:TransformNode,data:TransformNode,comp:VisualComp) =>{
+    const {height:rawHeight,width:rawWidth} = raw
+    const {height:height,width:width} = data
+    const scaleXPercent = (width - rawWidth) / rawWidth
+    const scaleYPercent = (height - rawHeight) / rawHeight
+    const comps = comp.props!.data as VisualComp[]
+    comp.props!.data =  comps.map(comp=>{
+        return {
+            ...comp,
+            position:{
+                left:(comp.position.left * (1+scaleXPercent)).toFixed(2),
+                top: (comp.position.top * (1+scaleYPercent)).toFixed(2)
+            },
+            size:{
+                width: (comp.size.width * (1+scaleXPercent)).toFixed(2),
+                height: (comp.size.height * (1+scaleYPercent)).toFixed(2)
+            }
+        }
+    })
+    return comp
 }

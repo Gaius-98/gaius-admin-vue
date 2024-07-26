@@ -5,10 +5,10 @@
       :key="item.id"
       :disabled="true"
       :active="false"
-      v-model:left="item.position.left"
-      v-model:top="item.position.top"
-      v-model:width="item.size.width"
-      v-model:height="item.size.height"
+      :left="item.position.left"
+      :top="item.position.top"
+      :width="item.size.width"
+      :height="item.size.height"
     >
       <component :is="item.tag" v-bind="item.props" :style="item.style || {}"> </component>
     </gu-drag-resize-plus>
@@ -24,7 +24,6 @@ interface Props {
 }
 const props = defineProps<Props>()
 const { data } = toRefs(props)
-console.log(data.value)
 </script>
 <style scoped lang="scss">
 .visual-group {
