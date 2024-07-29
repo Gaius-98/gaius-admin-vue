@@ -8,8 +8,17 @@
   >
     <template #extra>
       <a-space>
-        <a-button @click="undo">撤销</a-button>
-        <a-button @click="redo">重做</a-button>
+        <a-button-group>
+          <a-button :disabled="!frameSelection.length" @click="addGroup"> 成组 </a-button>
+          <a-button :disabled="curCompData.type != 'group'" @click="reduceGroup">
+            取消分组
+          </a-button>
+        </a-button-group>
+        <a-button-group>
+          <a-button @click="undo">撤销</a-button>
+          <a-button @click="redo">重做</a-button>
+        </a-button-group>
+
         <a-button>加载外部组件</a-button>
         <a-button @click="onOpenVariableModal" class="variable-btn"> 变量池配置 </a-button>
         <a-button @click="onOpenSaveModal" type="primary" class="save-btn"> 保存 </a-button>
@@ -34,8 +43,10 @@ import CfgArea from './components/CfgArea.vue'
 import DesignArea from './components/DesignArea.vue'
 import leftSideBar from './components/LeftSideBar.vue'
 import { useVisualStore } from '@/stores/visualDesign'
+import { storeToRefs } from 'pinia'
 const store = useVisualStore()
-const { undo, redo } = store
+const { undo, redo, addGroup, reduceGroup } = store
+const { curCompData, frameSelection } = storeToRefs(store)
 const router = useRouter()
 
 const title = computed(() => 'title')

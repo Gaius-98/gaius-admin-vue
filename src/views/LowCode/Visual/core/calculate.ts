@@ -42,6 +42,15 @@ export const createGroup = (data:VisualComp[]) =>{
     }
     return group
 }
+
+export const releaseGroup = (groupData:VisualComp,) =>{
+    const { position :{left,top}} = groupData
+    return groupData.props!.data.map((comp:VisualComp)=>{
+        comp.position.left =  Number(comp.position.left) + left
+        comp.position.top = Number(comp.position.top) + top
+        return comp
+    })
+}
 export const scaleGroupChildren = (raw:TransformNode,data:TransformNode,comp:VisualComp) =>{
     const {height:rawHeight,width:rawWidth} = raw
     const {height:height,width:width} = data

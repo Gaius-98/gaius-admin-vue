@@ -53,10 +53,9 @@ import { ViewCompNode } from '../../core/ViewCompNode'
 import { createGroup, scaleGroupChildren } from '../../core/calculate'
 import { debounce } from 'lodash-es'
 const store = useVisualStore()
-const { visualData, curCompData } = storeToRefs(store)
-const { onClickComp, setSnapshot, addComp, removeComp, updateComp } = store
+const { visualData, curCompData, frameSelection } = storeToRefs(store)
+const { onClickComp, setSnapshot, addComp, removeComp, updateComp, addGroup } = store
 const container = ref()
-const frameSelection = ref<string[]>([])
 
 const getContainerStyle = () => {
   const { width, height } = visualData.value
@@ -167,19 +166,19 @@ const dragResizeAfter = (data: TransformNode) => {
   setSnapshot()
 }
 const debounceDragResizeAfter = debounce(dragResizeAfter, 100)
-const addGroup = () => {
-  if (frameSelection.value.length) {
-    let data = visualData.value.componentData.filter((item) =>
-      frameSelection.value.includes(item.id)
-    )
-    const newGroup = createGroup(data)
-    data.forEach((item) => {
-      removeComp(item)
-    })
-    addComp(newGroup)
-    clearFrameSelection()
-  }
-}
+// const addGroup = () => {
+//   if (frameSelection.value.length) {
+//     let data = visualData.value.componentData.filter((item) =>
+//       frameSelection.value.includes(item.id)
+//     )
+//     const newGroup = createGroup(data)
+//     data.forEach((item) => {
+//       removeComp(item)
+//     })
+//     addComp(newGroup)
+//     clearFrameSelection()
+//   }
+// }
 document.body.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === 'g') {
     e.preventDefault()

@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { cloneDeep } from 'lodash-es'
+import { createGroup,releaseGroup } from '@/views/LowCode/Visual/core/calculate'
+
 import type { VisualComp,VisualData,VisualCompNodeInfo } from '@/model'
 // 快照保存的长度
 const SNAPSHOTLEN = 10
@@ -106,6 +108,38 @@ export const useVisualStore = defineStore('visual', () => {
         setSnapshot()
     }
   }
+
+  // 范围选中
+  const  frameSelection = ref<string[]>([])
+  const addGroup = () => {
+    if (frameSelection.value.length) {
+      const data = visualData.value.componentData.filter((item) =>
+        frameSelection.value.includes(item.id)
+      )
+      const newGroup = createGroup(data)
+      data.forEach((item) => {
+        removeComp(item)
+      })
+      addComp(newGroup)
+      clearFrameSelection()
+    }
+  }
+  const reduceGroup = () =>{
+   const newCompList =  releaseGroup(curCompData.value)
+   removeComp(curCompData.value)
+   if(newCompList){
+      newCompList.map((comp:VisualComp)=>{
+        addComp(comp)
+      })
+   }
+   
+  }
+  const clearFrameSelection = () =>{
+    frameSelection.value = []
+  }
+
+
+
   return {
     undo,
     redo,
@@ -117,6 +151,9 @@ export const useVisualStore = defineStore('visual', () => {
     removeComp,
     snapshotData,
     curSnapshotIdx,
-    updateComp
+    updateComp,
+    frameSelection,
+    addGroup,
+    reduceGroup
   }
 })
