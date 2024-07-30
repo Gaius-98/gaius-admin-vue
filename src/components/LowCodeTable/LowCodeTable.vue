@@ -42,6 +42,7 @@
         :scroll="{ y: showFilterForm ? 400 : 650 }"
         :loading="loading"
         :pagination="false"
+        :key="id"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.type == 'image'">
@@ -125,6 +126,8 @@ const rowBtns = ref<Partial<LCTableInteractionCfg>[]>([])
 watch(
   () => id.value,
   () => {
+    headerBtns.value = []
+    rowBtns.value = []
     tableApi.getDetail(id.value).then((res) => {
       const { code, data, msg } = res
       if (code == 200) {
