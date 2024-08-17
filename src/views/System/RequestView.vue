@@ -106,8 +106,16 @@
         <a-descriptions-item label="请求方式" :span="3">
           {{ curApiInfo.method }}
         </a-descriptions-item>
-        <a-descriptions-item label="调用结果" :span="3">
-          {{ resultFlag ? '成功' : '失败' }}
+        <a-descriptions-item
+          label="调用结果"
+          :span="3"
+          :contentStyle="{
+            color: resultFlag ? '#52c41a' : '#f5222d'
+          }"
+        >
+          <a-tag :color="resultFlag ? 'success' : 'error'">
+            {{ resultFlag ? '成功' : '失败' }}
+          </a-tag>
         </a-descriptions-item>
         <a-descriptions-item
           label="返回信息"

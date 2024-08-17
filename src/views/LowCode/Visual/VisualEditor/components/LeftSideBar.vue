@@ -48,7 +48,7 @@ const nodeList = [
   }
 ]
 const active = ref()
-const affix = ref(false)
+const affix = ref(true)
 const onAffix = () => {
   affix.value = !affix.value
 }

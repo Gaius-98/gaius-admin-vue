@@ -1,12 +1,10 @@
 <template>
   <a-tree
     class="draggable-tree"
-    draggable
     block-node
     :tree-data="treeData"
     :showIcon="false"
     @select="onSelect"
-    @drop="onDrop"
     :fieldNames="{
       title: 'name',
       key: 'id',
@@ -34,9 +32,7 @@ const { onClickComp } = store
 const onSelect = (_: string, e: AntTreeNodeSelectedEvent) => {
   onClickComp(e.node.dataRef as unknown as VisualComp)
 }
-const onDrop = (info: AntTreeNodeDropEvent) => {
-  console.log(info)
-}
+
 const convertNode = (node: Record<string, any>) => {
   // 创建一个新的对象，保留原始对象的其它属性
   let newNode = { id: node.id, type: node.type, children: [], icon: node.icon, name: node.name }
