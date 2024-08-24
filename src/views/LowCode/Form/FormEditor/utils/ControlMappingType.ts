@@ -27,5 +27,5 @@ export default <Obj<Component>>{
   date: DatePicker,
   divider: MaterialDivider,
   collapse: MaterialCollapse,
-  textarea:Textarea
+  textarea: Textarea
 }

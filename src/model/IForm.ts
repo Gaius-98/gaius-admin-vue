@@ -1,4 +1,4 @@
-import type { Obj } from "./ICommon"
+import type { Obj } from './ICommon'
 export enum Size {
   middle = '中',
   large = '大',
@@ -13,7 +13,18 @@ export enum RadioStyle {
   outline = 'outline',
   solid = 'solid'
 }
-export type ControlType = 'input' | 'select' | 'switch' | 'radio' | 'checkbox' | 'date' | 'number'|'grid'|'card'|'collapse'|'divider'
+export type ControlType =
+  | 'input'
+  | 'select'
+  | 'switch'
+  | 'radio'
+  | 'checkbox'
+  | 'date'
+  | 'number'
+  | 'grid'
+  | 'card'
+  | 'collapse'
+  | 'divider'
 export type ControlCfg<T extends ControlType> = T extends 'input'
   ? LCInputCfg
   : T extends 'select'
@@ -74,14 +85,14 @@ export interface LCCollapseCfg {
   children: LCFormItemCfg<ControlType>[]
   showArrow: true
   defaultExpanded: true
-  header:string
+  header: string
 }
 export interface LCDividerCfg {
   dashed: boolean
   orientation: 'left' | 'right' | 'center'
   plain: boolean
   type: 'horizontal' | 'vertical'
-  title:string
+  title: string
 }
 export interface LCCheckCfg extends Partial<Pick<LCBaseCfg, 'disabled' | 'dict'>> {}
 
@@ -97,8 +108,6 @@ export interface LCNumberCfg extends Partial<Pick<LCBaseCfg, 'disabled' | 'size'
   precision?: number
   step?: number
 }
-
-
 
 export interface LCFormItemCfg<T extends ControlType> {
   id?: string

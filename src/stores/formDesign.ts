@@ -8,7 +8,7 @@ import html2canvas from 'html2canvas'
 import formApi from '@/views/LowCode/Form/api/form'
 import type { LCFormCfg, FormCfg } from '@/model'
 import { message } from 'ant-design-vue'
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 export const useFormDesignStore = defineStore('formDesign', () => {
   const formCfgItemList = ref<LCFormItemCfg<ControlType>[]>([])
   const formConfig = ref<Partial<FormCfg>>({})
@@ -52,18 +52,18 @@ export const useFormDesignStore = defineStore('formDesign', () => {
   }
   const changeControlItemId = (data: LCFormItemCfg<ControlType>) => {
     data.id = uuid()
-    if(data.type == 'grid'){
-      (data.controlProp as LCGridCfg).children.forEach((item:LCFormItemCfg<ControlType>[])=>{
-        item.forEach((e)=>{
+    if (data.type == 'grid') {
+      ;(data.controlProp as LCGridCfg).children.forEach((item: LCFormItemCfg<ControlType>[]) => {
+        item.forEach((e) => {
           changeControlItemId(e)
         })
       })
-    }else if(data.type == 'card'){
-      (data.controlProp as LCCardCfg).children.forEach((item:LCFormItemCfg<ControlType>)=>{
+    } else if (data.type == 'card') {
+      ;(data.controlProp as LCCardCfg).children.forEach((item: LCFormItemCfg<ControlType>) => {
         changeControlItemId(item)
       })
-    }else if(data.type == 'collapse'){
-      (data.controlProp as LCCollapseCfg).children.forEach((item:LCFormItemCfg<ControlType>)=>{
+    } else if (data.type == 'collapse') {
+      ;(data.controlProp as LCCollapseCfg).children.forEach((item: LCFormItemCfg<ControlType>) => {
         changeControlItemId(item)
       })
     }

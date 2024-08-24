@@ -7,8 +7,8 @@ const router = createRouter({
       path: '/',
       name: 'layout',
       component: () => import('@/layout/LayoutView.vue'),
-      redirect:{
-        path:'/home',
+      redirect: {
+        path: '/home'
       },
       children: [
         {
@@ -19,7 +19,7 @@ const router = createRouter({
         {
           path: '/system',
           name: 'system',
-          component: ()=>import('@/layout/BlankView.vue'),
+          component: () => import('@/layout/BlankView.vue'),
           children: [
             {
               path: 'menu',
@@ -56,7 +56,7 @@ const router = createRouter({
         {
           path: '/low-code',
           name: 'lowCode',
-           component: ()=>import('@/layout/BlankView.vue'),
+          component: () => import('@/layout/BlankView.vue'),
           children: [
             {
               path: 'form',
@@ -79,40 +79,45 @@ const router = createRouter({
               path: 'table-list',
               name: 'tableList',
               component: () => import('@/views/LowCode/Table/TableList/TableList.vue')
-            },{
-              path:'preview-table',
-              name:'previewLowCodeTable',
-              component:()=>import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
+            },
+            {
+              path: 'preview-table',
+              name: 'previewLowCodeTable',
+              component: () => import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
               props: (route) => route.query
-            },{
-              path:'visual-list',
-              name:'visualList',
-              component:()=>import('@/views/LowCode/Visual/VisualList/VisualList.vue')
-            },{
-              path:'visual',
-              name:'visual',
-              component:()=>import('@/views/LowCode/Visual/VisualEditor/VisualEditor.vue'),
+            },
+            {
+              path: 'visual-list',
+              name: 'visualList',
+              component: () => import('@/views/LowCode/Visual/VisualList/VisualList.vue')
+            },
+            {
+              path: 'visual',
+              name: 'visual',
+              component: () => import('@/views/LowCode/Visual/VisualEditor/VisualEditor.vue')
             }
           ]
         },
         {
-          path:'/preview',
-          name:'preview',
-          children:[
+          path: '/preview',
+          name: 'preview',
+          children: [
             {
-              path:'form',
-              name:'preview-form',
-              component:()=>import('@/components/LowCodeForm/LowCodeFormId.vue'),
+              path: 'form',
+              name: 'preview-form',
+              component: () => import('@/components/LowCodeForm/LowCodeFormId.vue'),
               props: (route) => route.query
-            },{
-              path:'table',
-              name:'preview-table',
-              component:()=>import('@/components/LowCodeTable/LowCodeTable.vue'),
+            },
+            {
+              path: 'table',
+              name: 'preview-table',
+              component: () => import('@/components/LowCodeTable/LowCodeTable.vue'),
               props: (route) => route.query
-            },{
-              path:'iframe',
-              name:'iframe',
-              component:()=>import('@/components/IframeView.vue'),
+            },
+            {
+              path: 'iframe',
+              name: 'iframe',
+              component: () => import('@/components/IframeView.vue'),
               props: (route) => route.query
             }
           ]
@@ -120,7 +125,7 @@ const router = createRouter({
         {
           path: '/:pathMatch(.*)*',
           name: '404',
-          component: ()=>import('@/views/ErrorTemplate/NotFound.vue')
+          component: () => import('@/views/ErrorTemplate/NotFound.vue')
         }
       ]
     },
@@ -138,7 +143,6 @@ router.beforeEach((to, from, next) => {
   } else {
     if (auth.get()) {
       next()
-      
     } else {
       next('/login')
     }

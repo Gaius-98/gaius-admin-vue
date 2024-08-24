@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-import type { PageParams,  ResPage,LCTableCfg } from '@/model'
+import type { PageParams, ResPage, LCTableCfg } from '@/model'
 export interface ApiDictItem {
-  apiName:string
-  id:string
+  apiName: string
+  id: string
 }
 export interface FormDictItem {
-  name:string
-  id:string
+  name: string
+  id: string
 }
 export default {
   getList: (params: PageParams) => {
@@ -48,16 +48,16 @@ export default {
       data
     })
   },
-  getApiList:()=>{
+  getApiList: () => {
     return request<ApiDictItem[]>({
       method: 'get',
-      url: 'request/dict',
+      url: 'request/dict'
     })
   },
-  getFormList:()=>{
+  getFormList: () => {
     return request<FormDictItem[]>({
       method: 'get',
-      url: 'form/dict',
+      url: 'form/dict'
     })
   }
 }

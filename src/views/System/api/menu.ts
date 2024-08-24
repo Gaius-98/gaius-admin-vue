@@ -8,7 +8,7 @@ export interface MenuTreeDict {
   id: string
   label: string
   children: MenuTreeDict[]
-  pid?:string
+  pid?: string
 }
 export default {
   getList: (keyword: string) => {
@@ -58,7 +58,7 @@ export default {
       method: 'get'
     })
   },
-  getAllMenu:() =>{
+  getAllMenu: () => {
     return request<MenuTreeDict[]>({
       url: 'menu/all',
       method: 'get'

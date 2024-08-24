@@ -18,10 +18,10 @@ export const useSystemStore = defineStore('system', () => {
     local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
   }
 
-  const themeCfg = useStorage<SystemThemeCfg>('gaius-theme-json',{
+  const themeCfg = useStorage<SystemThemeCfg>('gaius-theme-json', {
     projectName: import.meta.env.VITE_TITLE,
-    logo:'/prod/uploads/3a587351093a7d331c2f210100eaef5593.png',
-    loginBg:'/prod/uploads/bef69558f77f710e05a25f66ad1076bed7.webp',
+    logo: '/prod/uploads/3a587351093a7d331c2f210100eaef5593.png',
+    loginBg: '/prod/uploads/bef69558f77f710e05a25f66ad1076bed7.webp',
     colorPrimary: '#1677ff',
     headerBgColor: '#001529',
     headerFontColor: '#ffffff',

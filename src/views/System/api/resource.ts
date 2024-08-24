@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-import type { PageParams,ResPage } from '@/model'
+import type { PageParams, ResPage } from '@/model'
 export interface ImageItem {
-  path:string,
-  originalname:string,
-  size:number,
-  createTime:string
-  id:string
+  path: string
+  originalname: string
+  size: number
+  createTime: string
+  id: string
 }
 export default {
   getList: (params: PageParams) => {

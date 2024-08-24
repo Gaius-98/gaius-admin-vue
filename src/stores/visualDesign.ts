@@ -1,39 +1,37 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { cloneDeep } from 'lodash-es'
-import { createGroup,releaseGroup } from '@/views/LowCode/Visual/core/calculate'
+import { createGroup, releaseGroup } from '@/views/LowCode/Visual/core/calculate'
 
-import type { VisualComp,VisualData,VisualCompNodeInfo } from '@/model'
+import type { VisualComp, VisualData, VisualCompNodeInfo } from '@/model'
 // 快照保存的长度
 const SNAPSHOTLEN = 10
 export const useVisualStore = defineStore('visual', () => {
   const visualData = ref<VisualData>({
-      componentData:[
-
-      ],
-      name:'',
-      id:'',
-      img:'',
-      height:1080,
-      width:1920
+    componentData: [],
+    name: '',
+    id: '',
+    img: '',
+    height: 1080,
+    width: 1920
   })
   const curCompData = ref<VisualComp>({
-      name:'',
-      type:'',
-      id:'',
-      props:{},
-      tag:'',
-      position:{
-          top:0,
-          left:0
-      },
-      size:{
-          width:0,
-          height:0
-      },
-      formId:''
+    name: '',
+    type: '',
+    id: '',
+    props: {},
+    tag: '',
+    position: {
+      top: 0,
+      left: 0
+    },
+    size: {
+      width: 0,
+      height: 0
+    },
+    formId: ''
   })
-   /**
+  /**
    * 快照数据 -- 只有影响布局的操作才会保存快照
    */
   const snapshotData = ref<any[][]>([])
@@ -46,7 +44,7 @@ export const useVisualStore = defineStore('visual', () => {
    */
   const setSnapshot = () => {
     snapshotData.value[curSnapshotIdx.value++] = cloneDeep(visualData.value.componentData)
-    if(snapshotData.value.length > SNAPSHOTLEN){
+    if (snapshotData.value.length > SNAPSHOTLEN) {
       snapshotData.value = snapshotData.value.slice(snapshotData.value.length - SNAPSHOTLEN)
       curSnapshotIdx.value = SNAPSHOTLEN
     }
@@ -70,13 +68,13 @@ export const useVisualStore = defineStore('visual', () => {
     }
   }
 
-    /**
+  /**
    * 选择组件
    */
   const onClickComp = (item: VisualComp) => {
-    const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
+    const idx = visualData.value.componentData.findIndex((e) => e.id === item.id)
     if (idx != -1) {
-        curCompData.value = visualData.value.componentData[idx]
+      curCompData.value = visualData.value.componentData[idx]
     }
   }
 
@@ -92,25 +90,25 @@ export const useVisualStore = defineStore('visual', () => {
    * 更新组件
    */
   const updateComp = (item: VisualComp) => {
-    const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
+    const idx = visualData.value.componentData.findIndex((e) => e.id === item.id)
     if (idx != -1) {
-        visualData.value.componentData[idx] = item
-        setSnapshot()
+      visualData.value.componentData[idx] = item
+      setSnapshot()
     }
   }
   /**
    * 删除组件
    */
   const removeComp = (item: VisualComp) => {
-    const idx = visualData.value.componentData.findIndex(e => e.id === item.id)
+    const idx = visualData.value.componentData.findIndex((e) => e.id === item.id)
     if (idx != -1) {
-        visualData.value.componentData.splice(idx, 1)
-        setSnapshot()
+      visualData.value.componentData.splice(idx, 1)
+      setSnapshot()
     }
   }
 
   // 范围选中
-  const  frameSelection = ref<string[]>([])
+  const frameSelection = ref<string[]>([])
   const addGroup = () => {
     if (frameSelection.value.length) {
       const data = visualData.value.componentData.filter((item) =>
@@ -124,21 +122,18 @@ export const useVisualStore = defineStore('visual', () => {
       clearFrameSelection()
     }
   }
-  const reduceGroup = () =>{
-   const newCompList =  releaseGroup(curCompData.value)
-   removeComp(curCompData.value)
-   if(newCompList){
-      newCompList.map((comp:VisualComp)=>{
+  const reduceGroup = () => {
+    const newCompList = releaseGroup(curCompData.value)
+    removeComp(curCompData.value)
+    if (newCompList) {
+      newCompList.map((comp: VisualComp) => {
         addComp(comp)
       })
-   }
-   
+    }
   }
-  const clearFrameSelection = () =>{
+  const clearFrameSelection = () => {
     frameSelection.value = []
   }
-
-
 
   return {
     undo,

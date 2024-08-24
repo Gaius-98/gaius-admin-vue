@@ -39,12 +39,11 @@ export const getDeepValue = (obj: Obj<any>, path: string) => {
 export const setDeepValue = (obj: Obj<any>, path: string, value: any) => {
   const paths = path.split('.')
   paths.reduce((pre, cur, index) => {
-    
     if (index === paths.length - 1) {
       pre[cur] = value || undefined
-    }else if(!pre[cur]){
+    } else if (!pre[cur]) {
       pre[cur] = {}
     }
-    return pre[cur] 
+    return pre[cur]
   }, obj)
 }

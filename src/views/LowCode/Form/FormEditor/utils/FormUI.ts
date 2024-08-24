@@ -1,6 +1,6 @@
 import type { Obj } from '@/model'
 import controlDefault from './ControlDefault'
-import {cloneDeep} from 'lodash-es'
+import { cloneDeep } from 'lodash-es'
 const createRandomField = () => {
   return 'field' + new Date().getTime().toString().slice(-4)
 }

@@ -14,12 +14,12 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-app.use(registerSFEl,{
-    'code-editor':defineAsyncComponent(()=>import('@/components/CodeEditor.vue')),
-    'color-picker':defineAsyncComponent(()=>import('@/components/ColorPicker.vue')),
-    'image-picker':defineAsyncComponent(()=>import('@/components/ImagePicker.vue'))
+app.use(registerSFEl, {
+  'code-editor': defineAsyncComponent(() => import('@/components/CodeEditor.vue')),
+  'color-picker': defineAsyncComponent(() => import('@/components/ColorPicker.vue')),
+  'image-picker': defineAsyncComponent(() => import('@/components/ImagePicker.vue'))
 })
-app.component('GEchart',GEchart)
-app.component('VisualGroup',VisualGroup)
+app.component('GEchart', GEchart)
+app.component('VisualGroup', VisualGroup)
 app.mount('#app')
 uninstallPreLoad()

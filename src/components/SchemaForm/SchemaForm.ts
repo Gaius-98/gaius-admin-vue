@@ -17,10 +17,10 @@ import {
   Textarea
 } from 'ant-design-vue'
 import { compileText, execFun } from './core'
-import { getDeepValue,setDeepValue } from '@/utils/tools'
+import { getDeepValue, setDeepValue } from '@/utils/tools'
 import { GuPubSub } from 'gaius-utils'
 import { defineExpose } from 'vue'
-import {cloneDeep} from 'lodash-es'
+import { cloneDeep } from 'lodash-es'
 const createUIControl = (
   formData: Obj<any>,
   key: string,
@@ -45,21 +45,21 @@ const createUIControl = (
         }
       })
       break
-      case 'textarea':
-        Node = h(Textarea, {
-          ...component,
-          value: getDeepValue(formData, key),
-          onChange: (e: Event) => {
-            setDeepValue(formData, key, (e.target as HTMLInputElement).value)
-            ctx.pubSub.onPublish(key)
-            ctx.onChange({
-              formData: formData,
-              field: key,
-              value: (e.target as HTMLInputElement).value
-            })
-          }
-        })
-        break
+    case 'textarea':
+      Node = h(Textarea, {
+        ...component,
+        value: getDeepValue(formData, key),
+        onChange: (e: Event) => {
+          setDeepValue(formData, key, (e.target as HTMLInputElement).value)
+          ctx.pubSub.onPublish(key)
+          ctx.onChange({
+            formData: formData,
+            field: key,
+            value: (e.target as HTMLInputElement).value
+          })
+        }
+      })
+      break
     case 'select':
       Node = h(Select, {
         ...component,
@@ -118,16 +118,21 @@ const createUIControl = (
             ctx.onChange({ formData: formData, field: key, value: e.target!.value })
           }
         },
-        (ctx.options[key] || []).map((item: any) => {
-          return h(
-            RadioButton,
-            {
-              value: item.value,
-              key: item.value
-            },
-            item.label
-          )
-        })
+        {
+          default: () =>
+            (ctx.options[key] || []).map((item: any) => {
+              return h(
+                RadioButton,
+                {
+                  value: item.value,
+                  key: item.value
+                },
+                {
+                  default: () => item.label
+                }
+              )
+            })
+        }
       )
       break
     case 'switch':
@@ -165,16 +170,14 @@ const createSchemaFormItem = (
   prop: SchemaProperties,
   ctx: any
 ) => {
-  const { type, label, component, rules,tooltip } = prop
+  const { type, label, component, rules, tooltip } = prop
   let childrenNode
   if (component?.name) {
     const { name } = component
     const itemProps = cloneDeep(component)
     Reflect.deleteProperty(itemProps, 'onChange')
     if (!ctx.sfProvideEL[name]) {
-      throw new Error(
-        `${name} is not registered,provide('sfProvideEL','${name}',Component)`
-      )
+      throw new Error(`${name} is not registered,provide('sfProvideEL','${name}',Component)`)
     }
     childrenNode = h(ctx.sfProvideEL[name], {
       ...itemProps,
@@ -205,7 +208,9 @@ const createSchemaFormItem = (
         rules,
         tooltip
       },
-      [childrenNode]
+      {
+        default: () => [childrenNode]
+      }
     )
   )
 }
@@ -297,12 +302,18 @@ const SchemaForm = {
     }
   },
   render: (ctx: any) => {
-    return h(Form, { ...ctx.layout }, [
-      ...Object.entries(ctx.properties as Obj<SchemaProperties>).map(
-        ([key, propItem]: [string, SchemaProperties]) =>
-          createSchemaFormItem(ctx.formData, key, propItem, ctx)
-      )
-    ])
+    return h(
+      Form,
+      { ...ctx.layout },
+      {
+        default: () => [
+          ...Object.entries(ctx.properties as Obj<SchemaProperties>).map(
+            ([key, propItem]: [string, SchemaProperties]) =>
+              createSchemaFormItem(ctx.formData, key, propItem, ctx)
+          )
+        ]
+      }
+    )
   }
 }
 export default SchemaForm

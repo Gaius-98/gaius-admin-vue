@@ -19,7 +19,7 @@ export const replaceVar = (text: string, formData: Obj<any>) => {
     // 从捕获组中获取变量名称
     const variableName = (p1 as string).trim()
     // 返回变量对应的值，如果变量不存在，则返回原占位符
-    return getDeepValue({formData},variableName) 
+    return getDeepValue({ formData }, variableName)
   })
   return replacedStr
 }
@@ -28,4 +28,3 @@ export const execFun = (text: string, formData: Obj<any>) => {
   const runFun = new Function(`return ${funStr}`)
   return runFun()
 }
-
