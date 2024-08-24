@@ -17,10 +17,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.allowClear': {
         type: 'switch',
         label: '可清除'
@@ -70,10 +70,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.allowClear': {
         type: 'switch',
         label: '可清除'
@@ -123,10 +123,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.allowClear': {
         type: 'switch',
         label: '可清除'
@@ -212,10 +212,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.disabled': {
         type: 'switch',
         label: '禁用'
@@ -253,10 +253,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.disabled': {
         type: 'switch',
         label: '禁用'
@@ -345,10 +345,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.disabled': {
         type: 'switch',
         label: '禁用'
@@ -385,10 +385,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.bordered': {
         type: 'switch',
         label: '边框'
@@ -450,10 +450,10 @@ export default [
         type: 'string',
         label: '字段名'
       },
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.bordered': {
         type: 'switch',
         label: '边框'
@@ -544,10 +544,10 @@ export default [
   {
     type: 'grid',
     properties: {
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.gutter': {
         type: 'number',
         label: '栅格间距'
@@ -581,10 +581,10 @@ export default [
   {
     type: 'card',
     properties: {
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.title': {
         type: 'string',
         label: '标题'
@@ -602,10 +602,10 @@ export default [
   {
     type: 'divider',
     properties: {
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.title': {
         type: 'string',
         label: '标题'
@@ -643,10 +643,10 @@ export default [
   {
     type: 'collapse',
     properties: {
-      show: {
-        type: 'string',
-        label: '显隐条件'
-      },
+      // show: {
+      //   type: 'string',
+      //   label: '显隐条件'
+      // },
       'controlProp.title': {
         type: 'string',
         label: '标题'
