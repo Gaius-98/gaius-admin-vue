@@ -46,24 +46,23 @@ export const useFormDesignStore = defineStore('formDesign', () => {
   const copyControlItem = () => {
     const copyCfg = cloneDeep(curControlCfg.value)
     changeControlItemId(copyCfg)
-    Reflect.deleteProperty(copyCfg, 'id')
     const copyControl = copyCfg
     formCfgItemList.value.push(copyControl)
   }
   const changeControlItemId = (data: LCFormItemCfg<ControlType>) => {
     data.id = uuid()
     if (data.type == 'grid') {
-      ;(data.controlProp as LCGridCfg).children.forEach((item: LCFormItemCfg<ControlType>[]) => {
+      (data.controlProp as LCGridCfg).children.forEach((item: LCFormItemCfg<ControlType>[]) => {
         item.forEach((e) => {
           changeControlItemId(e)
         })
       })
     } else if (data.type == 'card') {
-      ;(data.controlProp as LCCardCfg).children.forEach((item: LCFormItemCfg<ControlType>) => {
+      (data.controlProp as LCCardCfg).children.forEach((item: LCFormItemCfg<ControlType>) => {
         changeControlItemId(item)
       })
     } else if (data.type == 'collapse') {
-      ;(data.controlProp as LCCollapseCfg).children.forEach((item: LCFormItemCfg<ControlType>) => {
+      (data.controlProp as LCCollapseCfg).children.forEach((item: LCFormItemCfg<ControlType>) => {
         changeControlItemId(item)
       })
     }
