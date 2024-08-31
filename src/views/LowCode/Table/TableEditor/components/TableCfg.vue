@@ -132,7 +132,6 @@ watch(
   () => columnFields,
   () => {
     if (columnForm.value) {
-      console.log('columnForm', columnForm.value)
       columnForm.value.refreshOption('dataIndex')
     }
   },

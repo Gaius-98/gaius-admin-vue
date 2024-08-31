@@ -27,8 +27,15 @@
           @click="onRefresh"
         ></a-button>
       </div>
-      <drag-table-header v-model="tableCfg.columns" @onClick="onClickColumn" @onRemove="onRemove" />
-      <a-table
+      <ag-table
+        v-model:columns="tableCfg.columns"
+        :table-data="tableData"
+        :height="showFilterForm ? 300 : 500"
+        @onRemove="onRemove"
+        @onClick="onClickColumn"
+      ></ag-table>
+      <!-- <drag-table-header v-model="tableCfg.columns"   /> -->
+      <!-- <a-table
         :showHeader="false"
         :columns="tableCfg.columns"
         :data-source="tableData"
@@ -47,7 +54,7 @@
             </a>
           </template>
         </template>
-      </a-table>
+      </a-table> -->
     </a-card>
   </div>
   <a-modal v-model:open="interactionShow" :footer="null" title="交互配置">
@@ -78,6 +85,7 @@ import { v4 as uuid } from 'uuid'
 import tableApi from '../../api/table'
 import { message } from 'ant-design-vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
+import AgTable from '@/components/AgTable/AgTable.vue'
 const tableStore = useTableDesignStore()
 const { tableCfg, tableData, columnFields } = storeToRefs(tableStore)
 const { onSelectColumn, onRemoveColumn, onAddColumn, onRefreshData } = tableStore
