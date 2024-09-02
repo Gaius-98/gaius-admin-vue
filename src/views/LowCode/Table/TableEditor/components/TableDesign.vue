@@ -30,10 +30,11 @@
       <ag-table
         v-model:columns="tableCfg.columns"
         :table-data="tableData"
-        :height="showFilterForm ? 300 : 500"
+        :height="showFilterForm ? 400 : 600"
         @onRemove="onRemove"
         @onClick="onClickColumn"
       ></ag-table>
+      <a-pagination :total="total" show-less-items style="margin-top: 10px; float: right" />
       <!-- <drag-table-header v-model="tableCfg.columns"   /> -->
       <!-- <a-table
         :showHeader="false"

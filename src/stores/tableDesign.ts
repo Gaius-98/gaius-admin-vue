@@ -34,7 +34,8 @@ export const useTableDesignStore = defineStore('tableDesign', () => {
     tableCfg.value.columns.push({
       id: uuid(),
       dataIndex: 'field' + randomStr,
-      title: '列' + randomStr
+      title: '列' + randomStr,
+      width:200
     })
   }
   const onSelectColumn = (id: string, data: Partial<LCTableColumnCfg>[]) => {

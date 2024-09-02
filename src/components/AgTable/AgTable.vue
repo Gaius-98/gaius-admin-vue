@@ -27,7 +27,6 @@ import type {
   IHeaderParams
 } from 'ag-grid-community'
 import CustomTableHeader from './components/CustomTableHeader.vue'
-// const agColumnHeader = defineComponent(() => CustomTableHeader)
 import agPubSub from './utils/AgPubSub'
 agPubSub.onSubscribe('removeEvent', (params: IHeaderParams) => {
   let colId = params.column.getColId()
