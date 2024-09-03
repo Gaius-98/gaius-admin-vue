@@ -16,13 +16,16 @@
     <a-card class="table-container">
       <div class="tools" style="margin-bottom: 5px">
         <a-space>
-          <div
-            class="btn"
-            v-for="btn in headerBtnList"
-            :key="btn.id"
-            @click="onOpenBtnCfg('header', btn)"
-          >
-            <a-button> {{ btn.name }}</a-button>
+          <div class="btn" v-for="btn in headerBtnList" :key="btn.id">
+            <a-button @click="onOpenBtnCfg('header', btn)"> {{ btn.name }}</a-button>
+            <a-popconfirm
+              title="确定要删除此按钮的配置吗?"
+              ok-text="确定"
+              cancel-text="取消"
+              @confirm="onRemoveBtn(btn)"
+            >
+              <CloseCircleOutlined class="remove-btn" />
+            </a-popconfirm>
           </div>
           <a-button @click="onOpenBtnCfg('header')" class="add-btn">
             <PlusOutlined />
@@ -57,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { SyncOutlined } from '@ant-design/icons-vue'
+import { SyncOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
 import { reactive, toRefs, ref, computed, h } from 'vue'
 import { useTableDesignStore } from '@/stores/tableDesign'
 import { storeToRefs } from 'pinia'
@@ -322,6 +325,17 @@ const onCancel = () => {
   interactionShow.value = false
   actionBtnCfg.value = {}
 }
+
+const onRemoveBtn = (btn: Partial<LCTableInteractionCfg>) => {
+  const { id } = btn
+  const idx = tableCfg.value.global.actionCfg!.findIndex((e) => {
+    return e.id == id
+  })
+  tableCfg.value.global.actionCfg!.splice(idx, 1)
+}
+agPubSub.onSubscribe('remove-btn', (btn: Partial<LCTableInteractionCfg>) => {
+  onRemoveBtn(btn)
+})
 </script>
 <style scoped lang="scss">
 .table-design-container {
@@ -338,6 +352,14 @@ const onCancel = () => {
     border: 1px solid transparent;
     &:hover {
       border: 1px dashed #4096ff;
+      .remove-btn {
+        display: inline;
+      }
+    }
+    .remove-btn {
+      display: none;
+      cursor: pointer;
+      margin-left: 8px;
     }
   }
 }

@@ -16,6 +16,7 @@
 <script lang="ts" setup>
 import { reactive, toRefs, ref, computed, compile, defineComponent } from 'vue'
 import type { LCTableColumnCfg } from '@/model'
+import './styles/custom.scss'
 import 'ag-grid-community/styles/ag-grid.css' // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css' // Optional Theme applied to the Data Grid
 import { AgGridVue } from 'ag-grid-vue3' // Vue Data Grid Component

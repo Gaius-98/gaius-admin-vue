@@ -1,16 +1,25 @@
 <template>
-  <a-space>
-    <div class="btn" v-for="btn in rowBtnList" :key="btn.id" @click="onClickRowBtn('row', btn)">
-      <a>
+  <div class="custom-opt-cell">
+    <div class="btn" v-for="btn in rowBtnList" :key="btn.id">
+      <a @click="onClickRowBtn('row', btn)">
         {{ btn.name }}
       </a>
+      <a-popconfirm
+        title="确定要删除此按钮的配置吗?"
+        ok-text="确定"
+        cancel-text="取消"
+        @confirm="onRemoveBtn(btn)"
+      >
+        <CloseCircleOutlined class="remove-btn" />
+      </a-popconfirm>
     </div>
     <PlusOutlined style="cursor: pointer" @click="onClickRowBtn('row')" />
-  </a-space>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, watch, computed } from 'vue'
+import { CloseCircleOutlined } from '@ant-design/icons-vue'
+import { computed } from 'vue'
 import type { LCTableInteractionCfg } from '@/model'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { useTableDesignStore } from '@/stores/tableDesign'
@@ -28,17 +37,8 @@ const onClickRowBtn = (position: 'row' | 'header', data?: Partial<LCTableInterac
     data
   })
 }
-</script>
-<style scoped lang="scss">
-.btn-list {
-  display: flex;
-  justify-content: space-around;
-  .btn {
-    padding: 5px;
-    border: 1px dashed transparent;
-    &:hover {
-      border: 1px dashed #4096ff;
-    }
-  }
+const onRemoveBtn = (btn: Partial<LCTableInteractionCfg>) => {
+  agPubSub.onPublish('remove-btn', btn)
 }
-</style>
+</script>
+<style scoped lang="scss"></style>
