@@ -28,6 +28,8 @@ import type {
 } from 'ag-grid-community'
 import CustomTableHeader from './components/CustomTableHeader.vue'
 import agPubSub from './utils/AgPubSub'
+import CustomOptCell from './components/CustomOptCell.vue'
+import CustomAddColumnHeader from './components/CustomAddColumnHeader.vue'
 agPubSub.onSubscribe('removeEvent', (params: IHeaderParams) => {
   let colId = params.column.getColId()
   let column = columns.value.find((col) => col.dataIndex == colId)
@@ -49,7 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const { columnId, tableData } = toRefs(props)
 const colDefs = computed<ColDef[]>(() => {
-  return columns.value.map((col) => {
+  let cols = columns.value.map((col) => {
     return {
       field: col.dataIndex,
       colId: col.dataIndex,
@@ -57,8 +59,24 @@ const colDefs = computed<ColDef[]>(() => {
       pinned: col.fixed,
       lockVisible: true,
       headerComponent: CustomTableHeader
-    }
+    } as ColDef
   })
+  cols.push({
+    field: '_plus_',
+    colId: '_plus',
+    headerName: '新增列',
+    lockVisible: true,
+    headerComponent: CustomAddColumnHeader
+  })
+  cols.push({
+    field: '_opt_',
+    colId: '_opt_',
+    headerName: '操作',
+    pinned: 'right',
+    lockVisible: true,
+    cellRenderer: CustomOptCell
+  } as ColDef)
+  return cols
 })
 
 const afterColumnMoved = (ev: ColumnMovedEvent) => {

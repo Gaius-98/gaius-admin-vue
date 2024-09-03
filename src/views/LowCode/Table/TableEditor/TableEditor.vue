@@ -101,13 +101,23 @@ const steps = [
   },
   {
     title: '表格布局区',
-    description: '现在可以通过新增列,来增加表格的列,支持拖拽表头改变列的位置及列宽',
+    description: '在此区域可以编辑、预览您配置的表格整体样式',
     target: () => document.querySelector('.left-part')
+  },
+  {
+    title: '列配置',
+    description: '此处可以为表格增加列,列之间可以进行拖拽排序',
+    target: () => document.querySelector('.add-column')
   },
   {
     title: '配置区',
     description: '可以对表格整体或者表格单独的列进行配置,满足您的需求',
     target: () => document.querySelector('.right-part')
+  },
+  {
+    title: '按钮配置',
+    description: '如果是一个可以交互的表格,点击此处增加表格的交互功能',
+    target: () => document.querySelector('.add-btn')
   },
   {
     title: '最后',

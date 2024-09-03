@@ -39,7 +39,6 @@ import { storeToRefs } from 'pinia'
 import type { IHeaderParams } from 'ag-grid-community'
 const store = useTableDesignStore()
 const { currentColumn } = storeToRefs(store)
-console.log(currentColumn)
 interface Props {
   params: IHeaderParams
 }

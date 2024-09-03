@@ -16,8 +16,17 @@
     <a-card class="table-container">
       <div class="tools" style="margin-bottom: 5px">
         <a-space>
-          <a-button type="primary" @click="onAddColumn">新增列</a-button>
-          <a-button type="primary" @click="interactionShow = true">交互配置</a-button>
+          <div
+            class="btn"
+            v-for="btn in headerBtnList"
+            :key="btn.id"
+            @click="onOpenBtnCfg('header', btn)"
+          >
+            <a-button> {{ btn.name }}</a-button>
+          </div>
+          <a-button @click="onOpenBtnCfg('header')" class="add-btn">
+            <PlusOutlined />
+          </a-button>
         </a-space>
         <a-button
           :icon="h(SyncOutlined)"
@@ -35,58 +44,35 @@
         @onClick="onClickColumn"
       ></ag-table>
       <a-pagination :total="total" show-less-items style="margin-top: 10px; float: right" />
-      <!-- <drag-table-header v-model="tableCfg.columns"   /> -->
-      <!-- <a-table
-        :showHeader="false"
-        :columns="tableCfg.columns"
-        :data-source="tableData"
-        :scroll="{ y: showFilterForm ? 300 : 500 }"
-        :pagination="{
-          total: total
-        }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column && column.type == 'image'">
-            <a-image :src="`${record[column.dataIndex]}`" height="130px" width="100%" />
-          </template>
-          <template v-if="column && column.type == 'link'">
-            <a :href="`${record[column.dataIndex]}`" target="_blank">
-              {{ record[column.dataIndex] }}
-            </a>
-          </template>
-        </template>
-      </a-table> -->
     </a-card>
   </div>
-  <a-modal v-model:open="interactionShow" :footer="null" title="交互配置">
-    <a-tabs v-model:activeKey="activeKey" type="editable-card" @edit="onEdit">
-      <a-tab-pane v-for="pane in tableCfg.global.actionCfg" :key="pane.id" :tab="pane.name">
-        <div class="action-container">
-          <schema-form
-            :layout="schema.layout"
-            :properties="schema.properties"
-            :formData="pane"
-          ></schema-form>
-        </div>
-      </a-tab-pane>
-    </a-tabs>
+  <a-modal v-model:open="interactionShow" @ok="onConfirm()" @close="onCancel()" title="交互配置">
+    <schema-form
+      :layout="schema.layout"
+      :properties="schema.properties"
+      :formData="actionBtnCfg"
+      :key="actionBtnCfg.id"
+    ></schema-form>
   </a-modal>
 </template>
 
 <script lang="ts" setup>
-import DragTableHeader from '@/components/DragTableHeader.vue'
 import { SyncOutlined } from '@ant-design/icons-vue'
 import { reactive, toRefs, ref, computed, h } from 'vue'
 import { useTableDesignStore } from '@/stores/tableDesign'
 import { storeToRefs } from 'pinia'
-import type { LCTableColumnCfg } from '@/model'
+import type { LCTableColumnCfg, LCTableInteractionCfg } from '@/model'
 import LowCodeFormId from '@/components/LowCodeForm/LowCodeFormId.vue'
 import type { Schema } from '@/components/SchemaForm/ISchema'
 import { v4 as uuid } from 'uuid'
 import tableApi from '../../api/table'
 import { message } from 'ant-design-vue'
 import SchemaForm from '@/components/SchemaForm/SchemaForm'
-import AgTable from '@/components/AgTable/AgTable.vue'
+import AgTable from './AgTable/AgTable.vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
+import { cloneDeep } from 'lodash-es'
+import agPubSub from './AgTable/utils/AgPubSub'
+
 const tableStore = useTableDesignStore()
 const { tableCfg, tableData, columnFields } = storeToRefs(tableStore)
 const { onSelectColumn, onRemoveColumn, onAddColumn, onRefreshData } = tableStore
@@ -301,6 +287,41 @@ tableApi.getFormList().then((res) => {
     formList.value = data.map((e) => ({ value: e.id, label: e.name }))
   }
 })
+const headerBtnList = computed(
+  () => tableCfg.value.global.actionCfg?.filter((e) => e.position == 'header')
+)
+const actionBtnCfg = ref<Partial<LCTableInteractionCfg>>({})
+
+const onOpenBtnCfg = (position: 'row' | 'header', data?: Partial<LCTableInteractionCfg>) => {
+  actionBtnCfg.value = cloneDeep({
+    id: uuid(),
+    position,
+    ...data
+  })
+  interactionShow.value = true
+}
+agPubSub.onSubscribe(
+  'action',
+  ({ position, data }: { position: 'row' | 'header'; data?: Partial<LCTableInteractionCfg> }) => {
+    onOpenBtnCfg(position, data)
+  }
+)
+const onConfirm = () => {
+  const { id } = actionBtnCfg.value
+  const idx = tableCfg.value.global.actionCfg!.findIndex((e) => {
+    return e.id == id
+  })
+  if (idx != -1) {
+    tableCfg.value.global.actionCfg![idx] = cloneDeep(actionBtnCfg.value)
+  } else {
+    tableCfg.value.global.actionCfg?.push(cloneDeep(actionBtnCfg.value))
+  }
+  onCancel()
+}
+const onCancel = () => {
+  interactionShow.value = false
+  actionBtnCfg.value = {}
+}
 </script>
 <style scoped lang="scss">
 .table-design-container {
@@ -309,6 +330,15 @@ tableApi.getFormList().then((res) => {
   .filter-panel {
     max-height: 200px;
     margin-bottom: 20px;
+  }
+}
+.tools {
+  .btn {
+    padding: 5px;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px dashed #4096ff;
+    }
   }
 }
 .action-container {
