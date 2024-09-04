@@ -84,6 +84,7 @@ const { id } = toRefs(props)
 const tableDesignStore = useTableDesignStore()
 const { tableCfg, tableData, saveLoading, columnFields } = storeToRefs(tableDesignStore)
 const { onRefreshData, onSave } = tableDesignStore
+window.name = 'table'
 // 引导
 const open = ref<boolean>(false)
 
@@ -247,12 +248,10 @@ const onConfirm = () => {
   goBack()
 }
 const onPreview = () => {
-  router.push({
-    path: '/low-code/preview-table',
-    query: {
-      id: tableCfg.value.id
-    }
-  })
+  window.open(
+    `/preview-table?id=${tableCfg.value.id}&from=${location.pathname}${location.search}`,
+    `table_${tableCfg.value.id}`
+  )
 }
 const dataSourceShow = ref(false)
 const dataSourceSchema = ref<Schema>({

@@ -80,12 +80,7 @@ const router = createRouter({
               name: 'tableList',
               component: () => import('@/views/LowCode/Table/TableList/TableList.vue')
             },
-            {
-              path: 'preview-table',
-              name: 'previewLowCodeTable',
-              component: () => import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
-              props: (route) => route.query
-            },
+            
             {
               path: 'visual-list',
               name: 'visualList',
@@ -134,7 +129,13 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login/LoginView.vue')
-    }
+    },
+    {
+      path: '/preview-table',
+      name: 'previewLowCodeTable',
+      component: () => import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
+      props: (route) => route.query
+    },
   ]
 })
 router.beforeEach((to, from, next) => {

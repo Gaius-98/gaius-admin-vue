@@ -157,12 +157,7 @@ const onOpenAdd = () => {
   })
 }
 const onJumpView = (id: string) => {
-  router.push({
-    path: '/low-code/preview-table',
-    query: {
-      id
-    }
-  })
+  window.open(`/preview-table?id=${id}&from=${location.pathname}`, `table_${id}`)
 }
 const onJumpEdit = (id: string) => {
   router.push({
