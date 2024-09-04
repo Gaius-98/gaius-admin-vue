@@ -94,18 +94,18 @@ const router = createRouter({
           ]
         },
         {
-          path: '/preview',
-          name: 'preview',
+          path: '/apply',
+          name: 'apply',
           children: [
             {
               path: 'form',
-              name: 'preview-form',
+              name: 'apply-form',
               component: () => import('@/components/LowCodeForm/LowCodeFormId.vue'),
               props: (route) => route.query
             },
             {
               path: 'table',
-              name: 'preview-table',
+              name: 'apply-table',
               component: () => import('@/components/LowCodeTable/LowCodeTable.vue'),
               props: (route) => route.query
             },

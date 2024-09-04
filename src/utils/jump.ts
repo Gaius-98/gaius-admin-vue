@@ -16,7 +16,7 @@ export default (data: ResMenuItem) => {
       break
     case 'form':
       router.push({
-        path: '/preview/form',
+        path: '/apply/form',
         query: {
           id: address
         }
@@ -24,7 +24,7 @@ export default (data: ResMenuItem) => {
       break
     case 'table':
       router.push({
-        path: '/preview/table',
+        path: '/apply/table',
         query: {
           id: address
         }
@@ -32,7 +32,7 @@ export default (data: ResMenuItem) => {
       break
     case 'iframe':
       router.push({
-        path: '/preview/iframe',
+        path: '/apply/iframe',
         query: {
           id: encodeURIComponent(address!)
         }
