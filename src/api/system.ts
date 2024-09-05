@@ -10,13 +10,11 @@ export default {
       }
     })
   },
-  recordMenu: (url: string) => {
+  accessRecord: () => {
     return request({
       url: '/accessLog/record',
       method: 'get',
-      params: {
-        path: url
-      }
+
     })
   }
 }

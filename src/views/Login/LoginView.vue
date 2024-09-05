@@ -68,7 +68,7 @@ const onLogin = () => {
     if (code == 200) {
       auth.set(data)
       router.push('/home')
-      system.recordMenu('/home')
+      system.accessRecord()
     }
   })
 }
