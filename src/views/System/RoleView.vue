@@ -70,6 +70,7 @@
             <a-tree
               v-model:checkedKeys="formData.roleValue"
               :tree-data="menuTree"
+              :checkStrictly="true"
               checkable
               :field-names="{
                 children: 'children',
@@ -234,6 +235,9 @@ const onConfirm = () => {
     http = api.add
   } else {
     http = api.update
+  }
+  if (!(formData.value.roleValue instanceof Array)) {
+    formData.value.roleValue = formData.value.roleValue.checked
   }
   http(formData.value).then((res) => {
     const { code } = res

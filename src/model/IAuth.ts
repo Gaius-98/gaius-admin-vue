@@ -19,7 +19,9 @@ export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleI
 export interface RoleInfo {
   id?: string
   roleName: string
-  roleValue: string[]
+  roleValue: string[] | {
+    checked:string[]
+  }
   roleId: string
   creatTime?: Date
   desc?: string
