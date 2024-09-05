@@ -26,8 +26,8 @@ jobs:
           cache: 'pnpm'
       - name: Build
         run: |
-          npm install
-          npm run build
+          pnpm install
+          pnpm build
       - name: Depoly
         uses: peaceiris/actions-gh-pages@v3 # 一个自动发布github pages的action
         with:
