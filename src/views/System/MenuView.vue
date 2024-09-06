@@ -61,6 +61,12 @@
         <a-form-item label="地址" name="address" v-if="formData.menuType == 'app'">
           <a-input v-model:value="formData.address"> </a-input>
         </a-form-item>
+        <a-form-item label="启用" name="status">
+          <a-radio-group v-model:value="formData.status" button-style="solid">
+            <a-radio-button :value="1"> 是 </a-radio-button>
+            <a-radio-button :value="0"> 否 </a-radio-button>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item label="上级节点" name="pid">
           <a-tree-select
             v-model:value="formData.pid"
@@ -186,7 +192,8 @@ const formData = ref<ResMenuItem>({
   address: '',
   type: 'front',
   openType: '_self',
-  pid: ''
+  pid: '',
+  status: 1
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -205,7 +212,8 @@ const onOpenAddMenu = () => {
     address: '',
     type: 'front',
     openType: '_self',
-    pid: ''
+    pid: '',
+    status: 1
   }
   modalType.value = 'add'
   modalOpen.value = true

@@ -3,11 +3,8 @@ import type { ResMenuItem } from '@/model'
 export default {
   getMenu: () => {
     return request<ResMenuItem[]>({
-      url: '/menu/list',
+      url: '/menu/user/list',
       method: 'get',
-      params: {
-        keyword: ''
-      }
     })
   },
   accessRecord: () => {
