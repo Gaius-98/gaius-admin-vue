@@ -67,7 +67,6 @@ const value = defineModel('value', {
   type: String,
   required: true
 })
-const allImages = ref<ImageItem[]>([])
 const currentImages = ref<ImageItem[]>([])
 const params = ref({
   pageSize: 3,
@@ -88,7 +87,6 @@ const getList = () => {
   resourceApi.getList(params.value).then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
-      allImages.value = allImages.value.concat(data.data)
       currentImages.value = data.data
       total.value = data.total
     }
@@ -96,10 +94,7 @@ const getList = () => {
 }
 const onLastPage = () => {
   params.value.pageNumber--
-  currentImages.value = allImages.value.slice(
-    (params.value.pageNumber - 1) * params.value.pageSize,
-    params.value.pageSize
-  )
+  getList()
 }
 const onUpload = (data: any) => {
   const form = new FormData()
