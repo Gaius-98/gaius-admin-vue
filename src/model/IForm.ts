@@ -137,6 +137,7 @@ export interface LCFormCfg {
   img: string
   description?: string
   status?: number
+  belong:'private'|'public'
 }
 export interface SchemaItemChangeEventData {
   formData: Obj<any>

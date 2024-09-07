@@ -53,6 +53,7 @@ import LowCodeForm from '@/components/LowCodeForm/LowCodeForm.vue'
 import api from '../api/form'
 import { useRouter } from 'vue-router'
 import { downloadFile } from '@/utils/tools'
+import common from '@/api/common'
 interface Props {
   id?: string
 }
@@ -117,7 +118,8 @@ if (id.value) {
       }
     },
     img: '',
-    status: 1
+    status: 1,
+    belong: 'private'
   })
   open.value = true
 }
@@ -144,6 +146,21 @@ const schema = ref<Schema>({
     description: {
       type: 'string',
       label: '备注'
+    },
+    belong: {
+      type: 'radio',
+      label: '归属',
+      component: {
+        buttonStyle: 'solid',
+        asyncData: async () => {
+          const { code, data, msg } = await common.getDict(['belong'])
+          if (code == 200) {
+            return data['belong']
+          } else {
+            return []
+          }
+        }
+      }
     },
     status: {
       type: 'radio',
