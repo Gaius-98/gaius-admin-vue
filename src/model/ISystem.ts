@@ -57,13 +57,15 @@ export interface SystemThemeCfg {
 }
 export interface SystemDictTypeItem {
   dictType: string
-  dictTypeDesc: string
+  dictTypeDesc: string,
+  remark?:string
+  status:number
 }
-export interface SystemDictItem extends SystemDictTypeItem {
+export interface SystemDictItem  {
   id?: string
   label: string
   value: string
   sortNum: number
-  desc?: string
-  status?: number
+  status:number
+  dictType:string
 }

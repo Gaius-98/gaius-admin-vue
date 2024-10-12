@@ -4,42 +4,74 @@ export interface DictPageParams extends PageParams {
   dictType: string
 }
 export default {
-  getList: (params: PageParams) => {
-    return request<ResPage<SystemDictItem[]>>({
+  getTypeList: (params: PageParams) => {
+    return request<ResPage<SystemDictTypeItem[]>>({
       method: 'get',
-      url: 'dict/list',
+      url: 'dict/list/type',
       params
     })
   },
-  getDetail: (id: string) => {
-    return request<SystemDictItem>({
+  getTypeDetail: (id: string) => {
+    return request<SystemDictTypeItem>({
       method: 'get',
-      url: 'dict/detail',
+      url: 'dict/detail/type',
       params: {
         id
       }
     })
   },
-  remove: (id: string) => {
+  getDictDetail:(id:string)=>{
+      return request<SystemDictItem>({
+        method: 'get',
+        url: 'dict/detail/data',
+        params: {
+          id
+        }
+      })
+  },
+  removeType: (id: string) => {
     return request<string>({
       method: 'get',
-      url: 'dict/remove',
+      url: 'dict/remove/type',
       params: {
         id
       }
     })
   },
-  add: (data: SystemDictItem) => {
+  removeData: (id: string) => {
+    return request<string>({
+      method: 'get',
+      url: 'dict/remove/data',
+      params: {
+        id
+      }
+    })
+  },
+  addType: (data: SystemDictTypeItem) => {
     return request({
       method: 'post',
-      url: 'dict/add',
+      url: 'dict/add/type',
       data
     })
   },
-  update: (data: SystemDictItem) => {
+  addData: (data: SystemDictItem) => {
     return request({
       method: 'post',
-      url: 'dict/update',
+      url: 'dict/add/data',
+      data
+    })
+  },
+  updateType: (data: SystemDictTypeItem) => {
+    return request({
+      method: 'post',
+      url: 'dict/update/type',
+      data
+    })
+  },
+  updateData: (data: SystemDictItem) => {
+    return request({
+      method: 'post',
+      url: 'dict/update/data',
       data
     })
   },
