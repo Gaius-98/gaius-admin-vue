@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { PageParams, AuthInfo, ResPage, CreateAuthInfo, RoleDictItem } from '@/model'
+import type { PageParams, AuthInfo, ResPage, CreateAuthInfo, RoleDictItem,UserInfo } from '@/model'
 export default {
   getList: (params: PageParams) => {
     return request<ResPage<AuthInfo[]>>({
@@ -8,27 +8,27 @@ export default {
       params
     })
   },
-  getDetail: (username: string) => {
+  getDetail: (userId: string) => {
     return request<CreateAuthInfo>({
       method: 'get',
       url: 'user/detail',
       params: {
-        username
+        userId
       }
     })
   },
   getUserInfo: () => {
-    return request<CreateAuthInfo>({
+    return request<UserInfo>({
       method: 'get',
-      url: 'user/userInfo'
+      url: 'auth/userInfo'
     })
   },
-  remove: (username: string) => {
+  remove: (userId: string) => {
     return request<string>({
       method: 'get',
       url: 'user/remove',
       params: {
-        username
+        userId
       }
     })
   },

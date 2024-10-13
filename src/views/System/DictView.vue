@@ -28,7 +28,7 @@
     </a-card>
     <a-card>
       <div class="tools">
-        <a-button type="primary" @click="onOpenAddDict">新增</a-button>
+        <a-button type="primary" @click="onOpenAddDict" v-has-perm="'system:dict:add'">新增</a-button>
       </div>
       <a-table
         :loading="loading"
@@ -46,8 +46,8 @@
             <a-tag color="#f50" v-else>停用</a-tag>
           </template>
           <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenDictDataModal(record)">新增</a-button>
-            <a-button type="link" @click="onOpenEditDictType(record)">编辑</a-button>
+            <a-button type="link" @click="onOpenDictDataModal(record)" v-has-perm="'system:dict:add'">新增</a-button>
+            <a-button type="link" @click="onOpenEditDictType(record)" v-has-perm="'system:dict:update'">编辑</a-button>
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
@@ -55,7 +55,7 @@
               cancel-text="取消"
               @confirm="onDeleteDictType(record)"
             >
-              <a-button type="link" danger>删除</a-button>
+              <a-button type="link" danger v-has-perm="'system:dict:remove'">删除</a-button>
             </a-popconfirm>
           </template>
         </template>
@@ -67,7 +67,7 @@
                 <a-tag color="#f50" v-else>停用</a-tag>
               </template>
               <template v-if="column.key == 'action'">
-                <a-button type="link" @click="onOpenEditdict(record)">编辑</a-button>
+                <a-button type="link" @click="onOpenEditdict(record)" v-has-perm="'system:dict:update'">编辑</a-button>
                 <a-divider type="vertical" />
                 <a-popconfirm
                   title="确定要删除吗?"
@@ -75,7 +75,7 @@
                   cancel-text="取消"
                   @confirm="onDeleteDict(record)"
                 >
-                  <a-button type="link" danger>删除</a-button>
+                  <a-button type="link" danger v-has-perm="'system:dict:remove'">删除</a-button>
                 </a-popconfirm>
               </template>
             </template>

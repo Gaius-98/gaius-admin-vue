@@ -3,7 +3,7 @@ import type { ResMenuItem } from '@/model'
 export default {
   getMenu: () => {
     return request<ResMenuItem[]>({
-      url: '/menu/user/list',
+      url: '/menu',
       method: 'get',
     })
   },

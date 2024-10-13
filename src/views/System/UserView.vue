@@ -17,7 +17,9 @@
     </a-card>
     <a-card>
       <div class="tools">
-        <a-button type="primary" @click="onOpenAdduser">新增</a-button>
+        <a-button type="primary" @click="onOpenAdduser" v-has-perm="'system:user:add'"
+          >新增</a-button
+        >
       </div>
       <a-table
         :loading="loading"
@@ -32,7 +34,9 @@
             <a-tag>{{ record.role }}</a-tag>
           </template>
           <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenEdituser(record)">编辑</a-button>
+            <a-button type="link" @click="onOpenEdituser(record)" v-has-perm="'system:user:update'"
+              >编辑</a-button
+            >
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
@@ -40,7 +44,7 @@
               cancel-text="取消"
               @confirm="onDeleteuser(record)"
             >
-              <a-button type="link" danger>删除</a-button>
+              <a-button type="link" danger v-has-perm="'system:user:remove'">删除</a-button>
             </a-popconfirm>
           </template>
           <template v-if="column.key == 'userType'">
@@ -55,16 +59,17 @@
         <a-form-item label="用户名">
           <a-input v-model:value="formData.username"></a-input>
         </a-form-item>
-        <a-form-item label="密码">
+        <a-form-item label="密码" v-if="modalType == 'add'">
           <a-input-password v-model:value="formData.password"></a-input-password>
         </a-form-item>
         <a-form-item label="角色">
           <a-select
-            v-model:value="formData.roleId"
+            v-model:value="formData.roleIds"
             :fieldNames="{
               label: 'roleName',
               value: 'roleId'
             }"
+            mode="multiple"
             :options="roleDictList"
           ></a-select>
         </a-form-item>
@@ -76,6 +81,9 @@
         </a-form-item>
         <a-form-item label="邮箱">
           <a-input v-model:value="formData.email"></a-input>
+        </a-form-item>
+        <a-form-item label="电话">
+          <a-input v-model:value="formData.phone"></a-input>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -165,7 +173,8 @@ const formData = ref<CreateAuthInfo>({
   password: '',
   email: '',
   avatar: '',
-  roleId: ''
+  roleIds: [],
+  phone: ''
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -185,12 +194,13 @@ const onOpenAdduser = () => {
     password: '',
     email: '',
     avatar: '',
-    roleId: ''
+    roleIds: [],
+    phone: ''
   }
 }
 
 const onOpenEdituser = async (record: AuthInfo) => {
-  const { code, data } = await api.getDetail(record.username!)
+  const { code, data } = await api.getDetail(record.userId)
   if (code == 200) {
     formData.value = data
     modalType.value = 'edit'
@@ -198,7 +208,7 @@ const onOpenEdituser = async (record: AuthInfo) => {
   }
 }
 const onDeleteuser = async (record: AuthInfo) => {
-  const { code, msg, data } = await api.remove(record.username!)
+  const { code, msg, data } = await api.remove(record.userId)
   if (code == 200) {
     message.success(data)
     getList()

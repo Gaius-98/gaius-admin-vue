@@ -1,6 +1,6 @@
 import router from '@/router/index'
 import type { ResMenuItem } from '@/model'
-export default (data: ResMenuItem) => {
+export default (data: Partial<ResMenuItem>) => {
   const { type, address, openType } = data
   switch (type) {
     case 'front':
