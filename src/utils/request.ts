@@ -2,6 +2,7 @@ import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'ant-design-vue'
 import auth from './auth'
+import jump from './jump'
 //接口返回格式
 export type Res<T = any> = {
   code: number
@@ -31,7 +32,12 @@ service.interceptors.response.use(
     return res.data
   },
   (error: AxiosError) => {
-    message.error(error.message)
+    message.error((error.response?.data as Res).msg ||error.message)
+    jump({
+      type:'front',
+      openType:'_self',
+      address:'/login'
+    })
     return Promise.reject(error)
   }
 )

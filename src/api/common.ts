@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import type { Obj } from '@/model'
 export type DictTypes = string[]
 export interface DictItem {
-  id: string
+  value: string
   label: string
 }
 export default {

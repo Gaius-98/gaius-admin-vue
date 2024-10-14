@@ -143,7 +143,7 @@ onMounted(() => {
   getList()
 })
 
-const onDeleteresource = async (record: RoleInfo) => {
+const onDeleteresource = async (record: { id: string }) => {
   const { code, msg, data } = await api.remove(record.id!)
   if (code == 200) {
     message.success(data)

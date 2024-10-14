@@ -5,15 +5,16 @@ import 'normalize.css'
 import App from './App.vue'
 import router from './router'
 import { uninstallPreLoad } from './utils/tools'
-
 import registerSFEl from './components/SchemaForm/registerSFEl'
 import './assets/iconfont/iconfont.css'
 import GEchart from '@/components/GEchart/GEchart.vue'
 import VisualGroup from '@/components/VisualGroup/VisualGroup.vue'
+import directiveInstall from './directives'
 const app = createApp(App)
-
 app.use(createPinia())
+app.use(directiveInstall)
 app.use(router)
+
 app.use(registerSFEl, {
   'code-editor': defineAsyncComponent(() => import('@/components/CodeEditor.vue')),
   'color-picker': defineAsyncComponent(() => import('@/components/ColorPicker.vue')),
@@ -21,5 +22,6 @@ app.use(registerSFEl, {
 })
 app.component('GEchart', GEchart)
 app.component('VisualGroup', VisualGroup)
+
 app.mount('#app')
 uninstallPreLoad()

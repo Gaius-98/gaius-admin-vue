@@ -17,7 +17,7 @@ export interface ResMenuItem {
   id?: string
   label: string
   pid?: string
-  menuType: 'app' | 'directory'
+  menuType: 'app' | 'directory'| 'permission'
   desc?: string
   icon?: string
   sortNum: number
@@ -26,6 +26,7 @@ export interface ResMenuItem {
   // table 预置列表页 page 预置设计页面 front 前端代码页面 form 表单页面
   type: 'table' | 'page' | 'front' | 'form' | 'iframe'
   openType: '_blank' | '_self'
+  permissionId?:string
   children?: ResMenuItem[]
 }
 export interface ResMenuDict {
@@ -57,13 +58,16 @@ export interface SystemThemeCfg {
 }
 export interface SystemDictTypeItem {
   dictType: string
-  dictTypeDesc: string
+  dictTypeDesc: string,
+  remark?:string
+  status:number
+
 }
-export interface SystemDictItem extends SystemDictTypeItem {
+export interface SystemDictItem  {
   id?: string
   label: string
   value: string
   sortNum: number
-  desc?: string
-  status?: number
+  status:number
+  dictType:string
 }

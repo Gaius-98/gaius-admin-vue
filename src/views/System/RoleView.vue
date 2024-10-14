@@ -17,7 +17,9 @@
     </a-card>
     <a-card>
       <div class="tools">
-        <a-button type="primary" @click="onOpenAddrole">新增</a-button>
+        <a-button type="primary" @click="onOpenAddrole" v-has-perm="'system:role:add'"
+          >新增</a-button
+        >
       </div>
       <a-table
         :loading="loading"
@@ -33,7 +35,9 @@
             <a-tag color="#f50" v-else>停用</a-tag>
           </template>
           <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenEditrole(record)">编辑</a-button>
+            <a-button type="link" v-has-perm="'system:role:update'" @click="onOpenEditrole(record)"
+              >编辑</a-button
+            >
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
@@ -41,7 +45,7 @@
               cancel-text="取消"
               @confirm="onDeleterole(record)"
             >
-              <a-button type="link" danger>删除</a-button>
+              <a-button type="link" danger v-has-perm="'system:role:remove'">删除</a-button>
             </a-popconfirm>
           </template>
           <template v-if="column.key == 'roleType'">
@@ -57,7 +61,7 @@
           <a-input v-model:value="formData.roleName"></a-input>
         </a-form-item>
         <a-form-item label="角色ID">
-          <a-input v-model:value="formData.roleId"></a-input>
+          <a-input v-model:value="formData.roleKey"></a-input>
         </a-form-item>
         <a-form-item label="状态">
           <a-radio-group v-model:value="formData.status" button-style="solid">
@@ -68,7 +72,7 @@
         <a-form-item label="权限">
           <div style="height: 200px; overflow-y: auto">
             <a-tree
-              v-model:checkedKeys="formData.roleValue"
+              v-model:checkedKeys="formData.roleMenus"
               :tree-data="menuTree"
               :checkStrictly="true"
               checkable
@@ -97,7 +101,7 @@
           /> -->
         </a-form-item>
         <a-form-item label="备注">
-          <a-input v-model:value="formData.desc"></a-input>
+          <a-input v-model:value="formData.remark"></a-input>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -111,6 +115,7 @@ import { message, type FormInstance, type PaginationProps } from 'ant-design-vue
 import type { RoleInfo, PageParams } from '@/model'
 import apiMenu from './api/menu'
 import { TreeSelect } from 'ant-design-vue'
+import system from '@/api/system'
 const SHOW_ALL = TreeSelect.SHOW_ALL
 const roleParamsForm = reactive<PageParams>({
   keyword: '',
@@ -126,13 +131,13 @@ const columns = ref([
   },
   {
     title: '角色ID',
-    key: 'roleId',
-    dataIndex: 'roleId'
+    key: 'roleKey',
+    dataIndex: 'roleKey'
   },
   {
     title: '备注',
-    key: 'desc',
-    dataIndex: 'desc'
+    key: 'remark',
+    dataIndex: 'remark'
   },
   {
     title: '状态',
@@ -185,10 +190,10 @@ onMounted(() => {
 const modalOpen = ref(false)
 const formData = ref<RoleInfo>({
   roleName: '',
-  roleId: '',
+  roleKey: '',
   status: 1,
-  desc: '',
-  roleValue: []
+  remark: '',
+  roleMenus: []
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -204,15 +209,15 @@ const onOpenAddrole = () => {
   modalOpen.value = true
   formData.value = {
     roleName: '',
-    roleId: '',
+    roleKey: '',
     status: 1,
-    desc: '',
-    roleValue: []
+    remark: '',
+    roleMenus: []
   }
 }
 
 const onOpenEditrole = async (record: RoleInfo) => {
-  const { code, data } = await api.getDetail(record.id!)
+  const { code, data } = await api.getDetail(record.roleId!)
   if (code == 200) {
     formData.value = data
     modalType.value = 'edit'
@@ -220,7 +225,7 @@ const onOpenEditrole = async (record: RoleInfo) => {
   }
 }
 const onDeleterole = async (record: RoleInfo) => {
-  const { code, msg, data } = await api.remove(record.id!)
+  const { code, msg, data } = await api.remove(record.roleId!)
   if (code == 200) {
     message.success(data)
     getList()
@@ -236,8 +241,8 @@ const onConfirm = () => {
   } else {
     http = api.update
   }
-  if (!(formData.value.roleValue instanceof Array)) {
-    formData.value.roleValue = formData.value.roleValue.checked
+  if (!(formData.value.roleMenus instanceof Array)) {
+    formData.value.roleMenus = formData.value.roleMenus.checked
   }
   http(formData.value).then((res) => {
     const { code } = res

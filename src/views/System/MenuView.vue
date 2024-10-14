@@ -17,7 +17,9 @@
     </a-card>
     <a-card>
       <div class="tools">
-        <a-button type="primary" @click="onOpenAddMenu">新增</a-button>
+        <a-button type="primary" @click="onOpenAddMenu" v-has-perm="'system:menu:add'"
+          >新增</a-button
+        >
       </div>
       <a-table
         :rowKey="(record: ResMenuItem) => record.id"
@@ -29,7 +31,13 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenEditMenu(record)">编辑</a-button>
+            <a-button type="link" @click="onOpenAddMenu(record)" v-has-perm="'system:menu:add'"
+              >新增</a-button
+            >
+            <a-divider type="vertical" />
+            <a-button type="link" @click="onOpenEditMenu(record)" v-has-perm="'system:menu:update'"
+              >编辑</a-button
+            >
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
@@ -37,12 +45,13 @@
               cancel-text="取消"
               @confirm="onDeleteMenu(record)"
             >
-              <a-button type="link" danger>删除</a-button>
+              <a-button type="link" danger v-has-perm="'system:menu:remove'">删除</a-button>
             </a-popconfirm>
           </template>
           <template v-if="column.key == 'menuType'">
             <a-tag color="#2db7f5" v-if="record.menuType == 'app'">菜单</a-tag>
             <a-tag color="#87d068" v-if="record.menuType == 'directory'">目录</a-tag>
+            <a-tag color="#108ee9" v-if="record.menuType == 'permission'">权限点</a-tag>
           </template>
         </template>
       </a-table>
@@ -53,18 +62,20 @@
           <a-input v-model:value="formData.label"></a-input>
         </a-form-item>
         <a-form-item label="类型" name="menuType">
-          <a-radio-group v-model:value="formData.menuType" button-style="solid">
-            <a-radio-button value="directory"> 目录 </a-radio-button>
-            <a-radio-button value="app"> 菜单 </a-radio-button>
+          <a-radio-group v-model:value="formData.menuType" button-style="solid" disabled>
+            <a-radio-button v-for="item in menuTypeDict" :value="item.value" :key="item.value">
+              {{ item.label }}
+            </a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="地址" name="address" v-if="formData.menuType == 'app'">
           <a-input v-model:value="formData.address"> </a-input>
         </a-form-item>
-        <a-form-item label="启用" name="status">
+        <a-form-item label="状态" name="status">
           <a-radio-group v-model:value="formData.status" button-style="solid">
-            <a-radio-button :value="1"> 是 </a-radio-button>
-            <a-radio-button :value="0"> 否 </a-radio-button>
+            <a-radio-button v-for="item in statusDict" :value="item.value" :key="item.value">
+              {{ item.label }}
+            </a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="上级节点" name="pid">
@@ -73,7 +84,7 @@
             tree-node-filter-prop="label"
             show-search
             allow-clear
-            :treeData="dictList"
+            :treeData="formData.menuType === 'permission' ? tableData : dictList"
             :field-names="{
               children: 'children',
               label: 'label',
@@ -83,16 +94,25 @@
           >
           </a-tree-select>
         </a-form-item>
-        <a-form-item label="图标" name="icon">
+        <a-form-item
+          label="权限标识"
+          name="permissionId"
+          v-if="formData.menuType === 'permission'"
+          required
+        >
+          <a-input v-model:value="formData.permissionId"></a-input>
+        </a-form-item>
+        <a-form-item label="图标" name="icon" v-if="!(formData.menuType === 'permission')">
           <icon-select v-model="formData.icon"></icon-select>
         </a-form-item>
         <a-form-item label="排序号" name="sortNum">
           <a-input-number v-model:value="formData.sortNum"></a-input-number>
         </a-form-item>
-        <a-form-item label="是否外链" name="openType" v-if="formData.menuType == 'app'">
+        <a-form-item label="打开方式" name="openType" v-if="formData.menuType == 'app'">
           <a-radio-group v-model:value="formData.openType" button-style="solid">
-            <a-radio-button value="_blank"> 是 </a-radio-button>
-            <a-radio-button value="_self"> 否 </a-radio-button>
+            <a-radio-button v-for="item in openTypeDict" :value="item.value" :key="item.value">
+              {{ item.label }}
+            </a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -100,7 +120,7 @@
           name="type"
           v-if="formData.openType == '_self' && formData.menuType == 'app'"
         >
-          <a-select v-model:value="formData.type" :options="menuTypeList" show-search allowClear>
+          <a-select v-model:value="formData.type" :options="pageTypeDict" show-search allowClear>
           </a-select>
         </a-form-item>
       </a-form>
@@ -115,7 +135,7 @@ import IconSelect from '@/components/IconSelect/IconSelect.vue'
 import type { ResMenuItem } from '@/model'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { MenuDict } from './api/menu'
-import common from '@/api/common'
+import common, { type DictItem } from '@/api/common'
 import { useSystemStore } from '@/stores/system'
 const systemStore = useSystemStore()
 const { startUp } = systemStore
@@ -140,6 +160,11 @@ const columns = ref([
     dataIndex: 'address'
   },
   {
+    title: '权限点',
+    key: 'permissionId',
+    dataIndex: 'permissionId'
+  },
+  {
     title: '排序号',
     key: 'sortNum',
     dataIndex: 'sortNum'
@@ -161,12 +186,18 @@ const onClear = () => {
   searchFormRef.value?.resetFields()
   getList()
 }
-const menuTypeList = ref<MenuDict[]>([])
+const pageTypeDict = ref<DictItem[]>([])
+const menuTypeDict = ref<DictItem[]>([])
+const openTypeDict = ref<DictItem[]>([])
+const statusDict = ref<DictItem[]>([])
 const getMenuDict = () => {
-  common.getDict(['menuType']).then((res) => {
+  common.getDict(['pageType', 'menuType', 'openType', 'status']).then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
-      menuTypeList.value = data.menuType
+      pageTypeDict.value = data.pageType
+      menuTypeDict.value = data.menuType
+      openTypeDict.value = data.openType
+      statusDict.value = data.status
     }
   })
 }
@@ -187,13 +218,14 @@ onMounted(() => {
 const modalOpen = ref(false)
 const formData = ref<ResMenuItem>({
   label: '',
-  menuType: 'app',
+  menuType: 'directory',
   sortNum: 0,
   address: '',
   type: 'front',
   openType: '_self',
   pid: '',
-  status: 1
+  status: 1,
+  permissionId: ''
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -204,17 +236,27 @@ const modalTitle = computed(() => {
   return titleObj[modalType.value]
 })
 const modalFormRef = ref<FormInstance>()
-const onOpenAddMenu = () => {
+const onOpenAddMenu = (data: ResMenuItem) => {
   formData.value = {
     label: '',
-    menuType: 'app',
+    menuType: 'directory',
     sortNum: 0,
     address: '',
     type: 'front',
     openType: '_self',
     pid: '',
-    status: 1
+    status: 1,
+    permissionId: ''
   }
+  if (data) {
+    formData.value.pid = data.id
+    if (data.menuType === 'app') {
+      formData.value.menuType = 'permission'
+    } else if (data.menuType === 'directory') {
+      formData.value.menuType = 'app'
+    }
+  }
+
   modalType.value = 'add'
   modalOpen.value = true
   getDict()
