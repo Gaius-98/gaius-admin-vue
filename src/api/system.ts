@@ -7,11 +7,5 @@ export default {
       method: 'get',
     })
   },
-  accessRecord: () => {
-    return request({
-      url: '/accessLog/record',
-      method: 'get',
-
-    })
-  }
+  
 }
