@@ -71,3 +71,12 @@ export interface SystemDictItem  {
   status:number
   dictType:string
 }
+
+export interface SystemSetting {
+  id?:number
+  settingKey: string;
+  settingValue: string;
+  settingType: string;
+  remark?: string;
+  status: number;
+}

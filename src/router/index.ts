@@ -50,6 +50,10 @@ const router = createRouter({
               path: 'resource',
               name: 'resource',
               component: () => import('@/views/System/ResourceView.vue')
+            },{
+              path:'setting',
+              name:'setting',
+              component: () => import('@/views/System/SettingView.vue')
             }
           ]
         },

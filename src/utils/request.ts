@@ -33,11 +33,14 @@ service.interceptors.response.use(
   },
   (error: AxiosError) => {
     message.error((error.response?.data as Res).msg ||error.message)
-    jump({
-      type:'front',
-      openType:'_self',
-      address:'/login'
-    })
+    if((error.response?.data as Res).code == 403){
+      jump({
+        type:'front',
+        openType:'_self',
+        address:'/login'
+      })
+    }
+
     return Promise.reject(error)
   }
 )
