@@ -21,7 +21,7 @@ export default {
   remove: (id: number) => {
     return request<string>({
       method: 'get',
-      url: 'user/remove',
+      url: 'setting/remove',
       params: {
         id
       }
@@ -37,7 +37,7 @@ export default {
   update: (data: SystemSetting) => {
     return request({
       method: 'post',
-      url: 'user/update',
+      url: 'setting/update',
       data
     })
   },
