@@ -40,7 +40,7 @@
             <a-image :src="`${basePath}${record.path}`" height="130px" />
           </template>
           <template v-if="column.key == 'path'">
-            <span v-copy="`${basePath}${record.path}`">
+            <span v-copy="getImgPath(record.path)">
               {{ getImgPath(record.path) }}
               <CopyOutlined style="cursor: pointer" @click="onCopy()" />
             </span>

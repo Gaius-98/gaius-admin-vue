@@ -39,7 +39,7 @@
               </a-input>
             </a-form-item>
           </a-form>
-          <a-button type="primary" html-type="submit" style="width: 100%" @click="onLogin">
+          <a-button type="primary" html-type="submit" style="width: 100%" @click.enter="onLogin">
             登录
           </a-button>
         </div>
