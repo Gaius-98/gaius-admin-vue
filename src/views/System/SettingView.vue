@@ -36,7 +36,7 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'status'">
-            <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+            <a-tag color="#87d068" v-if="record.status == '1'">启用</a-tag>
             <a-tag color="#f50" v-else>停用</a-tag>
           </template>
           <template v-if="column.key == 'settingType'">

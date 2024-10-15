@@ -30,6 +30,10 @@
         :scroll="{ y: 500 }"
       >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key == 'status'">
+            <a-tag color="#87d068" v-if="record.status == '1'">启用</a-tag>
+            <a-tag color="#f50" v-else>停用</a-tag>
+          </template>
           <template v-if="column.key == 'action'">
             <a-button type="link" @click="onOpenAddMenu(record)" v-has-perm="'system:menu:add'"
               >新增</a-button
@@ -164,6 +168,12 @@ const columns = ref([
     key: 'permissionId',
     dataIndex: 'permissionId',
     width: '250px'
+  },
+  {
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status',
+    width: '100px'
   },
   {
     title: '排序号',
