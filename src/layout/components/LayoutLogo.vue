@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
-    <img :src="themeCfg.logo" alt="" />
-    <span class="title" v-show="!collapsed">{{ themeCfg.projectName }}</span>
+    <img :src="systemSetting.projectLogo" alt="" />
+    <span class="title" v-show="!collapsed">{{ systemSetting.projectName }}</span>
     <menu-unfold-outlined v-if="collapsed" class="trigger" @click="onToggleCollapsed" />
     <menu-fold-outlined v-else class="trigger" @click="onToggleCollapsed" />
   </div>
@@ -12,7 +12,7 @@ import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
 const systemStore = useSystemStore()
-const { themeCfg, collapsed } = storeToRefs(systemStore)
+const { themeCfg, collapsed, systemSetting } = storeToRefs(systemStore)
 const { onToggleCollapsed } = systemStore
 </script>
 <style scoped lang="scss">
