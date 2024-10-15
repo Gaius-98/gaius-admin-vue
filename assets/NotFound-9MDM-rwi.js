@@ -1,1 +1,0 @@
-import{_ as o}from"./index-C5r9f3T2.js";import{o as e,i as n,b5 as s}from"./.pnpm-DReGQEe3.js";const _={};function c(r,a){const t=s;return e(),n(t,{status:"404",title:"404","sub-title":"对不起,未找到页面"})}const p=o(_,[["render",c]]);export{p as default};
