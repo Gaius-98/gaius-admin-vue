@@ -38,7 +38,6 @@
             <a-button type="link" v-has-perm="'system:role:update'" @click="onOpenEditrole(record)"
               >编辑</a-button
             >
-            <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"
@@ -127,32 +126,26 @@ const columns = ref([
   {
     title: '角色名',
     key: 'roleName',
-    dataIndex: 'roleName'
+    dataIndex: 'roleName',
+    width: '200px'
   },
   {
-    title: '角色ID',
-    key: 'roleKey',
-    dataIndex: 'roleKey'
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status',
+    width: '100px'
   },
   {
     title: '备注',
     key: 'remark',
     dataIndex: 'remark'
   },
-  {
-    title: '状态',
-    key: 'status',
-    dataIndex: 'status'
-  },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
-  },
+
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const loading = ref(false)

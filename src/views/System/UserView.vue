@@ -30,6 +30,13 @@
         :pagination="{ current: userParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key == 'status'">
+            <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+            <a-tag color="#f50" v-else>停用</a-tag>
+          </template>
+          <template v-if="column.key == 'avatar'">
+            <a-image :src="`${record.avatar}`" height="30px" width="30px" :preview="false" />
+          </template>
           <template v-if="column.key == 'role'">
             <a-tag>{{ record.role }}</a-tag>
           </template>
@@ -37,7 +44,6 @@
             <a-button type="link" @click="onOpenEdituser(record)" v-has-perm="'system:user:update'"
               >编辑</a-button
             >
-            <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"
@@ -109,7 +115,12 @@ const columns = ref([
     dataIndex: 'username'
   },
   {
-    title: '名称',
+    title: '头像',
+    key: 'avatar',
+    dataIndex: 'avatar'
+  },
+  {
+    title: '昵称',
     key: 'name',
     dataIndex: 'name'
   },
@@ -119,19 +130,20 @@ const columns = ref([
     dataIndex: 'email'
   },
   {
-    title: '角色',
-    key: 'roleId',
-    dataIndex: 'roleId'
+    title: '电话',
+    key: 'phone',
+    dataIndex: 'phone'
   },
   {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
+    title: '状态',
+    key: 'status',
+    dataIndex: 'status'
   },
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const loading = ref(false)

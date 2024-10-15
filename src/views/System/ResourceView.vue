@@ -36,8 +36,14 @@
         :pagination="{ current: resourceParamsForm.pageNumber, total: total }"
       >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key == 'img'">
+            <a-image :src="`${basePath}${record.path}`" height="130px" />
+          </template>
           <template v-if="column.key == 'path'">
-            <a-image :src="`${basePath}/${record.path}`" height="130px" />
+            <span v-copy="`${basePath}${record.path}`">
+              {{ getImgPath(record.path) }}
+              <CopyOutlined style="cursor: pointer" @click="onCopy()" />
+            </span>
           </template>
           <template v-if="column.key == 'action'">
             <!-- <a-button type="link" @click="onOpenEditresource(record)">编辑</a-button>
@@ -63,6 +69,7 @@ import api from './api/resource'
 import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { RoleInfo, PageParams } from '@/model'
 import type { ImageItem } from './api/resource'
+import { CopyOutlined } from '@ant-design/icons-vue'
 const resourceParamsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
@@ -73,28 +80,33 @@ const columns = ref([
   {
     title: '文件名称',
     key: 'originalname',
-    dataIndex: 'originalname'
+    dataIndex: 'originalname',
+    width: '300px'
+  },
+
+  {
+    title: '缩略图',
+    key: 'img',
+    dataIndex: 'img',
+    width: '300px'
   },
   {
     title: '文件大小',
     key: 'size',
-    dataIndex: 'size'
+    dataIndex: 'size',
+    width: '120px'
   },
   {
-    title: '文件',
+    title: '地址',
     key: 'path',
-    dataIndex: 'path',
-    width: '250px'
+    dataIndex: 'path'
   },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
-  },
+
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const loading = ref(false)
@@ -142,13 +154,19 @@ const getList = () => {
 onMounted(() => {
   getList()
 })
-
+const getImgPath = (path: string) => {
+  let origin = window.location.origin
+  return origin + basePath + path
+}
 const onDeleteresource = async (record: { id: string }) => {
   const { code, msg, data } = await api.remove(record.id!)
   if (code == 200) {
     message.success(data)
     getList()
   }
+}
+const onCopy = () => {
+  message.success('复制成功')
 }
 </script>
 <style scoped lang="scss">

@@ -34,11 +34,9 @@
             <a-button type="link" @click="onOpenAddMenu(record)" v-has-perm="'system:menu:add'"
               >新增</a-button
             >
-            <a-divider type="vertical" />
             <a-button type="link" @click="onOpenEditMenu(record)" v-has-perm="'system:menu:update'"
               >编辑</a-button
             >
-            <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"
@@ -51,7 +49,7 @@
           <template v-if="column.key == 'menuType'">
             <a-tag color="#2db7f5" v-if="record.menuType == 'app'">菜单</a-tag>
             <a-tag color="#87d068" v-if="record.menuType == 'directory'">目录</a-tag>
-            <a-tag color="#108ee9" v-if="record.menuType == 'permission'">权限点</a-tag>
+            <a-tag color="#f50" v-if="record.menuType == 'permission'">权限点</a-tag>
           </template>
         </template>
       </a-table>
@@ -147,12 +145,14 @@ const columns = ref([
   {
     title: '名称',
     key: 'label',
-    dataIndex: 'label'
+    dataIndex: 'label',
+    width: '300px'
   },
   {
     title: '类型',
     key: 'menuType',
-    dataIndex: 'menuType'
+    dataIndex: 'menuType',
+    width: '180px'
   },
   {
     title: '地址',
@@ -162,22 +162,21 @@ const columns = ref([
   {
     title: '权限点',
     key: 'permissionId',
-    dataIndex: 'permissionId'
+    dataIndex: 'permissionId',
+    width: '250px'
   },
   {
     title: '排序号',
     key: 'sortNum',
-    dataIndex: 'sortNum'
+    dataIndex: 'sortNum',
+    width: '150px'
   },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
-  },
+
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const loading = ref(false)

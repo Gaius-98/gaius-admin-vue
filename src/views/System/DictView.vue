@@ -28,7 +28,9 @@
     </a-card>
     <a-card>
       <div class="tools">
-        <a-button type="primary" @click="onOpenAddDict" v-has-perm="'system:dict:add'">新增</a-button>
+        <a-button type="primary" @click="onOpenAddDict" v-has-perm="'system:dict:add'"
+          >新增</a-button
+        >
       </div>
       <a-table
         :loading="loading"
@@ -46,9 +48,18 @@
             <a-tag color="#f50" v-else>停用</a-tag>
           </template>
           <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenDictDataModal(record)" v-has-perm="'system:dict:add'">新增</a-button>
-            <a-button type="link" @click="onOpenEditDictType(record)" v-has-perm="'system:dict:update'">编辑</a-button>
-            <a-divider type="vertical" />
+            <a-button
+              type="link"
+              @click="onOpenDictDataModal(record)"
+              v-has-perm="'system:dict:add'"
+              >新增</a-button
+            >
+            <a-button
+              type="link"
+              @click="onOpenEditDictType(record)"
+              v-has-perm="'system:dict:update'"
+              >编辑</a-button
+            >
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"
@@ -67,7 +78,12 @@
                 <a-tag color="#f50" v-else>停用</a-tag>
               </template>
               <template v-if="column.key == 'action'">
-                <a-button type="link" @click="onOpenEditdict(record)" v-has-perm="'system:dict:update'">编辑</a-button>
+                <a-button
+                  type="link"
+                  @click="onOpenEditdict(record)"
+                  v-has-perm="'system:dict:update'"
+                  >编辑</a-button
+                >
                 <a-divider type="vertical" />
                 <a-popconfirm
                   title="确定要删除吗?"
@@ -171,72 +187,73 @@ const dictParamsForm = reactive<DictPageParams>({
 const tableData = ref<SystemDictTypeItem[]>([])
 const columns = ref([
   {
-    title: '字典类型描述',
-    key: 'dictTypeDesc',
-    dataIndex: 'dictTypeDesc'
+    title: '字典类型',
+    key: 'dictType',
+    dataIndex: 'dictType',
+    width: '300px'
   },
   {
-    title: '字典类型值',
-    key: 'dictType',
-    dataIndex: 'dictType'
+    title: '类型描述',
+    key: 'dictTypeDesc',
+    dataIndex: 'dictTypeDesc',
+    width: '300px'
   },
 
   {
     title: '状态',
     key: 'status',
-    dataIndex: 'status'
+    dataIndex: 'status',
+    width: '100px'
   },
   {
     title: '备注',
     key: 'remark',
     dataIndex: 'remark'
   },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
-  },
+
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const dictColumns = ref([
   {
     title: '字典值',
     key: 'value',
-    dataIndex: 'value'
+    dataIndex: 'value',
+    width: '300px'
   },
   {
-    title: '字典翻译',
+    title: '翻译值',
     key: 'label',
-    dataIndex: 'label'
+    dataIndex: 'label',
+    width: '300px'
   },
   {
     title: '排序号',
     key: 'sortNum',
-    dataIndex: 'sortNum'
+    dataIndex: 'sortNum',
+    width: '120px'
   },
   {
     title: '状态',
     key: 'status',
-    dataIndex: 'status'
+    dataIndex: 'status',
+    width: '100px'
   },
   {
     title: '备注',
     key: 'remark',
     dataIndex: 'remark'
   },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    dataIndex: 'createTime'
-  },
+
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const loading = ref(false)

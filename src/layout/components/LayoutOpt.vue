@@ -1,10 +1,10 @@
 <template>
   <div class="layout-opt">
-    <div class="layout-opt-i18n" @click="onToggleLocal">
+    <!-- <div class="layout-opt-i18n" @click="onToggleLocal">
       <a-button ghost size="small">
         {{ local == 'en' ? '中文' : 'English' }}
       </a-button>
-    </div>
+    </div> -->
     <!-- <div class="layout-opt-search">
       <SearchOutlined />
     </div> -->

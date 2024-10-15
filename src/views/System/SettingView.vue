@@ -110,22 +110,26 @@ const columns = ref([
   {
     title: '配置键名',
     key: 'settingKey',
-    dataIndex: 'settingKey'
+    dataIndex: 'settingKey',
+    width: '150px'
   },
   {
     title: '配置值',
     key: 'settingValue',
-    dataIndex: 'settingValue'
+    dataIndex: 'settingValue',
+    width: '400px'
   },
   {
     title: '配置类型',
     key: 'settingType',
-    dataIndex: 'settingType'
+    dataIndex: 'settingType',
+    width: '100px'
   },
   {
     title: '状态',
     key: 'status',
-    dataIndex: 'status'
+    dataIndex: 'status',
+    width: '100px'
   },
   {
     title: '备注',
@@ -135,7 +139,8 @@ const columns = ref([
   {
     title: '操作',
     key: 'action',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    width: '250px'
   }
 ])
 const loading = ref(false)
