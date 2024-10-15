@@ -47,3 +47,16 @@ export const setDeepValue = (obj: Obj<any>, path: string, value: any) => {
     return pre[cur]
   }, obj)
 }
+
+/**
+ * 判断是否为真
+ * @param val 
+ * @returns 
+ */
+export const isTruth = (val:string|number) =>{
+  if(typeof val === 'string'){
+    return Number(val) === 0 ?  false :true
+  }else if(typeof val === 'number') {
+    return val === 0 ? false :true
+  }
+}

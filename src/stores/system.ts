@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import type { CreateAuthInfo, ResMenuItem, RoleInfo, SystemThemeCfg, UserInfo } from '@/model'
+import type { CreateAuthInfo, Obj, ResMenuItem, RoleInfo, SystemThemeCfg, UserInfo } from '@/model'
 import systemApi from '@/api/system'
 import userApi from '@/views/System/api/user'
 import { useStorage } from '@vueuse/core'
@@ -30,6 +30,7 @@ export const useSystemStore = defineStore('system', () => {
     watermarkVisible: false,
     watermarkText: import.meta.env.VITE_TITLE
   })
+  const systemSetting = ref<Obj<string>>({})
   const userInfo = ref<Partial<CreateAuthInfo>>({})
   const roleInfo = ref<RoleInfo[]>([])
   const permissionInfo = useStorage<string[]>('gaius-permissions',[])
@@ -37,7 +38,9 @@ export const useSystemStore = defineStore('system', () => {
   const onToggleCollapsed = () => {
     collapsed.value = !collapsed.value
   }
-
+  const setSystemSetting = (setting:Obj<string>) =>{
+    systemSetting.value = setting
+  }
   const getMenu = async () => {
     const { data } = await systemApi.getMenu()
     menuTree.value = data
@@ -67,6 +70,8 @@ export const useSystemStore = defineStore('system', () => {
     getMenu,
     userInfo,
     getUserInfo,
-    permissionInfo
+    permissionInfo,
+    systemSetting,
+    setSystemSetting
   }
 })

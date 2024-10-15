@@ -1,5 +1,5 @@
 <template>
-  <a-divider>全局配置</a-divider>
+  <a-divider>主题配置</a-divider>
   <schema-form
     :layout="globalSchema.layout"
     :properties="globalSchema.properties"
@@ -41,24 +41,6 @@ const globalSchema = ref<Schema>({
     }
   },
   properties: {
-    projectName: {
-      type: 'string',
-      label: '项目名称'
-    },
-    logo: {
-      type: 'string',
-      label: '项目logo',
-      component: {
-        name: 'image-picker'
-      }
-    },
-    loginBg: {
-      type: 'string',
-      label: '登录背景图',
-      component: {
-        name: 'image-picker'
-      }
-    },
     colorPrimary: {
       type: 'string',
       label: '主题色',
@@ -76,15 +58,6 @@ const globalSchema = ref<Schema>({
           label: key
         }))
       }
-    },
-    watermarkVisible: {
-      type: 'switch',
-      label: '显示水印'
-    },
-    watermarkText: {
-      type: 'string',
-      label: '水印文字',
-      show: '${formData.watermarkVisible}'
     }
   }
 })

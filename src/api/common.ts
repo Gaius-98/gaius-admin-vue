@@ -14,5 +14,14 @@ export default {
         dictType: data
       }
     })
+  },
+  getSetting:(type:string)=>{
+    return request<Obj<string>>({
+      method: 'get',
+      url: '/setting/byType',
+      params: {
+        type
+      }
+    })
   }
 }

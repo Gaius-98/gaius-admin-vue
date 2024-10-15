@@ -1,5 +1,5 @@
 <template>
-  <a-watermark :content="themeCfg.watermarkText" :zIndex="themeCfg.watermarkVisible ? 9 : -1">
+  <a-watermark :content="watermarkText">
     <component :is="LayoutComponent"></component>
     <a-drawer
       :width="300"
@@ -22,12 +22,19 @@ import { useSystemStore } from '@/stores/system'
 import { storeToRefs } from 'pinia'
 import LayoutThemeCfg from './components/LayoutThemeCfg.vue'
 import type { Obj } from '@/model'
+import { isTruth } from '@/utils/tools'
 const systemStore = useSystemStore()
-const { isConfigVisible, themeCfg } = storeToRefs(systemStore)
+const { isConfigVisible, themeCfg, systemSetting, userInfo } = storeToRefs(systemStore)
 const { onCloseConfigDrawer, startUp } = systemStore
 const LayoutComponent = computed(() => {
   return layout[themeCfg.value.layoutMode]
 })
+const watermarkText = computed(() => {
+  const { projectWatermark } = systemSetting.value
+  const { username, name } = userInfo.value
+  return isTruth(projectWatermark) ? `${username}(${name})` : ''
+})
+
 const layout: Obj<Component> = {
   horizontal: defineAsyncComponent(() => import('@/layout/LayoutType/HorizontalSplitLayout.vue')),
   vertical: defineAsyncComponent(() => import('@/layout/LayoutType/VerticalStackLayout.vue'))
