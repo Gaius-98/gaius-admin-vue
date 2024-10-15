@@ -1,1 +1,0 @@
-import{_ as o}from"./index-DKU_nxyK.js";import{h as r,o as t,i as n}from"./.pnpm-eZ9qvLl_.js";const c={};function s(_,a){const e=r("router-view");return t(),n(e)}const m=o(c,[["render",s]]);export{m as default};
