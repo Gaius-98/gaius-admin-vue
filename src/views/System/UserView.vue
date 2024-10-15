@@ -82,6 +82,12 @@
         <a-form-item label="头像">
           <image-picker v-model:value="formData.avatar"></image-picker>
         </a-form-item>
+        <a-form-item label="状态">
+          <a-radio-group v-model:value="formData.status" button-style="solid">
+            <a-radio-button value="1">启用 </a-radio-button>
+            <a-radio-button value="0">停用 </a-radio-button>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item label="名称">
           <a-input v-model:value="formData.name"></a-input>
         </a-form-item>
@@ -186,7 +192,8 @@ const formData = ref<CreateAuthInfo>({
   email: '',
   avatar: '',
   roleIds: [],
-  phone: ''
+  phone: '',
+  status: '1'
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -207,7 +214,8 @@ const onOpenAdduser = () => {
     email: '',
     avatar: '',
     roleIds: [],
-    phone: ''
+    phone: '',
+    status: '1'
   }
 }
 

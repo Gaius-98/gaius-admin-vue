@@ -18,6 +18,7 @@ export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleI
   password: string
   phone:string
   userId?:string
+  status:string
 }
 export interface UserInfo {
   permissions:string[],

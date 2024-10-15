@@ -109,8 +109,8 @@
         </a-form-item>
         <a-form-item label="状态">
           <a-radio-group v-model:value="formData.status" button-style="solid">
-            <a-radio-button :value="1">启用 </a-radio-button>
-            <a-radio-button :value="0">停用 </a-radio-button>
+            <a-radio-button value="1">启用 </a-radio-button>
+            <a-radio-button value="0">停用 </a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="描述">
@@ -151,8 +151,8 @@
         </a-form-item>
         <a-form-item label="状态">
           <a-radio-group v-model:value="formDictData.status" button-style="solid">
-            <a-radio-button :value="1">启用 </a-radio-button>
-            <a-radio-button :value="0">停用 </a-radio-button>
+            <a-radio-button value="1">启用 </a-radio-button>
+            <a-radio-button value="0">停用 </a-radio-button>
           </a-radio-group>
         </a-form-item>
       </a-form>
