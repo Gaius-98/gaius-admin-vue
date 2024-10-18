@@ -6,6 +6,8 @@
     @select="onSelectMenu"
     v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
+    style="height: 100%; overflow-y: auto"
+    class="gaius-menu"
   >
   </a-menu>
 </template>
@@ -75,4 +77,11 @@ const onSelectMenu = ({ item }: { item: Obj<ResMenuItem> }) => {
   jump(originItemValue)
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.gaius-menu {
+  &::-webkit-scrollbar {
+    width: 0px;
+    /* 宽度 */
+  }
+}
+</style>

@@ -59,6 +59,11 @@ const router = createRouter({
               path:'setting',
               name:'setting',
               component: () => import('@/views/System/SettingView.vue')
+            },
+            {
+              path:'login-log',
+              name:'loginLog',
+              component: () => import('@/views/System/LoginLog.vue')
             }
           ]
         },

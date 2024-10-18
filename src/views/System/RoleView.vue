@@ -69,7 +69,7 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="菜单权限">
-          <div style="height: 200px; overflow-y: auto">
+          <div style="height: 150px; overflow-y: auto">
             <a-tree
               v-model:checkedKeys="formData.roleMenus"
               :tree-data="menuTree"
@@ -85,9 +85,7 @@
           </div>
         </a-form-item>
         <a-form-item label="数据权限">
-          <div style="height: 200px; overflow-y: auto">
-            <a-select v-model:checkedKeys="formData.dataPerm" :options="dataPermList"> </a-select>
-          </div>
+          <a-select v-model:value="formData.dataPerm" :options="dataPermList"> </a-select>
         </a-form-item>
         <a-form-item label="备注">
           <a-input v-model:value="formData.remark"></a-input>

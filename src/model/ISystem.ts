@@ -93,3 +93,12 @@ export interface SystemOrgTree extends SystemOrgItem {
   children?:SystemOrgItem[]
 
 }
+export interface SystemLoginLog {
+  id?:string
+  ip:string
+  address:string
+  username:string
+  os:string
+  browser:string
+  createTime:Date
+}

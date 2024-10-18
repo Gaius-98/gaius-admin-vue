@@ -12,6 +12,7 @@
           :collapsed="collapsed"
           :trigger="null"
           :theme="themeCfg.menuTheme"
+          class="layout-menu"
         >
           <layout-menu mode="inline"> </layout-menu>
         </a-layout-sider>
@@ -38,5 +39,9 @@ const { collapsed, themeCfg } = storeToRefs(systemStore)
 .layout-header {
   color: v-bind('themeCfg.headerFontColor');
   background: v-bind('themeCfg.headerBgColor');
+}
+.layout-menu {
+  height: calc(100vh - $layout-header-height);
+  overflow-y: auto;
 }
 </style>
