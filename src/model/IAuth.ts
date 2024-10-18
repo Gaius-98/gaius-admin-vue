@@ -12,9 +12,10 @@ export interface AuthInfo {
   name: string
   roleIds: string[]
   createTime: Date
-  id: string
+  id: string,
+  orgId:number
 }
-export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleIds' | 'username'> & {
+export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleIds' | 'username'|'orgId'> & {
   password: string
   phone:string
   userId?:string
@@ -32,7 +33,7 @@ export interface RoleInfo {
   roleMenus: string[] | {
     checked:string[]
   }
-
+  dataPerm:string
   roleKey: string
   creatTime?: Date
   remark?: string

@@ -301,7 +301,7 @@ const formData = ref<SystemDictTypeItem>({
   dictType: '',
   dictTypeDesc: '',
   remark: '',
-  status: 1
+  status: '1'
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -326,7 +326,7 @@ const onOpenAddDict = () => {
   formData.value = {
     dictType: '',
     dictTypeDesc: '',
-    status: 1,
+    status: '1',
     remark: ''
   }
 }
@@ -412,7 +412,7 @@ const onOpenDictDataModal = (row: SystemDictTypeItem) => {
     dictType: row.dictType,
     label: '',
     value: '',
-    status: 1,
+    status: '1',
     sortNum: 0
   }
 }
@@ -420,7 +420,7 @@ const formDictData = ref<SystemDictItem>({
   label: '',
   value: '',
   sortNum: 0,
-  status: 1,
+  status: '1',
   dictType: ''
 })
 const modalDictDataRef = ref<FormInstance>()

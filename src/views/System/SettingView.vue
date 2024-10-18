@@ -195,7 +195,7 @@ const formData = ref<SystemSetting>({
   settingKey: '',
   settingValue: '',
   settingType: '',
-  status: 1,
+  status: '1',
   remark: ''
 })
 const modalType = ref<'add' | 'edit'>('add')
@@ -214,7 +214,7 @@ const onOpenAddsetting = () => {
     settingKey: '',
     settingValue: '',
     settingType: '',
-    status: 1,
+    status: '1',
     remark: ''
   }
 }

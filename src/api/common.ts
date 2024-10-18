@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { Obj } from '@/model'
+import type { Obj,SystemOrgTree } from '@/model'
 export type DictTypes = string[]
 export interface DictItem {
   value: string
@@ -22,6 +22,12 @@ export default {
       params: {
         type
       }
+    })
+  },
+  getOrgTree:()=>{
+    return request<SystemOrgTree[]>({
+      url: 'org/orgList',
+      method: 'get'
     })
   }
 }

@@ -79,6 +79,21 @@
             :options="roleDictList"
           ></a-select>
         </a-form-item>
+        <a-form-item label="所属机构" name="orgId">
+          <a-tree-select
+            v-model:value="formData.orgId"
+            tree-node-filter-prop="label"
+            show-search
+            allow-clear
+            :treeData="orgTree"
+            :field-names="{
+              children: 'children',
+              label: 'name',
+              value: 'id'
+            }"
+          >
+          </a-tree-select>
+        </a-form-item>
         <a-form-item label="头像">
           <image-picker v-model:value="formData.avatar"></image-picker>
         </a-form-item>
@@ -106,13 +121,14 @@
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/user'
 import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
-import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem } from '@/model'
+import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem, SystemOrgTree } from '@/model'
 import ImagePicker from '@/components/ImagePicker.vue'
 const userParamsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
   pageSize: 10
 })
+import common from '@/api/common'
 const tableData = ref<AuthInfo[]>([])
 const columns = ref([
   {
@@ -181,8 +197,15 @@ const getList = () => {
     loading.value = false
   })
 }
+const orgTree = ref<SystemOrgTree[]>([])
 onMounted(() => {
   getList()
+  common.getOrgTree().then((res) => {
+    const { code, data, msg } = res
+    if (code == 200) {
+      orgTree.value = data
+    }
+  })
 })
 const modalOpen = ref(false)
 const formData = ref<CreateAuthInfo>({
@@ -193,7 +216,8 @@ const formData = ref<CreateAuthInfo>({
   avatar: '',
   roleIds: [],
   phone: '',
-  status: '1'
+  status: '1',
+  orgId: 0
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -215,7 +239,8 @@ const onOpenAdduser = () => {
     avatar: '',
     roleIds: [],
     phone: '',
-    status: '1'
+    status: '1',
+    orgId: 0
   }
 }
 

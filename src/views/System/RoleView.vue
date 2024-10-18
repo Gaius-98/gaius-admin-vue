@@ -68,7 +68,7 @@
             <a-radio-button value="0">停用 </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="权限">
+        <a-form-item label="菜单权限">
           <div style="height: 200px; overflow-y: auto">
             <a-tree
               v-model:checkedKeys="formData.roleMenus"
@@ -83,21 +83,11 @@
             >
             </a-tree>
           </div>
-          <!-- <a-tree-select
-            v-model:value="formData.roleValue"
-            style="width: 100%"
-            :tree-data="menuTree"
-            tree-checkable
-            allow-clear
-            :show-checked-strategy="SHOW_ALL"
-            placeholder="请选择权限"
-            tree-node-filter-prop="label"
-            :field-names="{
-              children: 'children',
-              label: 'label',
-              value: 'id'
-            }"
-          /> -->
+        </a-form-item>
+        <a-form-item label="数据权限">
+          <div style="height: 200px; overflow-y: auto">
+            <a-select v-model:checkedKeys="formData.dataPerm" :options="dataPermList"> </a-select>
+          </div>
         </a-form-item>
         <a-form-item label="备注">
           <a-input v-model:value="formData.remark"></a-input>
@@ -114,8 +104,7 @@ import { message, type FormInstance, type PaginationProps } from 'ant-design-vue
 import type { RoleInfo, PageParams } from '@/model'
 import apiMenu from './api/menu'
 import { TreeSelect } from 'ant-design-vue'
-import system from '@/api/system'
-const SHOW_ALL = TreeSelect.SHOW_ALL
+import common, { type DictItem } from '@/api/common'
 const roleParamsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
@@ -177,8 +166,15 @@ const getList = () => {
     loading.value = false
   })
 }
+const dataPermList = ref<DictItem[]>([])
 onMounted(() => {
   getList()
+  common.getDict(['dataPerm']).then((res) => {
+    const { code, data, msg } = res
+    if (code == 200) {
+      dataPermList.value = data['dataPerm']
+    }
+  })
 })
 const modalOpen = ref(false)
 const formData = ref<RoleInfo>({
@@ -186,7 +182,8 @@ const formData = ref<RoleInfo>({
   roleKey: '',
   status: 1,
   remark: '',
-  roleMenus: []
+  roleMenus: [],
+  dataPerm: '1'
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -205,7 +202,8 @@ const onOpenAddrole = () => {
     roleKey: '',
     status: 1,
     remark: '',
-    roleMenus: []
+    roleMenus: [],
+    dataPerm: '1'
   }
 }
 

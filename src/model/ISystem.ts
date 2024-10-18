@@ -60,7 +60,7 @@ export interface SystemDictTypeItem {
   dictType: string
   dictTypeDesc: string,
   remark?:string
-  status:number
+  status:string
 
 }
 export interface SystemDictItem  {
@@ -68,7 +68,7 @@ export interface SystemDictItem  {
   label: string
   value: string
   sortNum: number
-  status:number
+  status:string
   dictType:string
 }
 
@@ -78,5 +78,18 @@ export interface SystemSetting {
   settingValue: string;
   settingType: string;
   remark?: string;
-  status: number;
+  status: string;
+}
+export interface SystemOrgItem {
+  id?:number
+  pid?:number
+  name:string
+  status:string
+  sortNum:number
+  remark?:string
+}
+
+export interface SystemOrgTree extends SystemOrgItem {
+  children?:SystemOrgItem[]
+
 }
