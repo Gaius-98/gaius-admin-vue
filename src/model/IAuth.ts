@@ -1,3 +1,5 @@
+import type { SystemOrgItem } from "./ISystem"
+
 export interface AuthLogin {
   username: string
   password: string
@@ -13,18 +15,22 @@ export interface AuthInfo {
   roleIds: string[]
   createTime: Date
   id: string,
-  orgId:number
+  orgId:number,
+
 }
 export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleIds' | 'username'|'orgId'> & {
   password: string
   phone:string
   userId?:string
   status:string
+  loginIp:string
+  lastLoginIp:string
 }
 export interface UserInfo {
   permissions:string[],
   roles:RoleInfo[],
-  user:AuthInfo
+  user:AuthInfo,
+  org:SystemOrgItem
 }
 
 export interface RoleInfo {

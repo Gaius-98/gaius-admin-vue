@@ -20,10 +20,20 @@
           <a-button @click="onLogout" block> 退出 </a-button>
         </template>
         <template #title>
-          <a-descriptions title="用户信息" size="small" :column="1" style="width: 200px">
+          <a-descriptions title="用户信息" size="small" :column="2" style="width: 400px">
             <a-descriptions-item label="姓名">{{ userInfo.name }}</a-descriptions-item>
             <a-descriptions-item label="用户名">{{ userInfo.username }}</a-descriptions-item>
             <a-descriptions-item label="邮箱">{{ userInfo.email }}</a-descriptions-item>
+            <a-descriptions-item label="手机">{{ userInfo.phone }}</a-descriptions-item>
+            <a-descriptions-item label="角色">{{ role }}</a-descriptions-item>
+            <a-descriptions-item label="所属机构">{{ orgInfo.name }}</a-descriptions-item>
+
+            <a-descriptions-item label="上次登录IP" :span="2">{{
+              userInfo.lastLoginIp
+            }}</a-descriptions-item>
+            <a-descriptions-item label="登录IP" :span="2">{{
+              userInfo.loginIp
+            }}</a-descriptions-item>
           </a-descriptions>
         </template>
         <a-avatar>
@@ -43,9 +53,13 @@ import { storeToRefs } from 'pinia'
 import { SearchOutlined, SettingOutlined, GithubOutlined } from '@ant-design/icons-vue'
 import auth from '@/utils/auth'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 const router = useRouter()
 const systemStore = useSystemStore()
-const { local, themeCfg, userInfo } = storeToRefs(systemStore)
+const role = computed(() => {
+  return roleInfo.value.map((e) => e.roleName).join(',')
+})
+const { local, themeCfg, userInfo, orgInfo, roleInfo } = storeToRefs(systemStore)
 const { onOpenConfigDrawer, onToggleLocal } = systemStore
 const onOpenGithub = () => {
   window.open('https://github.com/Gaius-98/gaius-admin', '_blank')
