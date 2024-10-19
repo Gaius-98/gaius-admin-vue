@@ -1,119 +1,144 @@
 <template>
-  <div class="user">
-    <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="userParamsForm" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="用户名" name="keyword">
-              <a-input v-model:value="userParamsForm.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </a-card>
-    <a-card>
-      <div class="tools">
-        <a-button type="primary" @click="onOpenAdduser" v-has-perm="'system:user:add'"
-          >新增</a-button
-        >
-      </div>
-      <a-table
-        :loading="loading"
-        :columns="columns"
-        :data-source="tableData"
-        :scroll="{ y: 440 }"
-        @change="onChangePagination"
-        :pagination="{ current: userParamsForm.pageNumber, total: total }"
+  <div class="container">
+    <div class="search-tree">
+      <a-input-search
+        v-model:value="searchValue"
+        style="margin-bottom: 8px"
+        placeholder="请输入机构名称"
+        @search="getTree"
+      />
+      <a-tree
+        :tree-data="orgTree"
+        selectable
+        :fieldNames="{
+          title: 'name',
+          key: 'id',
+          children: 'children'
+        }"
+        style="height: calc(100% - 30px)"
+        @select="onSelectTree"
       >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key == 'status'">
-            <a-tag color="#87d068" v-if="record.status == '1'">启用</a-tag>
-            <a-tag color="#f50" v-else>停用</a-tag>
-          </template>
-          <template v-if="column.key == 'avatar'">
-            <a-image :src="`${record.avatar}`" height="30px" width="30px" :preview="false" />
-          </template>
-          <template v-if="column.key == 'role'">
-            <a-tag>{{ record.role }}</a-tag>
-          </template>
-          <template v-if="column.key == 'action'">
-            <a-button type="link" @click="onOpenEdituser(record)" v-has-perm="'system:user:update'"
-              >编辑</a-button
-            >
-            <a-popconfirm
-              title="确定要删除吗?"
-              ok-text="确定"
-              cancel-text="取消"
-              @confirm="onDeleteuser(record)"
-            >
-              <a-button type="link" danger v-has-perm="'system:user:remove'">删除</a-button>
-            </a-popconfirm>
-          </template>
-          <template v-if="column.key == 'userType'">
-            <a-tag color="#2db7f5" v-if="record.userType == 'app'">菜单</a-tag>
-            <a-tag color="#87d068" v-if="record.userType == 'directory'">目录</a-tag>
-          </template>
-        </template>
-      </a-table>
-    </a-card>
-    <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
-      <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-        <a-form-item label="用户名">
-          <a-input v-model:value="formData.username"></a-input>
-        </a-form-item>
-        <a-form-item label="密码" v-if="modalType == 'add'">
-          <a-input-password v-model:value="formData.password"></a-input-password>
-        </a-form-item>
-        <a-form-item label="角色">
-          <a-select
-            v-model:value="formData.roleIds"
-            :fieldNames="{
-              label: 'roleName',
-              value: 'roleId'
-            }"
-            mode="multiple"
-            :options="roleDictList"
-          ></a-select>
-        </a-form-item>
-        <a-form-item label="所属机构" name="orgId">
-          <a-tree-select
-            v-model:value="formData.orgId"
-            tree-node-filter-prop="label"
-            show-search
-            allow-clear
-            :treeData="orgTree"
-            :field-names="{
-              children: 'children',
-              label: 'name',
-              value: 'id'
-            }"
+      </a-tree>
+    </div>
+    <div class="user">
+      <a-card class="search-area">
+        <a-form ref="searchFormRef" :model="userParamsForm" @finish="onSearch">
+          <a-row :gutter="24">
+            <a-col :span="4">
+              <a-form-item label="用户名" name="keyword">
+                <a-input v-model:value="userParamsForm.keyword"> </a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="4" style="text-align: right">
+              <a-button type="primary" html-type="submit">搜索</a-button>
+              <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+            </a-col>
+          </a-row>
+        </a-form>
+      </a-card>
+      <a-card>
+        <div class="tools">
+          <a-button type="primary" @click="onOpenAdduser" v-has-perm="'system:user:add'"
+            >新增</a-button
           >
-          </a-tree-select>
-        </a-form-item>
-        <a-form-item label="头像">
-          <image-picker v-model:value="formData.avatar"></image-picker>
-        </a-form-item>
-        <a-form-item label="状态">
-          <a-radio-group v-model:value="formData.status" button-style="solid">
-            <a-radio-button value="1">启用 </a-radio-button>
-            <a-radio-button value="0">停用 </a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item label="名称">
-          <a-input v-model:value="formData.name"></a-input>
-        </a-form-item>
-        <a-form-item label="邮箱">
-          <a-input v-model:value="formData.email"></a-input>
-        </a-form-item>
-        <a-form-item label="电话">
-          <a-input v-model:value="formData.phone"></a-input>
-        </a-form-item>
-      </a-form>
-    </a-modal>
+        </div>
+        <a-table
+          :loading="loading"
+          :columns="columns"
+          :data-source="tableData"
+          :scroll="{ y: 510 }"
+          @change="onChangePagination"
+          :pagination="{ current: userParamsForm.pageNumber, total: total }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key == 'status'">
+              <a-tag color="#87d068" v-if="record.status == '1'">启用</a-tag>
+              <a-tag color="#f50" v-else>停用</a-tag>
+            </template>
+            <template v-if="column.key == 'avatar'">
+              <a-image :src="`${record.avatar}`" height="30px" width="30px" :preview="false" />
+            </template>
+            <template v-if="column.key == 'role'">
+              <a-tag>{{ record.role }}</a-tag>
+            </template>
+            <template v-if="column.key == 'action'">
+              <a-button
+                type="link"
+                @click="onOpenEdituser(record)"
+                v-has-perm="'system:user:update'"
+                >编辑</a-button
+              >
+              <a-popconfirm
+                title="确定要删除吗?"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="onDeleteuser(record)"
+              >
+                <a-button type="link" danger v-has-perm="'system:user:remove'">删除</a-button>
+              </a-popconfirm>
+            </template>
+            <template v-if="column.key == 'userType'">
+              <a-tag color="#2db7f5" v-if="record.userType == 'app'">菜单</a-tag>
+              <a-tag color="#87d068" v-if="record.userType == 'directory'">目录</a-tag>
+            </template>
+          </template>
+        </a-table>
+      </a-card>
+      <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
+        <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
+          <a-form-item label="用户名">
+            <a-input v-model:value="formData.username"></a-input>
+          </a-form-item>
+          <a-form-item label="密码" v-if="modalType == 'add'">
+            <a-input-password v-model:value="formData.password"></a-input-password>
+          </a-form-item>
+          <a-form-item label="角色">
+            <a-select
+              v-model:value="formData.roleIds"
+              :fieldNames="{
+                label: 'roleName',
+                value: 'roleId'
+              }"
+              mode="multiple"
+              :options="roleDictList"
+            ></a-select>
+          </a-form-item>
+          <a-form-item label="所属机构" name="orgId">
+            <a-tree-select
+              v-model:value="formData.orgId"
+              tree-node-filter-prop="label"
+              show-search
+              allow-clear
+              :treeData="orgTree"
+              :field-names="{
+                children: 'children',
+                label: 'name',
+                value: 'id'
+              }"
+            >
+            </a-tree-select>
+          </a-form-item>
+          <a-form-item label="头像">
+            <image-picker v-model:value="formData.avatar"></image-picker>
+          </a-form-item>
+          <a-form-item label="状态">
+            <a-radio-group v-model:value="formData.status" button-style="solid">
+              <a-radio-button value="1">启用 </a-radio-button>
+              <a-radio-button value="0">停用 </a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item label="名称">
+            <a-input v-model:value="formData.name"></a-input>
+          </a-form-item>
+          <a-form-item label="邮箱">
+            <a-input v-model:value="formData.email"></a-input>
+          </a-form-item>
+          <a-form-item label="电话">
+            <a-input v-model:value="formData.phone"></a-input>
+          </a-form-item>
+        </a-form>
+      </a-modal>
+    </div>
   </div>
 </template>
 
@@ -126,7 +151,8 @@ import ImagePicker from '@/components/ImagePicker.vue'
 const userParamsForm = reactive<PageParams>({
   keyword: '',
   pageNumber: 1,
-  pageSize: 10
+  pageSize: 10,
+  orgId: null
 })
 import common from '@/api/common'
 const tableData = ref<AuthInfo[]>([])
@@ -170,6 +196,10 @@ const columns = ref([
 ])
 const loading = ref(false)
 const searchFormRef = ref<FormInstance>()
+const onSelectTree = (keys: number[]) => {
+  userParamsForm.orgId = keys[0]
+  onSearch()
+}
 const onClear = () => {
   searchFormRef.value?.resetFields()
   getList()
@@ -198,14 +228,18 @@ const getList = () => {
   })
 }
 const orgTree = ref<SystemOrgTree[]>([])
-onMounted(() => {
-  getList()
-  common.getOrgTree().then((res) => {
+const searchValue = ref('')
+const getTree = () => {
+  common.getOrgTree(searchValue.value).then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
       orgTree.value = data
     }
   })
+}
+onMounted(() => {
+  getList()
+  getTree()
 })
 const modalOpen = ref(false)
 const formData = ref<CreateAuthInfo>({
@@ -293,17 +327,28 @@ onMounted(() => {
 })
 </script>
 <style scoped lang="scss">
-.user {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+.container {
   height: 100%;
-  overflow-y: auto;
-  .search-area {
-    margin-bottom: 20px;
+  display: flex;
+  .search-tree {
+    width: 240px;
+    height: 100%;
+    background-color: #fff;
+    margin-right: 10px;
+    padding: 10px;
   }
-  .tools {
-    margin-bottom: 5px;
+  .user {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    .search-area {
+      margin-bottom: $gap;
+    }
+    .tools {
+      margin-bottom: $half-gap;
+    }
   }
 }
 </style>
