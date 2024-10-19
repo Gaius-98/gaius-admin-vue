@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import type { CreateAuthInfo, Obj, ResMenuItem, RoleInfo, SystemOrgItem, SystemThemeCfg, UserInfo } from '@/model'
+import type { AuthInfo, Obj, ResMenuItem, RoleInfo, SystemOrgItem, SystemThemeCfg, UserInfo } from '@/model'
 import systemApi from '@/api/system'
 import userApi from '@/views/System/api/user'
 import { useStorage } from '@vueuse/core'
@@ -31,7 +31,7 @@ export const useSystemStore = defineStore('system', () => {
     watermarkText: import.meta.env.VITE_TITLE
   })
   const systemSetting = ref<Obj<string>>({})
-  const userInfo = ref<Partial<CreateAuthInfo>>({})
+  const userInfo = ref<Partial<AuthInfo>>({})
   const roleInfo = ref<RoleInfo[]>([])
   const orgInfo = ref<SystemOrgItem>({
     name:'',

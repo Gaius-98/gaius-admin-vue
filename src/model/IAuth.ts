@@ -18,10 +18,10 @@ export interface AuthInfo {
   orgId:number,
   loginIp:string
   lastLoginIp:string
+  phone?:string
 }
-export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleIds' | 'username'|'orgId'> & {
+export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleIds' | 'username'|'orgId'|'phone'> & {
   password: string
-  phone:string
   userId?:string
   status:string
 
