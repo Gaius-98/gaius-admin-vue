@@ -9,8 +9,8 @@
     "url": "https://github.com/Gaius-98/gaius-admin.git"
   },
   "scripts": {
-    "dev": "vite --host",
-    "dev:prod": "vite --host --mode production",
+    "start:dev": "vite --host --mode development",
+    "start:prod": "vite --host --mode production",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

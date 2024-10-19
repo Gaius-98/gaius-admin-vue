@@ -108,7 +108,8 @@ const columns = ref([
     title: '内容',
     key: 'content',
     dataIndex: 'content',
-    width: '400px'
+    width: '400px',
+    ellipsis: true
   },
   {
     title: '操作',

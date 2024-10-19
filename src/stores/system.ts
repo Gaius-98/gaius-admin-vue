@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import type { AuthInfo, Obj, ResMenuItem, RoleInfo, SystemOrgItem, SystemThemeCfg, UserInfo } from '@/model'
+import type { AuthInfo, Obj, ResMenuItem, RoleInfo, SystemOrgItem, SystemThemeCfg, SystemUserNotice, UserInfo } from '@/model'
 import systemApi from '@/api/system'
 import userApi from '@/views/System/api/user'
 import { useStorage } from '@vueuse/core'
+import common from '@/api/common'
 export const useSystemStore = defineStore('system', () => {
   const menuTree = ref<ResMenuItem[]>([])
   const isConfigVisible = ref(false)
@@ -38,6 +39,13 @@ export const useSystemStore = defineStore('system', () => {
     status:'',
     sortNum:0
   })
+  const noticeInfo = ref<{
+    list:SystemUserNotice[],
+    total:number
+  }>({
+    list:[],
+    total:0
+  })
   const permissionInfo = useStorage<string[]>('gaius-permissions',[])
   const collapsed = ref(false)
   const onToggleCollapsed = () => {
@@ -57,10 +65,17 @@ export const useSystemStore = defineStore('system', () => {
     orgInfo.value = org
     permissionInfo.value = permissions
   }
-
+  const getNoticeList = async () =>{
+    const {code,data,msg} = await common.getNotice()
+    if(code == 200){
+      noticeInfo.value.list = data.data
+      noticeInfo.value.total = data.total
+    }
+  }
   const startUp = async () => {
     await getMenu()
     await getUserInfo()
+    await getNoticeList()
   }
   return {
     menuTree,
@@ -80,6 +95,8 @@ export const useSystemStore = defineStore('system', () => {
     systemSetting,
     setSystemSetting,
     orgInfo,
-    roleInfo
+    roleInfo,
+    getNoticeList,
+    noticeInfo
   }
 })

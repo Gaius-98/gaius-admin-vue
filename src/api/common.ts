@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { Obj,SystemOrgTree } from '@/model'
+import type { Obj,SystemOrgTree,SystemUserNotice,ResPage } from '@/model'
 export type DictTypes = string[]
 export interface DictItem {
   value: string
@@ -31,6 +31,13 @@ export default {
         params:{
           keyword
         }
+    })
+  },
+  getNotice:() =>{
+    return request<ResPage<SystemUserNotice[]>>({
+      url: 'notice/list/ByUser/limit',
+      method: 'get',
+
     })
   }
 }

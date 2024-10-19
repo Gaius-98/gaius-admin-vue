@@ -39,7 +39,7 @@
             <a-tag color="#f50" v-else>未读</a-tag>
           </template>
           <template v-if="column.key == 'title'">
-            <div>{{ record.notice.title }}</div>
+            <div :title="record.notice.title">{{ record.notice.title }}</div>
           </template>
           <template v-if="column.key == 'content'">
             <div>{{ record.notice.content }}</div>
@@ -57,13 +57,15 @@
     </a-card>
     <a-modal v-model:open="modalOpen" title="查看通知" :footer="null" :width="700">
       <a-descriptions :column="2">
-        <a-descriptions-item label="标题">{{ formData.notice.title }}</a-descriptions-item>
+        <a-descriptions-item label="标题" style="font-weight: bold">{{
+          formData.notice.title
+        }}</a-descriptions-item>
         <a-descriptions-item label="状态">
           <a-tag color="#87d068" v-if="formData.status == '1'">已读</a-tag>
           <a-tag color="#f50" v-else>未读</a-tag>
         </a-descriptions-item>
         <a-descriptions-item label="发送人">
-          {{ formData?.user?.username }}
+          {{ formData?.userInfo?.username }}
         </a-descriptions-item>
         <a-descriptions-item label="查看时间">{{ formData.readTime }}</a-descriptions-item>
         <a-descriptions-item label="内容" :span="2">{{
@@ -110,13 +112,19 @@ const columns = ref([
     title: '内容',
     key: 'content',
     dataIndex: 'content',
-    width: '500px'
+    width: '500px',
+    ellipsis: true
   },
   {
     title: '状态',
     key: 'status',
     dataIndex: 'status',
     width: '100px'
+  },
+  {
+    title: '消息发送时间',
+    key: 'createTime',
+    dataIndex: 'createTime'
   },
   {
     title: '操作',

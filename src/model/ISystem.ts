@@ -118,5 +118,5 @@ export interface SystemUserNotice  {
   createTime?:Date
   readTime?:Date
   notice:SystemNotice
-  user?:AuthInfo
+  userInfo?:AuthInfo
 }
