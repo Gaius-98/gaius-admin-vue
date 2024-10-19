@@ -27,7 +27,7 @@
         :columns="columns"
         :data-source="tableData"
         :pagination="false"
-        :scroll="{ y: 500 }"
+        :scroll="{ y: 570 }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'status'">
@@ -333,10 +333,10 @@ const onChangeTreeSelect = (val: string) => {
   height: 100%;
   overflow-y: auto;
   .search-area {
-    margin-bottom: 20px;
+    margin-bottom: $gap;
   }
   .tools {
-    margin-bottom: 5px;
+    margin-bottom: $half-gap;
   }
 }
 </style>

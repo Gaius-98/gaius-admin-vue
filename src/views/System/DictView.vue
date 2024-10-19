@@ -39,7 +39,7 @@
         :pagination="{ current: dictParamsForm.pageNumber, total: total }"
         v-model:current="dictParamsForm.pageNumber"
         @change="onChangePagination"
-        :scroll="{ y: 440 }"
+        :scroll="{ y: 510 }"
         rowKey="id"
       >
         <template #bodyCell="{ column, record }">
@@ -433,10 +433,10 @@ const modalDictDataRef = ref<FormInstance>()
   height: 100%;
   overflow-y: auto;
   .search-area {
-    margin-bottom: 20px;
+    margin-bottom: $gap;
   }
   .tools {
-    margin-bottom: 5px;
+    margin-bottom: $half-gap;
   }
 }
 </style>

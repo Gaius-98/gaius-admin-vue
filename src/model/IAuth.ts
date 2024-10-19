@@ -16,15 +16,15 @@ export interface AuthInfo {
   createTime: Date
   id: string,
   orgId:number,
-
+  loginIp:string
+  lastLoginIp:string
 }
 export type CreateAuthInfo = Pick<AuthInfo, 'avatar' | 'email' | 'name' | 'roleIds' | 'username'|'orgId'> & {
   password: string
   phone:string
   userId?:string
   status:string
-  loginIp:string
-  lastLoginIp:string
+
 }
 export interface UserInfo {
   permissions:string[],

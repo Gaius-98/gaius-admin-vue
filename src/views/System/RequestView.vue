@@ -28,7 +28,7 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 440 }"
+        :scroll="{ y: 510 }"
         @change="onChangePagination"
         :pagination="{ current: requestParamsForm.pageNumber, total: total }"
       >
@@ -361,10 +361,10 @@ const onRun = (record: ReqInfo) => {
   height: 100%;
   overflow-y: auto;
   .search-area {
-    margin-bottom: 20px;
+    margin-bottom: $gap;
   }
   .tools {
-    margin-bottom: 5px;
+    margin-bottom: $half-gap;
   }
 }
 </style>

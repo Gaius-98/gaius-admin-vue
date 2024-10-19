@@ -7,9 +7,8 @@
   }
   .layout-content {
     box-sizing: border-box;
-    margin: 24px 16px;
-    padding: 16px;
-    height: calc(100vh - $layout-header-height - 48px);
+    padding: $gap;
+    height: calc(100vh - $layout-header-height);
     overflow-y: auto;
   }
   

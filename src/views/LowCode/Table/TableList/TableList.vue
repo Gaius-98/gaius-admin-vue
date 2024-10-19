@@ -188,7 +188,7 @@ onMounted(() => {
   height: 100%;
   overflow-y: auto;
   .search-area {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   .tools {
     margin-bottom: 5px;

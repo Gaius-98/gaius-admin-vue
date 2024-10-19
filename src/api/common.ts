@@ -24,10 +24,13 @@ export default {
       }
     })
   },
-  getOrgTree:()=>{
+  getOrgTree:(keyword?:string)=>{
     return request<SystemOrgTree[]>({
-      url: 'org/orgList',
-      method: 'get'
+      url: 'org/orgTree',
+      method: 'get',
+        params:{
+          keyword
+        }
     })
   }
 }
