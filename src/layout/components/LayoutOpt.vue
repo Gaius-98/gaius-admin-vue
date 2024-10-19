@@ -8,7 +8,7 @@
     <!-- <div class="layout-opt-search">
       <SearchOutlined />
     </div> -->
-    <div class="layout-opt-notice" title="通知">
+    <div class="layout-opt-notice" title="通知" v-has-perm="'private:notice:limit'">
       <a-popover title="通知" trigger="click">
         <template #content>
           <div class="content" style="display: flex; flex-direction: column">

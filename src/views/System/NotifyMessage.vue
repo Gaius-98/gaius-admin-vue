@@ -48,7 +48,7 @@
             <a-button
               type="link"
               @click="onOpenViewnotice(record)"
-              v-has-perm="'system:notice:update'"
+              v-has-perm="'private:notice:detail'"
               >查看</a-button
             >
           </template>
