@@ -64,6 +64,15 @@ const router = createRouter({
               path:'login-log',
               name:'loginLog',
               component: () => import('@/views/System/LoginLog.vue')
+            },
+            {
+              path:'notice',
+              name:'notice',
+              component: () => import('@/views/System/NoticeView.vue')
+            },{
+              path:'notice-message',
+              name:'noticeMessage',
+              component:()=> import('@/views/System/NotifyMessage.vue')
             }
           ]
         },

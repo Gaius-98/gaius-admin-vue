@@ -1,4 +1,5 @@
 import type { VNode } from 'vue'
+import type { AuthInfo, UserInfo } from './IAuth'
 export interface SystemMenuItem {
   key: string
   label: string
@@ -101,4 +102,21 @@ export interface SystemLoginLog {
   os:string
   browser:string
   createTime:Date
+}
+export interface SystemNotice {
+  id?:number
+  title:string
+  content:string
+  createTime?:Date
+  createBy?:string
+}
+export interface SystemUserNotice  {
+  id:number
+  noticeId:number
+  recevieId:string
+  status:string
+  createTime?:Date
+  readTime?:Date
+  notice:SystemNotice
+  user?:AuthInfo
 }

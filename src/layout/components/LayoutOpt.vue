@@ -26,7 +26,7 @@
             <a-descriptions-item label="邮箱">{{ userInfo.email }}</a-descriptions-item>
             <a-descriptions-item label="手机">{{ userInfo.phone }}</a-descriptions-item>
             <a-descriptions-item label="角色">{{ role }}</a-descriptions-item>
-            <a-descriptions-item label="所属机构">{{ orgInfo.name }}</a-descriptions-item>
+            <a-descriptions-item label="所属机构">{{ orgInfo?.name }}</a-descriptions-item>
 
             <a-descriptions-item label="上次登录IP" :span="2">{{
               userInfo.lastLoginIp

@@ -9,7 +9,7 @@
             </a-form-item>
           </a-col>
           <a-col :span="8">
-            <a-form-item label="登录日期" name="keyword">
+            <a-form-item label="登录日期">
               <a-range-picker
                 v-model:value="date"
                 valueFormat="YYYY-MM-DD"
@@ -88,7 +88,7 @@ const loading = ref(false)
 const searchFormRef = ref<FormInstance>()
 const onClear = () => {
   searchFormRef.value?.resetFields()
-  console.log(loginLogParamsForm)
+
   getList()
 }
 const total = ref(0)
@@ -101,6 +101,9 @@ const changeTime = () => {
   if (date.value) {
     loginLogParamsForm.startTime = date.value[0]
     loginLogParamsForm.endTime = date.value[1]
+  } else {
+    loginLogParamsForm.startTime = ''
+    loginLogParamsForm.endTime = ''
   }
 }
 const onChangePagination = (pagination: PaginationProps) => {
