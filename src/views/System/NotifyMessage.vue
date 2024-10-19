@@ -55,7 +55,7 @@
         </template>
       </a-table>
     </a-card>
-    <a-modal v-model:open="modalOpen" title="查看通知" :footer="null" :width="700">
+    <a-modal v-model:open="modalOpen" title="查看通知" :footer="null" :width="700" @cancel="getList()">
       <a-descriptions :column="2">
         <a-descriptions-item label="标题" style="font-weight: bold">{{
           formData.notice.title
