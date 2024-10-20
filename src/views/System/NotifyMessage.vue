@@ -1,27 +1,17 @@
 <template>
   <div class="notice">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="noticeParams" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="关键字" name="keyword">
-              <a-input v-model:value="noticeParams.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item label="时间范围">
-              <a-range-picker
-                v-model:value="date"
-                valueFormat="YYYY-MM-DD"
-                @change="changeTime()"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" :model="noticeParams" layout="inline" @finish="onSearch">
+        <a-form-item label="关键字" prop="keyword">
+          <a-input v-model:value="noticeParams.keyword"> </a-input>
+        </a-form-item>
+        <a-form-item label="日期范围">
+          <a-range-picker v-model:value="date" valueFormat="YYYY-MM-DD" @change="changeTime()" />
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -29,7 +19,7 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 510 }"
+        :scroll="{ y: 560 }"
         @change="onChangePagination"
         :pagination="{ current: noticeParams.pageNumber, total: total }"
       >
@@ -55,7 +45,13 @@
         </template>
       </a-table>
     </a-card>
-    <a-modal v-model:open="modalOpen" title="查看通知" :footer="null" :width="700" @cancel="getList()">
+    <a-modal
+      v-model:open="modalOpen"
+      title="查看通知"
+      :footer="null"
+      :width="700"
+      @cancel="getList()"
+    >
       <a-descriptions :column="2">
         <a-descriptions-item label="标题" style="font-weight: bold">{{
           formData.notice.title
@@ -137,6 +133,9 @@ const loading = ref(false)
 const searchFormRef = ref<FormInstance>()
 const onClear = () => {
   searchFormRef.value?.resetFields()
+  noticeParams.startTime = ''
+  noticeParams.endTime = ''
+  date.value = ''
   getList()
 }
 const total = ref(0)

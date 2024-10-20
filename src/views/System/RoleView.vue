@@ -1,18 +1,14 @@
 <template>
   <div class="role">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="roleParamsForm" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="角色名称" name="keyword">
-              <a-input v-model:value="roleParamsForm.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" layout="inline" :model="roleParamsForm" @finish="onSearch">
+        <a-form-item label="角色名称" prop="keyword">
+          <a-input v-model:value="roleParamsForm.keyword"> </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -25,7 +21,7 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 510 }"
+        :scroll="{ y: 560 }"
         @change="onChangePagination"
         :pagination="{ current: roleParamsForm.pageNumber, total: total }"
       >
@@ -56,19 +52,19 @@
     </a-card>
     <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
       <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-        <a-form-item label="角色名">
+        <a-form-item label="角色名" required prop="roleName">
           <a-input v-model:value="formData.roleName"></a-input>
         </a-form-item>
-        <a-form-item label="角色ID">
+        <a-form-item label="角色ID" required prop="roleKey">
           <a-input v-model:value="formData.roleKey"></a-input>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item label="状态" required prop="status">
           <a-radio-group v-model:value="formData.status" button-style="solid">
             <a-radio-button value="1">启用 </a-radio-button>
             <a-radio-button value="0">停用 </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="菜单权限">
+        <a-form-item label="菜单权限" prop="roleMenus">
           <div style="height: 150px; overflow-y: auto">
             <a-tree
               v-model:checkedKeys="formData.roleMenus"
@@ -84,11 +80,11 @@
             </a-tree>
           </div>
         </a-form-item>
-        <a-form-item label="数据权限">
+        <a-form-item label="数据权限" required prop="dataPerm">
           <a-select v-model:value="formData.dataPerm" :options="dataPermList"> </a-select>
         </a-form-item>
-        <a-form-item label="备注">
-          <a-input v-model:value="formData.remark"></a-input>
+        <a-form-item label="备注" prop="remark">
+          <a-textarea v-model:value="formData.remark" :rows="5"></a-textarea>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -127,7 +123,11 @@ const columns = ref([
     key: 'remark',
     dataIndex: 'remark'
   },
-
+  {
+    title: '创建时间',
+    key: 'createTime',
+    dataIndex: 'createTime'
+  },
   {
     title: '操作',
     key: 'action',
@@ -178,7 +178,7 @@ const modalOpen = ref(false)
 const formData = ref<RoleInfo>({
   roleName: '',
   roleKey: '',
-  status: 1,
+  status: '1',
   remark: '',
   roleMenus: [],
   dataPerm: '1'
@@ -198,7 +198,7 @@ const onOpenAddrole = () => {
   formData.value = {
     roleName: '',
     roleKey: '',
-    status: 1,
+    status: '1',
     remark: '',
     roleMenus: [],
     dataPerm: '1'
@@ -224,23 +224,25 @@ const resetForm = () => {
   modalFormRef.value?.resetFields()
 }
 const onConfirm = () => {
-  let http
-  if (modalType.value == 'add') {
-    http = api.add
-  } else {
-    http = api.update
-  }
-  if (!(formData.value.roleMenus instanceof Array)) {
-    formData.value.roleMenus = formData.value.roleMenus.checked
-  }
-  http(formData.value).then((res) => {
-    const { code } = res
-    if (code == 200) {
-      message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
-      getList()
+  modalFormRef.value?.validate().then(() => {
+    let http
+    if (modalType.value == 'add') {
+      http = api.add
+    } else {
+      http = api.update
     }
-    resetForm()
-    modalOpen.value = false
+    if (!(formData.value.roleMenus instanceof Array)) {
+      formData.value.roleMenus = formData.value.roleMenus.checked
+    }
+    http(formData.value).then((res) => {
+      const { code } = res
+      if (code == 200) {
+        message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
+        getList()
+      }
+      resetForm()
+      modalOpen.value = false
+    })
   })
 }
 const menuTree = ref<

@@ -34,14 +34,9 @@
             v-for="item in currentImages"
             :key="item.id"
             class="image-item"
-            :class="{ selected: selected == `${basePath}/${item.path}` }"
+            :class="{ selected: selected == item.path }"
           >
-            <img
-              :src="`${basePath}/${item.path}`"
-              @click="onClickItem(`${basePath}/${item.path}`)"
-              height="100px"
-              width="100px"
-            />
+            <img :src="item.path" @click="onClickItem(item.path)" height="100px" width="100px" />
           </div>
         </div>
         <a-button

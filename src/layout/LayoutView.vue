@@ -23,6 +23,7 @@ import { storeToRefs } from 'pinia'
 import LayoutThemeCfg from './components/LayoutThemeCfg.vue'
 import type { Obj } from '@/model'
 import { isTruth } from '@/utils/tools'
+import router from '@/router'
 const systemStore = useSystemStore()
 const { isConfigVisible, themeCfg, systemSetting, userInfo } = storeToRefs(systemStore)
 const { onCloseConfigDrawer, startUp } = systemStore

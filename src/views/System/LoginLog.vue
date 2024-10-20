@@ -1,27 +1,17 @@
 <template>
   <div class="loginLog">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="loginLogParamsForm" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="ip地址" name="keyword">
-              <a-input v-model:value="loginLogParamsForm.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item label="登录日期">
-              <a-range-picker
-                v-model:value="date"
-                valueFormat="YYYY-MM-DD"
-                @change="changeTime()"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" :model="loginLogParamsForm" layout="inline" @finish="onSearch">
+        <a-form-item label="ip地址" name="keyword">
+          <a-input v-model:value="loginLogParamsForm.keyword"> </a-input>
+        </a-form-item>
+        <a-form-item label="登录日期">
+          <a-range-picker v-model:value="date" valueFormat="YYYY-MM-DD" @change="changeTime()" />
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -29,7 +19,7 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 540 }"
+        :scroll="{ y: 590 }"
         @change="onChangePagination"
         :pagination="{ current: loginLogParamsForm.pageNumber, total: total }"
       >

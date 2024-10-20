@@ -15,7 +15,7 @@ export interface AuthInfo {
   roleIds: string[]
   createTime: Date
   id: string,
-  orgId:number,
+  orgId?:number,
   loginIp:string
   lastLoginIp:string
   phone?:string
@@ -43,7 +43,7 @@ export interface RoleInfo {
   roleKey: string
   creatTime?: Date
   remark?: string
-  status: number
+  status: string
 }
 export interface RoleDictItem {
   roleId: string

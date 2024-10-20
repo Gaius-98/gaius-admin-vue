@@ -16,3 +16,16 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #e3e4e6;
 }
+
+.ant-table-striped :deep(.table-striped) td {
+  background-color: #f4f4f4;
+}
+
+.search-area :deep(.ant-card-head) {
+  min-height: 40px;
+  border-bottom: none;
+}
+
+.search-area :deep(.ant-card-body) {
+  padding: 10px 24px;
+}

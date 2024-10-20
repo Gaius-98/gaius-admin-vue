@@ -1,23 +1,17 @@
 <template>
   <div class="request">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="requestParamsForm" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="API名称" name="keyword">
-              <a-input v-model:value="requestParamsForm.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="4">
-            <a-form-item label="地址" name="url">
-              <a-input v-model:value="requestParamsForm.url"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" layout="inline" :model="requestParamsForm" @finish="onSearch">
+        <a-form-item label="API名称" prop="keyword">
+          <a-input v-model:value="requestParamsForm.keyword"> </a-input>
+        </a-form-item>
+        <a-form-item label="地址" prop="url">
+          <a-input v-model:value="requestParamsForm.url"> </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -28,7 +22,7 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 510 }"
+        :scroll="{ y: 560 }"
         @change="onChangePagination"
         :pagination="{ current: requestParamsForm.pageNumber, total: total }"
       >

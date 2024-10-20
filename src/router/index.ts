@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, } from 'vue-router'
+import type {RouteLocationNormalized} from 'vue-router'
 import auth from '@/utils/auth'
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+const routes = [
     {
       path: '/',
       name: 'layout',
@@ -85,7 +84,7 @@ const router = createRouter({
               path: 'form',
               name: 'form',
               component: () => import('@/views/LowCode/Form/FormEditor/FormEditor.vue'),
-              props: (route) => route.query
+              props: (route:RouteLocationNormalized) => route.query
             },
             {
               path: 'form-list',
@@ -96,7 +95,7 @@ const router = createRouter({
               path: 'table',
               name: 'table',
               component: () => import('@/views/LowCode/Table/TableEditor/TableEditor.vue'),
-              props: (route) => route.query
+              props: (route:RouteLocationNormalized) => route.query
             },
             {
               path: 'table-list',
@@ -124,19 +123,19 @@ const router = createRouter({
               path: 'form',
               name: 'apply-form',
               component: () => import('@/components/LowCodeForm/LowCodeFormId.vue'),
-              props: (route) => route.query
+              props: (route:RouteLocationNormalized) => route.query
             },
             {
               path: 'table',
               name: 'apply-table',
               component: () => import('@/components/LowCodeTable/LowCodeTable.vue'),
-              props: (route) => route.query
+              props: (route:RouteLocationNormalized) => route.query
             },
             {
               path: 'iframe',
               name: 'iframe',
               component: () => import('@/components/IframeView.vue'),
-              props: (route) => route.query
+              props: (route:RouteLocationNormalized) => route.query
             }
           ]
         },
@@ -157,9 +156,12 @@ const router = createRouter({
       path: '/preview-table',
       name: 'previewLowCodeTable',
       component: () => import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
-      props: (route) => route.query
+      props: (route:RouteLocationNormalized) => route.query
     },
   ]
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
 })
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

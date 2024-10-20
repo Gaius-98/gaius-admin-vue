@@ -1,27 +1,17 @@
 <template>
   <div class="notice">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="noticeParams" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="关键字" name="keyword">
-              <a-input v-model:value="noticeParams.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item label="时间范围">
-              <a-range-picker
-                v-model:value="date"
-                valueFormat="YYYY-MM-DD"
-                @change="changeTime()"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" :model="noticeParams" layout="inline" @finish="onSearch">
+        <a-form-item label="关键字" prop="keyword">
+          <a-input v-model:value="noticeParams.keyword"> </a-input>
+        </a-form-item>
+        <a-form-item label="日期范围">
+          <a-range-picker v-model:value="date" valueFormat="YYYY-MM-DD" @change="changeTime()" />
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -34,7 +24,7 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 510 }"
+        :scroll="{ y: 560 }"
         @change="onChangePagination"
         :pagination="{ current: noticeParams.pageNumber, total: total }"
       >
@@ -61,11 +51,11 @@
     </a-card>
     <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
       <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-        <a-form-item label="标题">
+        <a-form-item label="标题" required prop="title">
           <a-input v-model:value="formData.title"></a-input>
         </a-form-item>
-        <a-form-item label="内容">
-          <a-textarea auto-size v-model:value="formData.content" :minRows="5"></a-textarea>
+        <a-form-item label="内容" required prop="title">
+          <a-textarea v-model:value="formData.content" :rows="5"></a-textarea>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -122,6 +112,9 @@ const loading = ref(false)
 const searchFormRef = ref<FormInstance>()
 const onClear = () => {
   searchFormRef.value?.resetFields()
+  noticeParams.startTime = ''
+  noticeParams.endTime = ''
+  date.value = ''
   getList()
 }
 const total = ref(0)
@@ -207,20 +200,22 @@ const resetForm = () => {
   modalFormRef.value?.resetFields()
 }
 const onConfirm = () => {
-  let http
-  if (modalType.value == 'add') {
-    http = api.add
-  } else {
-    http = api.update
-  }
-  http(formData.value).then((res) => {
-    const { code } = res
-    if (code == 200) {
-      message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
-      getList()
+  modalFormRef.value?.validate().then(() => {
+    let http
+    if (modalType.value == 'add') {
+      http = api.add
+    } else {
+      http = api.update
     }
-    resetForm()
-    modalOpen.value = false
+    http(formData.value).then((res) => {
+      const { code } = res
+      if (code == 200) {
+        message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
+        getList()
+      }
+      resetForm()
+      modalOpen.value = false
+    })
   })
 }
 

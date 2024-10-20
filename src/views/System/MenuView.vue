@@ -1,18 +1,14 @@
 <template>
   <div class="menu">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="menuParamsForm" @finish="getList">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="名称" name="keyword">
-              <a-input v-model:value="menuParamsForm.keyword"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" :model="menuParamsForm" layout="inline" @finish="getList">
+        <a-form-item label="名称" prop="keyword">
+          <a-input v-model:value="menuParamsForm.keyword"> </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -27,7 +23,7 @@
         :columns="columns"
         :data-source="tableData"
         :pagination="false"
-        :scroll="{ y: 570 }"
+        :scroll="{ y: 620 }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'status'">
@@ -60,27 +56,27 @@
     </a-card>
     <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle">
       <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-        <a-form-item label="名称" name="label">
+        <a-form-item label="名称" prop="label" required>
           <a-input v-model:value="formData.label"></a-input>
         </a-form-item>
-        <a-form-item label="类型" name="menuType">
+        <a-form-item label="类型" prop="menuType" required>
           <a-radio-group v-model:value="formData.menuType" button-style="solid" disabled>
             <a-radio-button v-for="item in menuTypeDict" :value="item.value" :key="item.value">
               {{ item.label }}
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="地址" name="address" v-if="formData.menuType == 'app'">
+        <a-form-item label="地址" prop="address" v-if="formData.menuType == 'app'" required>
           <a-input v-model:value="formData.address"> </a-input>
         </a-form-item>
-        <a-form-item label="状态" name="status">
+        <a-form-item label="状态" prop="status" required>
           <a-radio-group v-model:value="formData.status" button-style="solid">
             <a-radio-button v-for="item in statusDict" :value="item.value" :key="item.value">
               {{ item.label }}
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="上级节点" name="pid">
+        <a-form-item label="上级节点" prop="pid">
           <a-tree-select
             v-model:value="formData.pid"
             tree-node-filter-prop="label"
@@ -98,19 +94,19 @@
         </a-form-item>
         <a-form-item
           label="权限标识"
-          name="permissionId"
+          prop="permissionId"
           v-if="formData.menuType === 'permission'"
           required
         >
           <a-input v-model:value="formData.permissionId"></a-input>
         </a-form-item>
-        <a-form-item label="图标" name="icon" v-if="!(formData.menuType === 'permission')">
+        <a-form-item label="图标" prop="icon" v-if="!(formData.menuType === 'permission')">
           <icon-select v-model="formData.icon"></icon-select>
         </a-form-item>
-        <a-form-item label="排序号" name="sortNum">
+        <a-form-item label="排序号" prop="sortNum" required>
           <a-input-number v-model:value="formData.sortNum"></a-input-number>
         </a-form-item>
-        <a-form-item label="打开方式" name="openType" v-if="formData.menuType == 'app'">
+        <a-form-item label="打开方式" prop="openType" v-if="formData.menuType == 'app'" required>
           <a-radio-group v-model:value="formData.openType" button-style="solid">
             <a-radio-button v-for="item in openTypeDict" :value="item.value" :key="item.value">
               {{ item.label }}
@@ -119,7 +115,8 @@
         </a-form-item>
         <a-form-item
           label="页面类型"
-          name="type"
+          prop="type"
+          required
           v-if="formData.openType == '_self' && formData.menuType == 'app'"
         >
           <a-select v-model:value="formData.type" :options="pageTypeDict" show-search allowClear>
@@ -294,21 +291,23 @@ const resetForm = () => {
   modalFormRef.value?.resetFields()
 }
 const onConfirm = () => {
-  let http
-  if (modalType.value == 'add') {
-    http = api.add
-  } else {
-    http = api.update
-  }
-  http(formData.value).then((res) => {
-    const { code } = res
-    if (code == 200) {
-      message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
-      getList()
-      startUp()
+  modalFormRef.value?.validate().then(() => {
+    let http
+    if (modalType.value == 'add') {
+      http = api.add
+    } else {
+      http = api.update
     }
-    resetForm()
-    modalOpen.value = false
+    http(formData.value).then((res) => {
+      const { code } = res
+      if (code == 200) {
+        message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
+        getList()
+        startUp()
+      }
+      resetForm()
+      modalOpen.value = false
+    })
   })
 }
 const dictList = ref<MenuDict[]>([])

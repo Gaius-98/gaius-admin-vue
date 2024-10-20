@@ -1,29 +1,26 @@
 <template>
   <div class="dict">
     <a-card class="search-area">
-      <a-form ref="searchFormRef" :model="dictParamsForm" @finish="onSearch">
-        <a-row :gutter="24">
-          <a-col :span="4">
-            <a-form-item label="字典类型" name="dictType">
-              <a-select
-                v-model:value="dictParamsForm.dictType"
-                :fieldNames="{
-                  label: 'dictTypeDesc',
-                  value: 'dictType'
-                }"
-                optionFilterProp="dictTypeDesc"
-                show-search
-                allowClear
-                :options="dictTypes"
-              >
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="4" style="text-align: right">
-            <a-button type="primary" html-type="submit">搜索</a-button>
-            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-          </a-col>
-        </a-row>
+      <a-form ref="searchFormRef" layout="inline" :model="dictParamsForm" @finish="onSearch">
+        <a-form-item label="字典类型" name="dictType">
+          <a-select
+            v-model:value="dictParamsForm.dictType"
+            :fieldNames="{
+              label: 'dictTypeDesc',
+              value: 'dictType'
+            }"
+            optionFilterProp="dictTypeDesc"
+            show-search
+            allowClear
+            :options="dictTypes"
+            style="width: 200px"
+          >
+          </a-select>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" html-type="submit">搜索</a-button>
+          <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+        </a-form-item>
       </a-form>
     </a-card>
     <a-card>
@@ -39,8 +36,9 @@
         :pagination="{ current: dictParamsForm.pageNumber, total: total }"
         v-model:current="dictParamsForm.pageNumber"
         @change="onChangePagination"
-        :scroll="{ y: 510 }"
+        :scroll="{ y: 560 }"
         rowKey="id"
+        class="ant-table-striped"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'status'">
@@ -71,50 +69,61 @@
           </template>
         </template>
         <template #expandedRowRender="{ record }">
-          <a-table :columns="dictColumns" :pagination="false" :data-source="record.dictDataList">
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.key == 'status'">
-                <a-tag color="#87d068" v-if="record.status">启用</a-tag>
-                <a-tag color="#f50" v-else>停用</a-tag>
+          <a-card>
+            <a-table
+              class="ant-table-striped"
+              :columns="dictColumns"
+              :pagination="false"
+              :data-source="record.dictDataList"
+              :row-class-name="
+                (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
+              "
+              style="margin: 5px"
+            >
+              <template #bodyCell="{ column, record }">
+                <template v-if="column.key == 'status'">
+                  <a-tag color="#87d068" v-if="record.status">启用</a-tag>
+                  <a-tag color="#f50" v-else>停用</a-tag>
+                </template>
+                <template v-if="column.key == 'action'">
+                  <a-button
+                    type="link"
+                    @click="onOpenEditdict(record)"
+                    v-has-perm="'system:dict:update'"
+                    >编辑</a-button
+                  >
+                  <a-divider type="vertical" />
+                  <a-popconfirm
+                    title="确定要删除吗?"
+                    ok-text="确定"
+                    cancel-text="取消"
+                    @confirm="onDeleteDict(record)"
+                  >
+                    <a-button type="link" danger v-has-perm="'system:dict:remove'">删除</a-button>
+                  </a-popconfirm>
+                </template>
               </template>
-              <template v-if="column.key == 'action'">
-                <a-button
-                  type="link"
-                  @click="onOpenEditdict(record)"
-                  v-has-perm="'system:dict:update'"
-                  >编辑</a-button
-                >
-                <a-divider type="vertical" />
-                <a-popconfirm
-                  title="确定要删除吗?"
-                  ok-text="确定"
-                  cancel-text="取消"
-                  @confirm="onDeleteDict(record)"
-                >
-                  <a-button type="link" danger v-has-perm="'system:dict:remove'">删除</a-button>
-                </a-popconfirm>
-              </template>
-            </template>
-          </a-table>
+            </a-table>
+          </a-card>
         </template>
       </a-table>
     </a-card>
     <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
       <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-        <a-form-item label="字典类型值">
+        <a-form-item label="字典类型" required prop="dictType">
           <a-input v-model:value="formData.dictType"></a-input>
         </a-form-item>
-        <a-form-item label="字典类型描述">
+        <a-form-item label="类型描述" required prop="dictTypeDesc">
           <a-input v-model:value="formData.dictTypeDesc"></a-input>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item label="状态" required prop="status">
           <a-radio-group v-model:value="formData.status" button-style="solid">
             <a-radio-button value="1">启用 </a-radio-button>
             <a-radio-button value="0">停用 </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="描述">
-          <a-input type="textarea" v-model:value="formData.remark"></a-input>
+        <a-form-item label="备注" prop="remark">
+          <a-textarea v-model:value="formData.remark" :rows="5"></a-textarea>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -125,7 +134,7 @@
       @cancel="resetDictForm"
     >
       <a-form :model="formDictData" :label-col="{ span: 8 }" ref="modalDictDataRef">
-        <a-form-item label="所属类型">
+        <a-form-item label="所属类型" required prop="dictType">
           <a-select
             v-model:value="formDictData.dictType"
             :fieldNames="{
@@ -140,16 +149,16 @@
           >
           </a-select>
         </a-form-item>
-        <a-form-item label="字典值">
+        <a-form-item label="字典值" required prop="value">
           <a-input v-model:value="formDictData.value"></a-input>
         </a-form-item>
-        <a-form-item label="字典翻译">
+        <a-form-item label="字典翻译" required prop="label">
           <a-input v-model:value="formDictData.label"></a-input>
         </a-form-item>
-        <a-form-item label="排序号">
+        <a-form-item label="排序号" required prop="sortNum">
           <a-input-number :min="0" :step="1" v-model:value="formDictData.sortNum"></a-input-number>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item label="状态" required prop="status">
           <a-radio-group v-model:value="formDictData.status" button-style="solid">
             <a-radio-button value="1">启用 </a-radio-button>
             <a-radio-button value="0">停用 </a-radio-button>
@@ -361,38 +370,42 @@ const resetDictForm = () => {
   modalDictDataRef.value?.resetFields()
 }
 const onConfirm = () => {
-  let http
-  if (modalType.value == 'add') {
-    http = api.addType
-  } else {
-    http = api.updateType
-  }
-  http(formData.value).then((res) => {
-    const { code } = res
-    if (code == 200) {
-      message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
-      getList()
+  modalFormRef.value?.validate().then(() => {
+    let http
+    if (modalType.value == 'add') {
+      http = api.addType
+    } else {
+      http = api.updateType
     }
-    resetForm()
-    modalOpen.value = false
+    http(formData.value).then((res) => {
+      const { code } = res
+      if (code == 200) {
+        message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
+        getList()
+      }
+      resetForm()
+      modalOpen.value = false
+    })
   })
 }
 const onDictConfirm = () => {
-  let http
-  if (modalType.value == 'add') {
-    http = api.addData
-  } else {
-    http = api.updateData
-  }
-  http(formDictData.value).then((res) => {
-    const { code } = res
-    if (code == 200) {
-      message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
-      getList()
-      getDictTypes()
+  modalDictDataRef.value?.validate().then(() => {
+    let http
+    if (modalType.value == 'add') {
+      http = api.addData
+    } else {
+      http = api.updateData
     }
-    resetDictForm()
-    dictDataOpen.value = false
+    http(formDictData.value).then((res) => {
+      const { code } = res
+      if (code == 200) {
+        message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
+        getList()
+        getDictTypes()
+      }
+      resetDictForm()
+      dictDataOpen.value = false
+    })
   })
 }
 

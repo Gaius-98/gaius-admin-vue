@@ -8,6 +8,7 @@
         @search="getTree"
       />
       <a-tree
+        v-model:selectedKeys="selectKeys"
         :tree-data="orgTree"
         selectable
         :fieldNames="{
@@ -22,18 +23,14 @@
     </div>
     <div class="user">
       <a-card class="search-area">
-        <a-form ref="searchFormRef" :model="userParamsForm" @finish="onSearch">
-          <a-row :gutter="24">
-            <a-col :span="4">
-              <a-form-item label="用户名" name="keyword">
-                <a-input v-model:value="userParamsForm.keyword"> </a-input>
-              </a-form-item>
-            </a-col>
-            <a-col :span="4" style="text-align: right">
-              <a-button type="primary" html-type="submit">搜索</a-button>
-              <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
-            </a-col>
-          </a-row>
+        <a-form ref="searchFormRef" :model="userParamsForm" @finish="onSearch" layout="inline">
+          <a-form-item label="用户名" name="keyword">
+            <a-input v-model:value="userParamsForm.keyword"> </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" html-type="submit">搜索</a-button>
+            <a-button style="margin: 0 8px" @click="onClear"> 重置 </a-button>
+          </a-form-item>
         </a-form>
       </a-card>
       <a-card>
@@ -46,7 +43,7 @@
           :loading="loading"
           :columns="columns"
           :data-source="tableData"
-          :scroll="{ y: 510 }"
+          :scroll="{ y: 560 }"
           @change="onChangePagination"
           :pagination="{ current: userParamsForm.pageNumber, total: total }"
         >
@@ -58,8 +55,8 @@
             <template v-if="column.key == 'avatar'">
               <a-image :src="`${record.avatar}`" height="30px" width="30px" :preview="false" />
             </template>
-            <template v-if="column.key == 'role'">
-              <a-tag>{{ record.role }}</a-tag>
+            <template v-if="column.key == 'org'">
+              <a-tag>{{ record.orgInfo?.name }}</a-tag>
             </template>
             <template v-if="column.key == 'action'">
               <a-button
@@ -85,14 +82,14 @@
         </a-table>
       </a-card>
       <a-modal v-model:open="modalOpen" @ok="onConfirm" :title="modalTitle" @cancel="resetForm">
-        <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef">
-          <a-form-item label="用户名">
+        <a-form :model="formData" :label-col="{ span: 8 }" ref="modalFormRef" :rules="rules">
+          <a-form-item label="用户名" prop="username">
             <a-input v-model:value="formData.username"></a-input>
           </a-form-item>
-          <a-form-item label="密码" v-if="modalType == 'add'">
+          <a-form-item label="密码" v-if="modalType == 'add'" prop="password">
             <a-input-password v-model:value="formData.password"></a-input-password>
           </a-form-item>
-          <a-form-item label="角色">
+          <a-form-item label="角色" prop="roleIds">
             <a-select
               v-model:value="formData.roleIds"
               :fieldNames="{
@@ -103,7 +100,7 @@
               :options="roleDictList"
             ></a-select>
           </a-form-item>
-          <a-form-item label="所属机构" name="orgId">
+          <a-form-item label="所属机构" prop="orgId">
             <a-tree-select
               v-model:value="formData.orgId"
               tree-node-filter-prop="label"
@@ -118,22 +115,22 @@
             >
             </a-tree-select>
           </a-form-item>
-          <a-form-item label="头像">
+          <a-form-item label="头像" prop="avatar">
             <image-picker v-model:value="formData.avatar"></image-picker>
           </a-form-item>
-          <a-form-item label="状态">
+          <a-form-item label="状态" prop="status">
             <a-radio-group v-model:value="formData.status" button-style="solid">
               <a-radio-button value="1">启用 </a-radio-button>
               <a-radio-button value="0">停用 </a-radio-button>
             </a-radio-group>
           </a-form-item>
-          <a-form-item label="名称">
+          <a-form-item label="名称" prop="name">
             <a-input v-model:value="formData.name"></a-input>
           </a-form-item>
-          <a-form-item label="邮箱">
+          <a-form-item label="邮箱" prop="email">
             <a-input v-model:value="formData.email"></a-input>
           </a-form-item>
-          <a-form-item label="电话">
+          <a-form-item label="电话" prop="phone">
             <a-input v-model:value="formData.phone"></a-input>
           </a-form-item>
         </a-form>
@@ -145,6 +142,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api/user'
+import type { Rule } from 'ant-design-vue/es/form'
 import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem, SystemOrgTree } from '@/model'
 import ImagePicker from '@/components/ImagePicker.vue'
@@ -154,18 +152,21 @@ const userParamsForm = reactive<PageParams>({
   pageSize: 10,
   orgId: null
 })
+const selectKeys = ref<number[]>([])
 import common from '@/api/common'
 const tableData = ref<AuthInfo[]>([])
 const columns = ref([
   {
     title: '用户名',
     key: 'username',
-    dataIndex: 'username'
+    dataIndex: 'username',
+    width: '100px'
   },
   {
     title: '头像',
     key: 'avatar',
-    dataIndex: 'avatar'
+    dataIndex: 'avatar',
+    width: '60px'
   },
   {
     title: '昵称',
@@ -173,19 +174,21 @@ const columns = ref([
     dataIndex: 'name'
   },
   {
+    title: '所属机构',
+    key: 'org',
+    dataIndex: 'org'
+  },
+  {
     title: '邮箱',
     key: 'email',
     dataIndex: 'email'
   },
-  {
-    title: '电话',
-    key: 'phone',
-    dataIndex: 'phone'
-  },
+
   {
     title: '状态',
     key: 'status',
-    dataIndex: 'status'
+    dataIndex: 'status',
+    width: '100px'
   },
   {
     title: '操作',
@@ -230,7 +233,7 @@ const getList = () => {
 const orgTree = ref<SystemOrgTree[]>([])
 const searchValue = ref('')
 const getTree = () => {
-  common.getOrgTree(searchValue.value).then((res) => {
+  return common.getOrgTree(searchValue.value).then((res) => {
     const { code, data, msg } = res
     if (code == 200) {
       orgTree.value = data
@@ -238,8 +241,11 @@ const getTree = () => {
   })
 }
 onMounted(() => {
-  getList()
-  getTree()
+  getTree().then(() => {
+    userParamsForm.orgId = orgTree.value ? orgTree.value[0]?.id : null
+    selectKeys.value = [userParamsForm.orgId]
+    getList()
+  })
 })
 const modalOpen = ref(false)
 const formData = ref<CreateAuthInfo>({
@@ -250,8 +256,7 @@ const formData = ref<CreateAuthInfo>({
   avatar: '',
   roleIds: [],
   phone: '',
-  status: '1',
-  orgId: 0
+  status: '1'
 })
 const modalType = ref<'add' | 'edit'>('add')
 const modalTitle = computed(() => {
@@ -273,8 +278,7 @@ const onOpenAdduser = () => {
     avatar: '',
     roleIds: [],
     phone: '',
-    status: '1',
-    orgId: 0
+    status: '1'
   }
 }
 
@@ -296,21 +300,49 @@ const onDeleteuser = async (record: AuthInfo) => {
 const resetForm = () => {
   modalFormRef.value?.resetFields()
 }
-const onConfirm = () => {
-  let http
-  if (modalType.value == 'add') {
-    http = api.add
-  } else {
-    http = api.update
-  }
-  http(formData.value).then((res) => {
-    const { code } = res
-    if (code == 200) {
-      message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
-      getList()
+const rules: Record<string, Rule[]> = {
+  username: [
+    {
+      required: true,
+      message: '请输入用户名'
     }
-    resetForm()
-    modalOpen.value = false
+  ],
+  status: [
+    {
+      required: true,
+      message: '请选择状态'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: '请输入名称'
+    }
+  ],
+  email: [
+    {
+      required: true,
+      message: '请输入联系邮箱'
+    }
+  ]
+}
+const onConfirm = () => {
+  modalFormRef.value?.validate().then(() => {
+    let http
+    if (modalType.value == 'add') {
+      http = api.add
+    } else {
+      http = api.update
+    }
+    http(formData.value).then((res) => {
+      const { code } = res
+      if (code == 200) {
+        message.success(modalType.value == 'add' ? '新增成功' : '编辑成功')
+        getList()
+      }
+      resetForm()
+      modalOpen.value = false
+    })
   })
 }
 const roleDictList = ref<RoleDictItem[]>([])
