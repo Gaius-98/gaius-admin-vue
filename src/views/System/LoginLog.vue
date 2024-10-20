@@ -19,9 +19,14 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :scroll="{ y: 590 }"
+        :scroll="{ y: 600 }"
         @change="onChangePagination"
-        :pagination="{ current: loginLogParamsForm.pageNumber, total: total }"
+        :pagination="{
+          current: loginLogParamsForm.pageNumber,
+          total: total,
+          showSizeChanger: true,
+          pageSize: loginLogParamsForm.pageSize
+        }"
       >
       </a-table>
     </a-card>
@@ -38,7 +43,7 @@ const loginLogParamsForm = reactive<PageParams>({
   startTime: '',
   endTime: '',
   pageNumber: 1,
-  pageSize: 10
+  pageSize: 20
 })
 const date = ref('')
 const tableData = ref<SystemLoginLog[]>([])
@@ -84,7 +89,7 @@ const onClear = () => {
 const total = ref(0)
 const onSearch = () => {
   loginLogParamsForm.pageNumber = 1
-  loginLogParamsForm.pageSize = 10
+  loginLogParamsForm.pageSize = 20
   getList()
 }
 const changeTime = () => {

@@ -29,7 +29,12 @@
         :data-source="tableData"
         :scroll="{ y: 560 }"
         @change="onChangePagination"
-        :pagination="{ current: resourceParamsForm.pageNumber, total: total }"
+        :pagination="{
+          current: resourceParamsForm.pageNumber,
+          total: total,
+          showSizeChanger: true,
+          pageSize: resourceParamsForm.pageSize
+        }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'img'">

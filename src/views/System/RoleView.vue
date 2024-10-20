@@ -23,7 +23,12 @@
         :data-source="tableData"
         :scroll="{ y: 560 }"
         @change="onChangePagination"
-        :pagination="{ current: roleParamsForm.pageNumber, total: total }"
+        :pagination="{
+          current: roleParamsForm.pageNumber,
+          total: total,
+          showSizeChanger: true,
+          pageSize: roleParamsForm.pageSize
+        }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key == 'status'">

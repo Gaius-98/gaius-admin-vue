@@ -33,7 +33,12 @@
         :loading="loading"
         :columns="columns"
         :data-source="tableData"
-        :pagination="{ current: dictParamsForm.pageNumber, total: total }"
+        :pagination="{
+          current: dictParamsForm.pageNumber,
+          total: total,
+          showSizeChanger: true,
+          pageSize: dictParamsForm.pageSize
+        }"
         v-model:current="dictParamsForm.pageNumber"
         @change="onChangePagination"
         :scroll="{ y: 560 }"
