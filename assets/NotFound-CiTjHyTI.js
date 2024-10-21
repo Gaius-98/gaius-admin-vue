@@ -1,1 +1,0 @@
-import{_ as o}from"./index-DaChsbMI.js";import{o as e,h as n,aE as s}from"./.pnpm-8LtkOrH2.js";const _={};function c(r,a){const t=s;return e(),n(t,{status:"404",title:"404","sub-title":"对不起,未找到页面"})}const f=o(_,[["render",c]]);export{f as default};
