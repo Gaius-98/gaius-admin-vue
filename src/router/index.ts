@@ -79,11 +79,23 @@ const routes = [
           path:'/business',
           name:'business',
           component: () => import('@/layout/BlankView.vue'),
-          children:[{
-            path:'device',
-            name:'device',
-            component:()=>import ('@/views/Business/Device/DeviceView.vue')
-          }]
+          children:[
+            {
+              path:'device',
+              name:'device',
+              component:()=>import ('@/views/Business/Device/DeviceView.vue')
+            },
+            {
+              path:'report',
+              name:'report',
+              component:()=>import ('@/views/Business/Report/ReportView.vue')
+            },
+            {
+              path:'log',
+              name:'log',
+              component:()=>import ('@/views/Business/Log/LogView.vue')
+            },
+        ]
         },
 
         {
