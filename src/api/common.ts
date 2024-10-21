@@ -39,5 +39,11 @@ export default {
       method: 'get',
 
     })
+  },
+  getAllUser:()=>{
+    return request<DictItem[]>({
+      url: 'user/all',
+      method: 'get',
+    })
   }
 }

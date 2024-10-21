@@ -76,69 +76,16 @@ const routes = [
           ]
         },
         {
-          path: '/low-code',
-          name: 'lowCode',
+          path:'/business',
+          name:'business',
           component: () => import('@/layout/BlankView.vue'),
-          children: [
-            {
-              path: 'form',
-              name: 'form',
-              component: () => import('@/views/LowCode/Form/FormEditor/FormEditor.vue'),
-              props: (route:RouteLocationNormalized) => route.query
-            },
-            {
-              path: 'form-list',
-              name: 'formList',
-              component: () => import('@/views/LowCode/Form/FormList/FormList.vue')
-            },
-            {
-              path: 'table',
-              name: 'table',
-              component: () => import('@/views/LowCode/Table/TableEditor/TableEditor.vue'),
-              props: (route:RouteLocationNormalized) => route.query
-            },
-            {
-              path: 'table-list',
-              name: 'tableList',
-              component: () => import('@/views/LowCode/Table/TableList/TableList.vue')
-            },
-            
-            {
-              path: 'visual-list',
-              name: 'visualList',
-              component: () => import('@/views/LowCode/Visual/VisualList/VisualList.vue')
-            },
-            {
-              path: 'visual',
-              name: 'visual',
-              component: () => import('@/views/LowCode/Visual/VisualEditor/VisualEditor.vue')
-            }
-          ]
+          children:[{
+            path:'device',
+            name:'device',
+            component:()=>import ('@/views/Business/Device/DeviceView.vue')
+          }]
         },
-        {
-          path: '/apply',
-          name: 'apply',
-          children: [
-            {
-              path: 'form',
-              name: 'apply-form',
-              component: () => import('@/components/LowCodeForm/LowCodeFormId.vue'),
-              props: (route:RouteLocationNormalized) => route.query
-            },
-            {
-              path: 'table',
-              name: 'apply-table',
-              component: () => import('@/components/LowCodeTable/LowCodeTable.vue'),
-              props: (route:RouteLocationNormalized) => route.query
-            },
-            {
-              path: 'iframe',
-              name: 'iframe',
-              component: () => import('@/components/IframeView.vue'),
-              props: (route:RouteLocationNormalized) => route.query
-            }
-          ]
-        },
+
         {
           path: '/:pathMatch(.*)*',
           name: '404',
@@ -152,12 +99,7 @@ const routes = [
       name: 'login',
       component: () => import('@/views/Login/LoginView.vue')
     },
-    {
-      path: '/preview-table',
-      name: 'previewLowCodeTable',
-      component: () => import('@/views/LowCode/Table/PreviewTable/PreviewTable.vue'),
-      props: (route:RouteLocationNormalized) => route.query
-    },
+
   ]
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
