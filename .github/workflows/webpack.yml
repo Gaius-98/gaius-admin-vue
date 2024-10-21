@@ -31,7 +31,7 @@ jobs:
       - name: Depoly
         uses: peaceiris/actions-gh-pages@v3 # 一个自动发布github pages的action
         with:
-          publish_branch: gh-pages
+          publish_branch: sy-gh-page
           publish_dir: ./dist
           github_token: ${{ secrets.GAIUS_TOKEN }}
           user_name: Gaius-98

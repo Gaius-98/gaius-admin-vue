@@ -19,7 +19,7 @@ export const useSystemStore = defineStore('system', () => {
     local.value == 'en' ? (local.value = 'zh') : (local.value = 'en')
   }
 
-  const themeCfg = useStorage<SystemThemeCfg>('gaius-theme-json', {
+  const themeCfg = useStorage<SystemThemeCfg>('sy-theme-json', {
     projectName: import.meta.env.VITE_TITLE,
     logo: '/prod/uploads/3a587351093a7d331c2f210100eaef5593.png',
     loginBg: '/prod/uploads/bef69558f77f710e05a25f66ad1076bed7.webp',
@@ -46,7 +46,7 @@ export const useSystemStore = defineStore('system', () => {
     list:[],
     total:0
   })
-  const permissionInfo = useStorage<string[]>('gaius-permissions',[])
+  const permissionInfo = useStorage<string[]>('sy-permissions',[])
   const collapsed = ref(false)
   const onToggleCollapsed = () => {
     collapsed.value = !collapsed.value

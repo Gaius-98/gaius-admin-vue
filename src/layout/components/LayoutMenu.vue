@@ -7,7 +7,7 @@
     v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
     style="height: 100%; overflow-y: auto"
-    class="gaius-menu"
+    class="sy-menu"
   >
   </a-menu>
 </template>
@@ -26,8 +26,8 @@ const route = useRoute()
 const systemStore = useSystemStore()
 const { menuTree, themeCfg } = storeToRefs(systemStore)
 
-const selectedKeys = useStorage<string[]>('gaius-admin-menu-selected', [], sessionStorage)
-const openKeys = useStorage('gaius-admin-menu-open', [], sessionStorage)
+const selectedKeys = useStorage<string[]>('sy-admin-menu-selected', [], sessionStorage)
+const openKeys = useStorage('sy-admin-menu-open', [], sessionStorage)
 const realMenuTree = computed(() => {
   return transformMenuData(menuTree.value)
 })
@@ -78,7 +78,7 @@ const onSelectMenu = ({ item }: { item: Obj<ResMenuItem> }) => {
 }
 </script>
 <style scoped lang="scss">
-.gaius-menu {
+.sy-menu {
   &::-webkit-scrollbar {
     width: 0px;
     /* 宽度 */

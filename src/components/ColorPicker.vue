@@ -1,5 +1,5 @@
 <template>
-  <input type="color" :value="value" @change="onChangeColor" class="gaius-color-picker" />
+  <input type="color" :value="value" @change="onChangeColor" class="sy-color-picker" />
 </template>
 
 <script lang="ts" setup>
@@ -11,7 +11,7 @@ const onChangeColor = (ev: Event) => {
 }
 </script>
 <style scoped lang="scss">
-.gaius-color-picker {
+.sy-color-picker {
   padding: 0;
   block-size: 32px;
   width: 30px;
