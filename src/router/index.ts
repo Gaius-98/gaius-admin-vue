@@ -72,6 +72,10 @@ const routes = [
               path:'notice-message',
               name:'noticeMessage',
               component:()=> import('@/views/System/NotifyMessage.vue')
+            },{
+              path:'system-info',
+              name:'systemInfo',
+              component:()=> import('@/views/System/SystemInfo.vue')
             }
           ]
         },
