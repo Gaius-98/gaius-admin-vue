@@ -41,7 +41,6 @@
               v-has-perm="'system:notice:update'"
               >编辑</a-button
             >
-            <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"

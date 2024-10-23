@@ -65,6 +65,11 @@ const routes = [
               component: () => import('@/views/System/LoginLog.vue')
             },
             {
+              path:'opt-log',
+              name:'optLog',
+              component: () => import('@/views/System/OptLog.vue')
+            },
+            {
               path:'notice',
               name:'notice',
               component: () => import('@/views/System/NoticeView.vue')
