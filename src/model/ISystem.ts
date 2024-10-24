@@ -103,6 +103,24 @@ export interface SystemLoginLog {
   browser:string
   createTime:Date
 }
+export interface SystemOptLog {
+  id:number
+  username:string
+  ip: string
+  location: string
+  reqType: string
+  reqUrl: string
+  reqParam: string
+  moduleName: string
+  funcName: string
+  optModule: string
+  optType: string
+  resStatus: string
+  resTime: string
+  res: string
+  errMsg: string
+  createTime: string
+}
 export interface SystemNotice {
   id?:number
   title:string

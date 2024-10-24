@@ -1,8 +1,8 @@
 import request from '@/utils/request'
-import type { PageParams,SystemLoginLog,ResPage  } from '@/model'
+import type { PageParams,SystemOptLog,ResPage  } from '@/model'
 export default {
   getList: (params: PageParams) => {
-    return request<ResPage<SystemLoginLog[]>>({
+    return request<ResPage<SystemOptLog[]>>({
       method: 'get',
       url: 'operationlog/list',
       params

@@ -6,7 +6,12 @@
           <a-input v-model:value="noticeParams.keyword"> </a-input>
         </a-form-item>
         <a-form-item label="日期范围">
-          <a-range-picker v-model:value="date" valueFormat="YYYY-MM-DD" @change="changeTime()" />
+          <a-range-picker
+            v-model:value="date"
+            :showTime="true"
+            valueFormat="YYYY-MM-DD HH:mm:ss"
+            @change="changeTime()"
+          />
         </a-form-item>
         <a-form-item>
           <a-button type="primary" html-type="submit">搜索</a-button>
