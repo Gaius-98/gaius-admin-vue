@@ -1,7 +1,8 @@
 import permission from "./permission"
 import type { App } from "vue"
 import { copy } from 'gaius-utils'
-const directives = [permission,copy]
+import loading from "./loading"
+const directives = [permission,copy,loading]
 const install = (app:App) => {
     
     directives.map(directive =>{

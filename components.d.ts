@@ -72,6 +72,7 @@ declare module 'vue' {
     IconSelect: typeof import('./src/components/IconSelect/IconSelect.vue')['default']
     IframeView: typeof import('./src/components/IframeView.vue')['default']
     ImagePicker: typeof import('./src/components/ImagePicker.vue')['default']
+    LoadingView: typeof import('./src/components/LoadingView.vue')['default']
     LowCodeCard: typeof import('./src/components/LowCodeForm/components/LowCodeCard.vue')['default']
     LowCodeCollapse: typeof import('./src/components/LowCodeForm/components/LowCodeCollapse.vue')['default']
     LowCodeForm: typeof import('./src/components/LowCodeForm/LowCodeForm.vue')['default']

@@ -1,5 +1,5 @@
 <template>
-  <div class="resource">
+  <div class="resource" v-loading.fullscreen="fullLoading">
     <a-card class="search-area">
       <a-form ref="searchFormRef" layout="inline" :model="resourceParamsForm" @finish="onSearch">
         <a-form-item label="资源名称" prop="keyword">
@@ -76,6 +76,7 @@ const resourceParamsForm = reactive<PageParams>({
   pageNumber: 1,
   pageSize: 10
 })
+const fullLoading = ref(false)
 const tableData = ref<ImageItem[]>([])
 const columns = ref([
   {
@@ -131,6 +132,7 @@ const onChangePagination = (pagination: PaginationProps) => {
 }
 
 const onUpload = (data: any) => {
+  fullLoading.value = true
   const form = new FormData()
   form.append('file', data.file, encodeURIComponent(data.file.name))
   api.add(form).then((res) => {
@@ -138,6 +140,7 @@ const onUpload = (data: any) => {
     if (code == 200) {
       message.success(msg)
     }
+    fullLoading.value = false
     getList()
   })
 }
