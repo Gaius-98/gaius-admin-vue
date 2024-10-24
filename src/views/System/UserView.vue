@@ -16,7 +16,7 @@
           key: 'id',
           children: 'children'
         }"
-        style="height: calc(100% - 30px)"
+        style="height: calc(100% - 30px);overflow-y: auto"
         @select="onSelectTree"
       >
       </a-tree>
@@ -283,7 +283,8 @@ const onOpenAdduser = () => {
     avatar: '',
     roleIds: [],
     phone: '',
-    status: '1'
+    status: '1',
+    orgId: selectKeys.value[0]
   }
 }
 
