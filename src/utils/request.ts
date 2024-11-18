@@ -13,7 +13,7 @@ const service = axios.create({
   baseURL: import.meta.env.VITE_REQ_BASE_URL,
   timeout: 60000
 })
-
+export {service}
 //请求拦截器
 service.interceptors.request.use(
   (config) => {
@@ -26,7 +26,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res: AxiosResponse<any, any>) => {
     const { code, msg } = res.data
-    if (code != 200) {
+    if (typeof code != 'undefined' && code != 200) {
       message.error(msg)
     }
     return res.data

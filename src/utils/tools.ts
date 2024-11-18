@@ -19,7 +19,24 @@ export const downloadFile = (content: string, fileName?: string, fileType = 'jso
   a.click()
   document.body.removeChild(a)
 }
-
+/**
+ *
+ * @param content string -- 文件内容
+ * @param fileName string --文件名称
+ * @param fileType string --文件类型  文件后缀名
+ */
+export const downloadFileByBlob = (content: Blob, fileName?: string, fileType = 'json') => {
+  const a = document.createElement('a')
+  // 构造一个blob对象来处理数据
+  fileName = `${decodeURI(encodeURI(fileName || uuidv4()))}.${fileType}`
+  // URL.createObjectURL()会产生一个url字符串，可以像使用普通 URL 那样使用它，比如用在 img.src 上
+  a.href = URL.createObjectURL(content)
+  // a标签里有download属性可以自定义文件名
+  a.setAttribute('download', fileName)
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+}
 export const uninstallPreLoad = () => {
   const element = document.querySelector('.pre-loading')
   if (element) {

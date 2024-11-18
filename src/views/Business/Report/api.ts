@@ -41,5 +41,15 @@ export default {
       data
     })
   },
-
+  export: (id: number) => {
+    return request({
+      method: 'post',
+      url: 'business/report/export',
+      data:{
+        id
+      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      responseType: 'blob',
+    })
+  },
 }

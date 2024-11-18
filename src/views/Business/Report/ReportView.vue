@@ -44,6 +44,10 @@
               >编辑</a-button
             >
             <a-divider type="vertical" />
+            <a-button type="link" @click="onExport(record)" v-has-perm="'business:report:export'"
+              >导出</a-button
+            >
+            <a-divider type="vertical" />
             <a-popconfirm
               title="确定要删除吗?"
               ok-text="确定"
@@ -92,9 +96,11 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import api from './api'
+import { service } from '@/utils/request'
+import axios from 'axios'
 import { message, type FormInstance, type PaginationProps } from 'ant-design-vue'
 import type { AuthInfo, PageParams, CreateAuthInfo, RoleDictItem, SystemOrgTree } from '@/model'
-
+import { downloadFile, downloadFileByBlob } from '@/utils/tools'
 import type { ReportInfo } from '@/model'
 import common, { type DictItem } from '@/api/common'
 const reportParams = reactive<PageParams>({
@@ -280,7 +286,12 @@ const onConfirm = () => {
     })
   })
 }
-
+const onExport = (record: ReportInfo) => {
+  const { id } = record
+  api.export(id!).then((res) => {
+    downloadFileByBlob(res as unknown as Blob, '空气检验报告', 'doc')
+  })
+}
 onMounted(() => {})
 </script>
 <style scoped lang="scss">
