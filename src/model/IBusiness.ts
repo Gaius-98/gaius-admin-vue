@@ -6,6 +6,9 @@ export interface DeviceInfo {
     expireDate?:Date|string
     id?:string
     isExpired:string
+    mqttInfo?:any
+    orgInfo?:any
+    userInfo?:any
 }
 
 export interface ReportInfo {

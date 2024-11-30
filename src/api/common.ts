@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { Obj,SystemOrgTree,SystemUserNotice,ResPage } from '@/model'
+import type { Obj,SystemOrgTree,SystemUserNotice,ResPage,PageParams,DeviceInfo } from '@/model'
 export type DictTypes = string[]
 export interface DictItem {
   value: string
@@ -45,5 +45,12 @@ export default {
       url: 'user/all',
       method: 'get',
     })
-  }
+  },
+  getOverview: (params: PageParams) => {
+    return request<ResPage<DeviceInfo[]>>({
+      method: 'get',
+      url: 'business/device/overview',
+      params
+    })
+  },
 }

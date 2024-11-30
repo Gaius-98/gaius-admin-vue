@@ -8,6 +8,7 @@ export default {
       params
     })
   },
+  
   getDetail: (id: string) => {
     return request<DeviceInfo>({
       method: 'get',

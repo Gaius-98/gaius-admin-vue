@@ -50,14 +50,11 @@
           </div>
         </template>
         <a-badge :count="noticeInfo.total" :overflow-count="3" class="badge"> </a-badge>
-        <MessageOutlined />
+        <AlertOutlined />
       </a-popover>
     </div>
     <div class="layout-opt-theme" @click="onOpenConfigDrawer" title="主题配置">
       <SettingOutlined />
-    </div>
-    <div class="layout-opt-github" @click="onOpenGithub" title="github">
-      <GithubOutlined />
     </div>
     <div class="layout-opt-userinfo" title="用户信息">
       <a-popover placement="bottomRight">
@@ -99,7 +96,7 @@ import {
   SearchOutlined,
   SettingOutlined,
   GithubOutlined,
-  MessageOutlined
+  AlertOutlined
 } from '@ant-design/icons-vue'
 import auth from '@/utils/auth'
 import { useRouter } from 'vue-router'
