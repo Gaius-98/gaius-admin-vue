@@ -31,9 +31,9 @@ const LayoutComponent = computed(() => {
   return layout[themeCfg.value.layoutMode]
 })
 const watermarkText = computed(() => {
-  const { projectWatermark } = systemSetting.value
-  const { username, name } = userInfo.value
-  return isTruth(projectWatermark) ? `${username}(${name})` : ''
+  const { projectWatermark, projectName } = systemSetting.value
+  const { username } = userInfo.value
+  return isTruth(projectWatermark) ? `${projectName}(${username})` : ''
 })
 
 const layout: Obj<Component> = {
